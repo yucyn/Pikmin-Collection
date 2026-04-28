@@ -356,7 +356,6 @@ document.addEventListener("DOMContentLoaded", function () {
     });
 
     refreshViews();
-    clearPreview();
     locationInput.value = "";
     categoryInput.value = "";
   });

@@ -106,11 +106,17 @@ function renderPostcards({ grid, emptyState, onCardClick, onLikeClick, onCopyCli
         </button>
       </div>
 
-      <div class="card-actions">
-        <button class="copy-button" type="button">複製座標</button>
-        <button class="share-button small-share-button" type="button">分享</button>
-        <button class="delete-button" type="button">刪除</button>
-      </div>
+      const canDelete = isOwnedByCurrentUser(item);
+
+card.innerHTML = `
+  ...
+  <div class="card-actions">
+    <button class="copy-button" type="button">複製座標</button>
+    <button class="share-button small-share-button" type="button">分享</button>
+    ${canDelete ? `<button class="delete-button" type="button">刪除</button>` : ""}
+  </div>
+  ...
+`;
 
       <a
         class="map-btn"

@@ -79,6 +79,96 @@ function renderCategoryFilter(categoryFilter, selectedValue = "") {
   });
 }
 
+function createEl(tagName, className, textContent) {
+  const el = document.createElement(tagName);
+
+  if (className) {
+    el.className = className;
+  }
+
+  if (textContent !== undefined) {
+    el.textContent = textContent;
+  }
+
+  return el;
+}
+
+function createPostcardCard({ item, titleNumber, category, liked, canDelete, onCardClick, onLikeClick, onCopyClick, onDeleteClick, onShareClick }) {
+  const card = createEl("article", "card");
+  card.dataset.id = item.id;
+
+  const image = createEl("img");
+  image.src = item.image;
+  image.alt = "Pikmin postcard image";
+  card.appendChild(image);
+
+  const title = createEl("div", "card-title", `No.${titleNumber}`);
+  card.appendChild(title);
+
+  const location = createEl("div", "card-location", item.locationText || "");
+  card.appendChild(location);
+
+  const metaRow = createEl("div", "card-meta-row");
+
+  const categoryBadge = createEl("span", "category-badge", category);
+  metaRow.appendChild(categoryBadge);
+
+  const likeButton = createEl("button", `like-button ${liked ? "liked" : ""}`, `${liked ? "❤️" : "🤍"} ${formatLikeCount(item.likeCount)}`);
+  likeButton.type = "button";
+  likeButton.addEventListener("click", function (event) {
+    event.stopPropagation();
+    onLikeClick(item.id);
+  });
+  metaRow.appendChild(likeButton);
+
+  card.appendChild(metaRow);
+
+  const actions = createEl("div", "card-actions");
+
+  const copyButton = createEl("button", "copy-button", "複製座標");
+  copyButton.type = "button";
+  copyButton.addEventListener("click", function (event) {
+    event.stopPropagation();
+    onCopyClick(item.locationText);
+  });
+  actions.appendChild(copyButton);
+
+  const shareButton = createEl("button", "share-button small-share-button", "分享");
+  shareButton.type = "button";
+  shareButton.addEventListener("click", function (event) {
+    event.stopPropagation();
+    onShareClick(item.id);
+  });
+  actions.appendChild(shareButton);
+
+  if (canDelete) {
+    const deleteButton = createEl("button", "delete-button", "刪除");
+    deleteButton.type = "button";
+    deleteButton.addEventListener("click", function (event) {
+      event.stopPropagation();
+      onDeleteClick(item.id);
+    });
+    actions.appendChild(deleteButton);
+  }
+
+  card.appendChild(actions);
+
+  const mapLink = createEl("a", "map-btn", "Open Google Map");
+  mapLink.href = createGoogleMapUrl(item.lat, item.lng);
+  mapLink.target = "_blank";
+  mapLink.rel = "noopener noreferrer";
+  mapLink.addEventListener("click", function (event) {
+    event.stopPropagation();
+  });
+  card.appendChild(mapLink);
+
+  card.addEventListener("click", function () {
+    onCardClick(item);
+  });
+
+  return card;
+}
+
 function renderPostcards({ grid, emptyState, onCardClick, onLikeClick, onCopyClick, onDeleteClick, onShareClick, filters }) {
   const list = getFilteredPostcards(filters);
 
@@ -86,84 +176,22 @@ function renderPostcards({ grid, emptyState, onCardClick, onLikeClick, onCopyCli
   emptyState.classList.toggle("hidden", list.length > 0);
 
   list.forEach(function (item) {
-    const card = document.createElement("article");
-    card.className = "card";
-    card.dataset.id = item.id;
-
     const titleNumber = String(item.originalIndex + 1).padStart(3, "0");
     const category = item.category || "全球";
     const liked = isLikedByCurrentUser(item);
+    const canDelete = isOwnedByCurrentUser(item);
 
-    card.innerHTML = `
-      <img src="${item.image}" alt="Pikmin postcard image">
-      <div class="card-title">No.${titleNumber}</div>
-      <div class="card-location">${item.locationText}</div>
-
-      <div class="card-meta-row">
-        <span class="category-badge">${category}</span>
-        <button class="like-button ${liked ? "liked" : ""}" type="button">
-          ${liked ? "❤️" : "🤍"} ${formatLikeCount(item.likeCount)}
-        </button>
-      </div>
-
-  const canDelete = isOwnedByCurrentUser(item);
-
-card.innerHTML = `
-  <img src="${item.image}" alt="Pikmin postcard image">
-
-  <div class="card-title">No.${titleNumber}</div>
-  <div class="card-location">${item.locationText}</div>
-
-  <div class="card-meta-row">
-    <span class="category-badge">${category}</span>
-    <button class="like-button ${liked ? "liked" : ""}" type="button">
-      ${liked ? "❤️" : "🤍"} ${formatLikeCount(item.likeCount)}
-    </button>
-  </div>
-
-  <div class="card-actions">
-    <button class="copy-button" type="button">複製座標</button>
-    <button class="share-button small-share-button" type="button">分享</button>
-    ${canDelete ? `<button class="delete-button" type="button">刪除</button>` : ""}
-  </div>
-
-  <a
-    class="map-btn"
-    href="${createGoogleMapUrl(item.lat, item.lng)}"
-    target="_blank"
-    rel="noopener noreferrer"
-  >
-    Open Google Map
-  </a>
-`;
-
-    card.addEventListener("click", function (event) {
-      if (event.target.closest(".like-button")) {
-        event.stopPropagation();
-        onLikeClick(item.id);
-        return;
-      }
-
-      if (event.target.closest(".copy-button")) {
-        event.stopPropagation();
-        onCopyClick(item.locationText);
-        return;
-      }
-
-      if (event.target.closest(".share-button")) {
-        event.stopPropagation();
-        onShareClick(item.id);
-        return;
-      }
-
-      if (event.target.closest(".delete-button")) {
-        event.stopPropagation();
-        onDeleteClick(item.id);
-        return;
-      }
-
-      if (event.target.closest("a")) return;
-      onCardClick(item);
+    const card = createPostcardCard({
+      item,
+      titleNumber,
+      category,
+      liked,
+      canDelete,
+      onCardClick,
+      onLikeClick,
+      onCopyClick,
+      onDeleteClick,
+      onShareClick
     });
 
     grid.appendChild(card);
@@ -176,24 +204,33 @@ function renderMapList({ mapList, onSelect, filters }) {
   mapList.innerHTML = "";
 
   list.forEach(function (item) {
-    const button = document.createElement("button");
-    button.className = "map-list-item";
+    const button = createEl("button", "map-list-item");
     button.type = "button";
     button.dataset.id = item.id;
 
-    const category = item.category || "全球";
+    const thumbnail = createEl("img");
+    thumbnail.src = item.image;
+    thumbnail.alt = "postcard thumbnail";
+    button.appendChild(thumbnail);
 
-    button.innerHTML = `
-      <img src="${item.image}" alt="postcard thumbnail">
-      <span>
-        <strong>No.${String(item.originalIndex + 1).padStart(3, "0")}</strong>
-        <span>${item.locationText}</span>
-        <span class="map-list-meta">
-          <span class="category-badge">${category}</span>
-          <span>${isLikedByCurrentUser(item) ? "❤️" : "🤍"} ${formatLikeCount(item.likeCount)}</span>
-        </span>
-      </span>
-    `;
+    const content = createEl("span");
+
+    const title = createEl("strong", "", `No.${String(item.originalIndex + 1).padStart(3, "0")}`);
+    content.appendChild(title);
+
+    const location = createEl("span", "", item.locationText || "");
+    content.appendChild(location);
+
+    const meta = createEl("span", "map-list-meta");
+
+    const categoryBadge = createEl("span", "category-badge", item.category || "全球");
+    meta.appendChild(categoryBadge);
+
+    const likeText = createEl("span", "", `${isLikedByCurrentUser(item) ? "❤️" : "🤍"} ${formatLikeCount(item.likeCount)}`);
+    meta.appendChild(likeText);
+
+    content.appendChild(meta);
+    button.appendChild(content);
 
     button.addEventListener("click", function () {
       onSelect(item);

@@ -1,154 +1,31 @@
-const USER_ID_KEY = "pikmin_current_user_id";
+const app = firebase.initializeApp(window.PIKMIN_FIREBASE_CONFIG);
+const db = firebase.firestore();
 
-let postcardsCache = [];
-let db = null;
-let auth = null;
-let currentUserId = localStorage.getItem(USER_ID_KEY) || "";
-let isFirebaseReady = false;
-let isAuthReady = false;
+let currentUser = null;
 
-function getCurrentUserId() {
-  return currentUserId || localStorage.getItem(USER_ID_KEY) || "";
+firebase.auth().signInAnonymously();
+
+firebase.auth().onAuthStateChanged(user => {
+  currentUser = user;
+});
+
+function addPostcard(data) {
+  return db.collection(window.PIKMIN_FIREBASE_COLLECTION).add({
+    ...data,
+    ownerId: currentUser?.uid || null,
+    createdAt: new Date().toISOString(),
+    likeCount: 0
+  });
 }
 
-function getPostcards() {
-  return postcardsCache;
-}
-
-function getPostcardById(id) {
-  return postcardsCache.find(item => String(item.id) === String(id));
-}
-
-function isOwnedByCurrentUser(item) {
-  return Boolean(item && item.ownerId && item.ownerId === getCurrentUserId());
-}
-
-function normalizePostcard(id, data) {
-  return {
-    id,
-    image: data.image || "",
-    category: data.category || "全球",
-    ownerId: data.ownerId || "",
-    likedBy: Array.isArray(data.likedBy) ? data.likedBy : [],
-    likeCount: Number(data.likeCount || 0),
-    locationText: data.locationText || "",
-    lat: Number(data.lat),
-    lng: Number(data.lng),
-    createdAt: data.createdAt || new Date().toISOString()
-  };
-}
-
-function initializeFirebaseStorage(onChange) {
-  const config = window.PIKMIN_FIREBASE_CONFIG;
-  const collectionName = window.PIKMIN_FIREBASE_COLLECTION || "pikmin_postcards";
-
-  if (!config || String(config.apiKey).includes("PASTE_")) {
-    alert("Firebase 設定尚未完成，請檢查 js/firebaseConfig.js");
-    return;
-  }
-
-  if (!firebase.apps.length) {
-    firebase.initializeApp(config);
-  }
-
-  db = firebase.firestore();
-  isFirebaseReady = true;
-
-  // 先讀資料：即使匿名登入網域尚未授權，公開明信片也能顯示
-  db.collection(collectionName)
+function subscribePostcards(callback) {
+  return db.collection(window.PIKMIN_FIREBASE_COLLECTION)
+    .orderBy("createdAt", "desc")
     .onSnapshot(snapshot => {
-      postcardsCache = snapshot.docs.map(doc =>
-        normalizePostcard(doc.id, doc.data())
-      );
-
-      postcardsCache.sort((a, b) =>
-        new Date(b.createdAt) - new Date(a.createdAt)
-      );
-
-      onChange();
-    }, error => {
-      console.error("Firestore 讀取失敗：", error);
-      alert("Firestore 讀取失敗，請查看 Console");
+      const list = snapshot.docs.map(doc => ({
+        id: doc.id,
+        ...doc.data()
+      }));
+      callback(list);
     });
-
-  // 再做匿名登入：新增、愛心、刪除才需要
-  auth = firebase.auth();
-
-  auth.signInAnonymously()
-    .then(result => {
-      currentUserId = result.user.uid;
-      isAuthReady = true;
-      localStorage.setItem(USER_ID_KEY, currentUserId);
-      onChange();
-    })
-    .catch(error => {
-      console.error("匿名登入失敗：", error);
-      isAuthReady = false;
-      // 不阻擋瀏覽；只讓寫入類操作提示使用者
-    });
-}
-
-function assertWriteReady() {
-  if (!isFirebaseReady || !db) {
-    alert("Firebase 還沒準備好，請稍後再試");
-    return false;
-  }
-
-  if (!isAuthReady || !getCurrentUserId()) {
-    alert("目前網域尚未通過 Firebase 匿名登入授權。請到 Authentication → 設定 → 授權網域新增目前網址。");
-    return false;
-  }
-
-  return true;
-}
-
-async function addPostcard(postcard) {
-  if (!assertWriteReady()) return;
-
-  const collectionName = window.PIKMIN_FIREBASE_COLLECTION || "pikmin_postcards";
-
-  await db.collection(collectionName).add({
-    ...postcard,
-    ownerId: getCurrentUserId(),
-    category: postcard.category || "全球",
-    likedBy: Array.isArray(postcard.likedBy) ? postcard.likedBy : [],
-    likeCount: Number(postcard.likeCount || 0),
-    createdAt: postcard.createdAt || new Date().toISOString()
-  });
-}
-
-async function deletePostcard(id) {
-  if (!assertWriteReady()) return;
-
-  const item = getPostcardById(id);
-
-  if (!isOwnedByCurrentUser(item)) {
-    alert("你只能刪除自己建立的明信片");
-    return;
-  }
-
-  const collectionName = window.PIKMIN_FIREBASE_COLLECTION || "pikmin_postcards";
-  await db.collection(collectionName).doc(id).delete();
-}
-
-async function togglePostcardLike(id) {
-  if (!assertWriteReady()) return;
-
-  const collectionName = window.PIKMIN_FIREBASE_COLLECTION || "pikmin_postcards";
-  const userId = getCurrentUserId();
-  const item = getPostcardById(id);
-
-  if (!item) return;
-
-  const likedBy = Array.isArray(item.likedBy) ? item.likedBy : [];
-  const hasLiked = likedBy.includes(userId);
-
-  const nextLikedBy = hasLiked
-    ? likedBy.filter(x => x !== userId)
-    : [...likedBy, userId];
-
-  await db.collection(collectionName).doc(id).update({
-    likedBy: nextLikedBy,
-    likeCount: nextLikedBy.length
-  });
 }

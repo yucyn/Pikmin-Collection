@@ -106,16 +106,35 @@ function renderPostcards({ grid, emptyState, onCardClick, onLikeClick, onCopyCli
         </button>
       </div>
 
-      const canDelete = isOwnedByCurrentUser(item);
+  const canDelete = isOwnedByCurrentUser(item);
 
 card.innerHTML = `
-  ...
+  <img src="${item.image}" alt="Pikmin postcard image">
+
+  <div class="card-title">No.${titleNumber}</div>
+  <div class="card-location">${item.locationText}</div>
+
+  <div class="card-meta-row">
+    <span class="category-badge">${category}</span>
+    <button class="like-button ${liked ? "liked" : ""}" type="button">
+      ${liked ? "❤️" : "🤍"} ${formatLikeCount(item.likeCount)}
+    </button>
+  </div>
+
   <div class="card-actions">
     <button class="copy-button" type="button">複製座標</button>
     <button class="share-button small-share-button" type="button">分享</button>
     ${canDelete ? `<button class="delete-button" type="button">刪除</button>` : ""}
   </div>
-  ...
+
+  <a
+    class="map-btn"
+    href="${createGoogleMapUrl(item.lat, item.lng)}"
+    target="_blank"
+    rel="noopener noreferrer"
+  >
+    Open Google Map
+  </a>
 `;
 
       <a

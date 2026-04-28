@@ -114,7 +114,22 @@ async function togglePostcardLike(id) {
     likedBy: nextLikedBy,
     likeCount: nextLikedBy.length
   });
-  function isOwnedByCurrentUser(item) {
+  // ===== 無登入安全版（補充） =====
+
+// 取得目前使用者ID（如果沒有就自動建立）
+function getCurrentUserId() {
+  let userId = localStorage.getItem("pikmin_user_id");
+
+  if (!userId) {
+    userId = "user_" + Date.now() + "_" + Math.random().toString(36).slice(2);
+    localStorage.setItem("pikmin_user_id", userId);
+  }
+
+  return userId;
+}
+
+// 判斷是否為自己的卡片
+function isOwnedByCurrentUser(item) {
   const userId = getCurrentUserId();
 
   if (!item || !item.ownerId) {
@@ -122,4 +137,5 @@ async function togglePostcardLike(id) {
   }
 
   return item.ownerId === userId;
+}
 }

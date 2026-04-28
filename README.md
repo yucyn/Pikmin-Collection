@@ -1,2 +1,0 @@
-# Pikmin-Collection
-Pikmin Collection

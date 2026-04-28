@@ -123,4 +123,3 @@ async function togglePostcardLike(id) {
 
   return item.ownerId === userId;
 }
-}

@@ -1,0 +1,214 @@
+.collage-view {
+  min-height: 680px;
+}
+
+.collage-layout {
+  display: grid;
+  grid-template-columns: 280px 1fr;
+  gap: 18px;
+  align-items: start;
+}
+
+.collage-library,
+.collage-workspace {
+  background: rgba(255, 253, 242, 0.72);
+  border: 1px solid rgba(90, 72, 32, 0.1);
+  border-radius: 26px;
+  box-shadow: var(--shadow);
+}
+
+.collage-library {
+  padding: 14px;
+  max-height: calc(100vh - 180px);
+  overflow-y: auto;
+}
+
+.collage-section-title h3,
+.collage-toolbar h3 {
+  margin: 0 0 4px;
+}
+
+.collage-section-title p,
+.collage-toolbar p {
+  font-size: 13px;
+  color: var(--muted);
+}
+
+.collage-library-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 12px;
+  margin-top: 14px;
+}
+
+.collage-library-card {
+  position: relative;
+  display: grid;
+  grid-template-columns: 72px 1fr 38px;
+  gap: 10px;
+  align-items: center;
+  padding: 8px;
+  border-radius: 16px;
+  border: 1px solid rgba(90, 72, 32, 0.1);
+  background: #fffef6;
+}
+
+.collage-library-card img {
+  width: 72px;
+  height: 72px;
+  border-radius: 14px;
+  object-fit: cover;
+}
+
+.collage-library-card strong {
+  display: block;
+  font-size: 13px;
+  color: var(--ink);
+}
+
+.collage-library-card span {
+  display: block;
+  margin-top: 4px;
+  font-size: 12px;
+  color: var(--muted);
+  word-break: break-all;
+}
+
+.collage-add-button {
+  width: 36px;
+  height: 36px;
+  border: 0;
+  border-radius: 999px;
+  background: var(--green);
+  color: white;
+  cursor: pointer;
+  font-size: 22px;
+  font-weight: 700;
+}
+
+.collage-workspace {
+  padding: 16px;
+}
+
+.collage-toolbar {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  align-items: flex-start;
+  margin-bottom: 14px;
+}
+
+.collage-toolbar-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  justify-content: flex-end;
+}
+
+.collage-tool-button {
+  border: 1px solid rgba(47, 116, 56, 0.2);
+  background: #fffef6;
+  color: var(--green-dark);
+  border-radius: 999px;
+  padding: 9px 12px;
+  cursor: pointer;
+}
+
+.collage-tool-button.primary {
+  background: var(--green);
+  border-color: var(--green);
+  color: white;
+}
+
+.collage-tool-button.danger {
+  color: #c24141;
+  border-color: rgba(194, 65, 65, 0.24);
+  background: #fff0f0;
+}
+
+.collage-canvas {
+  position: relative;
+  width: min(100%, 520px);
+  aspect-ratio: 3 / 4;
+  margin: 0 auto;
+  overflow: hidden;
+  border-radius: 28px;
+  background:
+    radial-gradient(circle, rgba(110, 112, 99, 0.2) 1px, transparent 1.5px),
+    #fffef8;
+  background-size: 18px 18px;
+  border: 1px solid rgba(90, 72, 32, 0.12);
+  box-shadow: inset 0 0 0 1px rgba(255,255,255,.6), 0 16px 30px rgba(72, 58, 24, 0.12);
+  touch-action: none;
+}
+
+.collage-empty-hint {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  text-align: center;
+  color: var(--muted);
+  pointer-events: none;
+}
+
+.collage-item {
+  position: absolute;
+  left: 40px;
+  top: 40px;
+  width: 180px;
+  transform-origin: center center;
+  cursor: move;
+  user-select: none;
+  touch-action: none;
+}
+
+.collage-item img {
+  width: 100%;
+  display: block;
+  border-radius: 16px;
+  box-shadow: 0 14px 28px rgba(0,0,0,0.18);
+  pointer-events: none;
+}
+
+.collage-item.selected img {
+  outline: 3px solid #9d6cff;
+  outline-offset: 2px;
+}
+
+.collage-controls {
+  width: min(100%, 520px);
+  margin: 14px auto 0;
+  display: grid;
+  gap: 10px;
+  padding: 12px;
+  border-radius: 18px;
+  background: rgba(255, 253, 242, 0.75);
+}
+
+.collage-controls label {
+  display: grid;
+  grid-template-columns: 48px 1fr;
+  gap: 10px;
+  align-items: center;
+  color: var(--muted);
+  font-size: 14px;
+}
+
+.collage-controls input[type="range"] {
+  width: 100%;
+}
+
+@media (max-width: 900px) {
+  .collage-layout {
+    grid-template-columns: 1fr;
+  }
+
+  .collage-toolbar {
+    flex-direction: column;
+  }
+
+  .collage-toolbar-actions {
+    justify-content: flex-start;
+  }
+}

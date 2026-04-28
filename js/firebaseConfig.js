@@ -4,7 +4,7 @@
 // 3. 沒填設定時，系統會自動退回 localStorage 測試模式
 
 window.PIKMIN_FIREBASE_CONFIG = {
-  apiKey: "AIzaSyAZDSSH1IPKg5f0H59Rs7cuI_UfgpHFz7E",
+  apiKey: "AIzaSyAZDSSH1IPKg5f0H59Rs7cuI_UfgpHfZ7",
   authDomain: "pikmin-collection.firebaseapp.com",
   projectId: "pikmin-collection",
   storageBucket: "pikmin-collection.firebasestorage.app",

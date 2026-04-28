@@ -137,16 +137,6 @@ card.innerHTML = `
   </a>
 `;
 
-      <a
-        class="map-btn"
-        href="${createGoogleMapUrl(item.lat, item.lng)}"
-        target="_blank"
-        rel="noopener noreferrer"
-      >
-        Open Google Map
-      </a>
-    `;
-
     card.addEventListener("click", function (event) {
       if (event.target.closest(".like-button")) {
         event.stopPropagation();

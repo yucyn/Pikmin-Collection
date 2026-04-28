@@ -6,7 +6,7 @@
 // Firebase 設定檔
 
 window.PIKMIN_FIREBASE_CONFIG = {
-  apiKey: "AIzaSyAZDSSH1IPKg5f0H59Rs7cuI_UfgpHFz7E",
+  apiKey: "AIzaSyAZDSSH1IPKg5f0H59Rs7cuI_UfgpHfZ7E",
   authDomain: "pikmin-collection.firebaseapp.com",
   projectId: "pikmin-collection",
   storageBucket: "pikmin-collection.firebasestorage.app",

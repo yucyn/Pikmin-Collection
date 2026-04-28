@@ -364,16 +364,17 @@ document.addEventListener("DOMContentLoaded", function () {
     const detectedCountry = location.country || "全球";
     const category = String(categoryInput.value || "").trim() || detectedCountry || "全球";
 
-    await addPostcard({
-      image: imageData,
-      category,
-      likedBy: [],
-      likeCount: 0,
-      locationText: location.locationText,
-      lat: location.lat,
-      lng: location.lng,
-      createdAt: new Date().toISOString()
-    });
+   await addPostcard({
+  image: imageData,
+  category,
+  likedBy: [],
+  likeCount: 0,
+  locationText: location.locationText,
+  lat: location.lat,
+  lng: location.lng,
+  createdAt: new Date().toISOString(),
+  ownerId: getCurrentUserId() // ⭐ 加這行
+});
 
     // Firebase onSnapshot 會自動更新畫面，不要在這裡手動 refreshViews()
     clearPreview();

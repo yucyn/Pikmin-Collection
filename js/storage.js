@@ -114,4 +114,13 @@ async function togglePostcardLike(id) {
     likedBy: nextLikedBy,
     likeCount: nextLikedBy.length
   });
+  function isOwnedByCurrentUser(item) {
+  const userId = getCurrentUserId();
+
+  if (!item || !item.ownerId) {
+    return false;
+  }
+
+  return item.ownerId === userId;
+}
 }

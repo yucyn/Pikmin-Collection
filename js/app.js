@@ -375,3 +375,39 @@ document.addEventListener("DOMContentLoaded", function () {
     openSharedCardFromUrl();
   });
 });
+(function initTagFilterUI() {
+  function bindTagButtons() {
+    const buttons = document.querySelectorAll(".tag-filter");
+    if (!buttons.length) return;
+
+    if (typeof currentFilters === "undefined") {
+      console.warn("找不到 currentFilters，請確認 app.js 裡有 currentFilters 物件");
+      return;
+    }
+
+    if (!("tag" in currentFilters)) {
+      currentFilters.tag = "";
+    }
+
+    buttons.forEach(button => {
+      button.addEventListener("click", () => {
+        buttons.forEach(btn => btn.classList.remove("active"));
+        button.classList.add("active");
+
+        currentFilters.tag = button.dataset.tag || "";
+
+        if (typeof renderAll === "function") {
+          renderAll();
+        } else {
+          console.warn("找不到 renderAll()，請把 tag patch 裡的 renderAll() 改成你原本的重繪函式名稱");
+        }
+      });
+    });
+  }
+
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", bindTagButtons);
+  } else {
+    bindTagButtons();
+  }
+})();

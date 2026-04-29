@@ -61,6 +61,15 @@ function renderPostcards({ grid, emptyState, onCardClick, onLikeClick, onCopyCli
     const liked = isLikedByCurrentUser(item);
     const canDelete = isOwnedByCurrentUser(item);
 
+    // 未來若你有 tags 欄位，可直接吃 item.tags，例如：["花", "蘑菇"]
+    const tags = Array.isArray(item.tags)
+      ? item.tags
+      : item.tag
+        ? [item.tag]
+        : item.type
+          ? [item.type]
+          : [];
+
     const card = createEl("article", "postcard-card");
     card.dataset.id = item.id;
 
@@ -81,25 +90,23 @@ function renderPostcards({ grid, emptyState, onCardClick, onLikeClick, onCopyCli
     });
     hoverActions.appendChild(mapButton);
 
-    const copyButton = createEl("button", "float-btn copy-btn", "📍");
-    copyButton.type = "button";
-    copyButton.addEventListener("click", event => {
+    const moreButton = createEl("button", "float-btn more-btn", "⋯");
+    moreButton.type = "button";
+    moreButton.title = "更多操作";
+    moreButton.addEventListener("click", event => {
       event.stopPropagation();
-      onCopyClick(item.locationText);
+      if (canDelete) onDeleteClick(item.id);
     });
-    hoverActions.appendChild(copyButton);
+    hoverActions.appendChild(moreButton);
 
     photo.appendChild(hoverActions);
-
     photo.addEventListener("click", () => onCardClick(item));
     card.appendChild(photo);
 
     const info = createEl("div", "postcard-info");
 
     const titleRow = createEl("div", "postcard-title-row");
-
-    const title = createEl("div", "postcard-title", `No.${titleNumber}`);
-    titleRow.appendChild(title);
+    titleRow.appendChild(createEl("div", "postcard-title", `No.${titleNumber}`));
 
     const likeButton = createEl(
       "button",
@@ -115,38 +122,58 @@ function renderPostcards({ grid, emptyState, onCardClick, onLikeClick, onCopyCli
 
     info.appendChild(titleRow);
 
-    const location = createEl("div", "postcard-coords", item.locationText || "");
-    info.appendChild(location);
+    const coords = createEl("div", "postcard-coords", item.locationText || "");
+    coords.title = "點擊複製座標";
+    coords.addEventListener("click", event => {
+      event.stopPropagation();
+      onCopyClick(item.locationText);
+    });
+    info.appendChild(coords);
 
-    const country = createEl("span", "postcard-country", category);
-    info.appendChild(country);
+    const taxonomy = createEl("div", "postcard-taxonomy");
+    taxonomy.appendChild(createEl("span", "postcard-country", category));
 
-    const bottomActions = createEl("div", "v28-card-secondary-actions");
+    tags.forEach(tag => {
+      taxonomy.appendChild(createEl("span", "postcard-tag", tag));
+    });
 
-    const shareButton = createEl("button", "v28-soft-action", "分享");
+    info.appendChild(taxonomy);
+
+    const actions = createEl("div", "v30-card-actions");
+
+    const copyButton = createEl("button", "v30-text-action", "複製");
+    copyButton.type = "button";
+    copyButton.addEventListener("click", event => {
+      event.stopPropagation();
+      onCopyClick(item.locationText);
+    });
+    actions.appendChild(copyButton);
+
+    const shareButton = createEl("button", "v30-text-action", "分享");
     shareButton.type = "button";
     shareButton.addEventListener("click", event => {
       event.stopPropagation();
       onShareClick(item.id);
     });
-    bottomActions.appendChild(shareButton);
+    actions.appendChild(shareButton);
 
     if (canDelete) {
-      const deleteButton = createEl("button", "v28-soft-action danger", "刪除");
+      const deleteButton = createEl("button", "v30-text-action danger", "刪除");
       deleteButton.type = "button";
       deleteButton.addEventListener("click", event => {
         event.stopPropagation();
         onDeleteClick(item.id);
       });
-      bottomActions.appendChild(deleteButton);
+      actions.appendChild(deleteButton);
     }
 
-    info.appendChild(bottomActions);
+    info.appendChild(actions);
     card.appendChild(info);
 
     grid.appendChild(card);
   });
 }
+
 
 function renderMapList({ mapList, onSelect, filters }) {
   const list = getFilteredPostcards(filters);

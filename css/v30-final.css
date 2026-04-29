@@ -242,12 +242,18 @@
   border-radius:20px;
   overflow:hidden;
 }
+/* V30：回到自然圖片展示 */
+.v28-scope .postcard-photo{
+  aspect-ratio:auto !important;
+  background:transparent !important;
+  display:block !important;
+}
 
-/* 圖片永遠置中 */
 .v28-scope .postcard-photo img{
-  max-width:90%;
-  max-height:90%;
-  width:auto;
-  height:auto;
-  object-fit:contain;
+  width:100% !important;
+  height:auto !important;
+  max-width:none !important;
+  max-height:none !important;
+  object-fit:initial !important;
+}
 }

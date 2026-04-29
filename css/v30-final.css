@@ -270,3 +270,102 @@
   background:#eceef2;
   color:#66707c;
 }
+/* ===== V33 白框卡片版（穩定好看版）===== */
+
+/* 卡片 */
+.v28-scope .postcard-card{
+  break-inside: avoid;
+  margin: 0 0 28px;
+  padding: 12px;
+  background: #ffffff;
+  border-radius: 18px;
+  box-shadow: 0 6px 18px rgba(0,0,0,0.06);
+}
+
+/* 圖片區 */
+.v28-scope .postcard-photo{
+  width: 100%;
+  aspect-ratio: 3 / 4;
+  border-radius: 14px;
+  overflow: hidden;
+  background: #f3f4ef;
+}
+
+/* 圖片 */
+.v28-scope .postcard-photo img{
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+/* 資訊 */
+.v28-scope .postcard-info{
+  margin-top: 10px;
+  padding: 0 4px;
+}
+
+/* 標題列 */
+.v28-scope .postcard-title-row{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+/* No.xxx */
+.v28-scope .postcard-title{
+  font-size: 15px;
+  font-weight: 800;
+}
+
+/* 愛心 */
+.v28-scope .postcard-want{
+  background: transparent;
+  border: none;
+  font-size: 13px;
+  font-weight: 700;
+}
+
+/* 座標 */
+.v28-scope .postcard-coords{
+  margin-top: 4px;
+  font-size: 13px;
+  font-weight: 600;
+  color: #333;
+}
+
+/* 國家 + Tag */
+.v28-scope .postcard-taxonomy{
+  margin-top: 4px;
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+
+.v28-scope .postcard-country{
+  font-size: 13px;
+  color: #666;
+}
+
+/* Tag */
+.v28-scope .postcard-tag{
+  font-size: 12px;
+  padding: 2px 8px;
+  border-radius: 999px;
+  background: #eeeeea;
+}
+
+/* 動作 */
+.v28-scope .v30-card-actions{
+  margin-top: 6px;
+  display: flex;
+  gap: 12px;
+}
+
+.v28-scope .v30-text-action{
+  font-size: 13px;
+  font-weight: 700;
+  background: none;
+  border: none;
+  color: #3f7650;
+}

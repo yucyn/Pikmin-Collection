@@ -446,3 +446,6 @@
   object-fit: cover !important;
   object-position: center center !important;
 }
+.v28-scope #grid .postcard-photo img.landscape{
+  object-position: left center;
+}

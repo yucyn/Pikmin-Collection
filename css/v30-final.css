@@ -319,3 +319,16 @@
   position: relative !important;
   z-index: 2 !important;
 }
+/* ⭐ 核心：讓資訊卡浮起來 */
+.v28-scope .postcard-info{
+  position: relative !important;
+  width: 88% !important;
+  margin: -40px auto 0 !important;   /* 🔥 關鍵：往上拉 */
+  padding: 14px !important;
+
+  background: rgba(255,255,255,0.96) !important;
+  border-radius: 18px !important;
+  box-shadow: 0 12px 28px rgba(0,0,0,0.12) !important;
+
+  z-index: 5 !important;
+}

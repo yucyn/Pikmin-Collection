@@ -107,6 +107,15 @@ function renderPostcards({
     const image = createEl("img");
     image.src = item.image;
     image.alt = "Pikmin postcard image";
+
+    image.onload = () => {
+  const ratio = image.naturalWidth / image.naturalHeight;
+
+  if (ratio > 1.2) {
+    image.classList.add("landscape"); // 橫圖
+  }
+};
+    
     photo.appendChild(image);
 
     const hoverActions = createEl("div", "postcard-hover-actions");

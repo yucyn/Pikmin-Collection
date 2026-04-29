@@ -91,7 +91,6 @@
 @media(max-width:520px){
   #grid.grid,#grid{column-count:1}
 }
-/* 👇👇👇 這裡開始貼 */
 
 .v28-card-secondary-actions{
   display:flex;

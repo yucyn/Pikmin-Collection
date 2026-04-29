@@ -62,84 +62,89 @@ function renderPostcards({ grid, emptyState, onCardClick, onLikeClick, onCopyCli
     const canDelete = isOwnedByCurrentUser(item);
 
     const card = createEl("article", "postcard-card");
-card.dataset.id = item.id;
+    card.dataset.id = item.id;
 
-const photo = createEl("div", "postcard-photo");
+    const photo = createEl("div", "postcard-photo");
 
-const image = createEl("img");
-image.src = item.image;
-image.alt = "Pikmin postcard image";
-photo.appendChild(image);
+    const image = createEl("img");
+    image.src = item.image;
+    image.alt = "Pikmin postcard image";
+    photo.appendChild(image);
 
-const hoverActions = createEl("div", "postcard-hover-actions");
+    const hoverActions = createEl("div", "postcard-hover-actions");
 
-const mapButton = createEl("button", "float-btn map-btn", "Map");
-mapButton.type = "button";
-mapButton.addEventListener("click", event => {
-  event.stopPropagation();
-  window.open(createGoogleMapUrl(item.lat, item.lng), "_blank");
-});
-hoverActions.appendChild(mapButton);
+    const mapButton = createEl("button", "float-btn map-btn", "Map");
+    mapButton.type = "button";
+    mapButton.addEventListener("click", event => {
+      event.stopPropagation();
+      window.open(createGoogleMapUrl(item.lat, item.lng), "_blank");
+    });
+    hoverActions.appendChild(mapButton);
 
-const copyButton = createEl("button", "float-btn copy-btn", "📍");
-copyButton.type = "button";
-copyButton.addEventListener("click", event => {
-  event.stopPropagation();
-  onCopyClick(item.locationText);
-});
-hoverActions.appendChild(copyButton);
+    const copyButton = createEl("button", "float-btn copy-btn", "📍");
+    copyButton.type = "button";
+    copyButton.addEventListener("click", event => {
+      event.stopPropagation();
+      onCopyClick(item.locationText);
+    });
+    hoverActions.appendChild(copyButton);
 
-photo.appendChild(hoverActions);
-photo.addEventListener("click", () => onCardClick(item));
-card.appendChild(photo);
+    photo.appendChild(hoverActions);
 
-const info = createEl("div", "postcard-info");
+    photo.addEventListener("click", () => onCardClick(item));
+    card.appendChild(photo);
 
-const titleRow = createEl("div", "postcard-title-row");
+    const info = createEl("div", "postcard-info");
 
-titleRow.appendChild(createEl("div", "postcard-title", `No.${titleNumber}`));
+    const titleRow = createEl("div", "postcard-title-row");
 
-const likeButton = createEl(
-  "button",
-  `postcard-want ${liked ? "active" : ""}`,
-  `${liked ? "❤️" : "♡"} ${formatLikeCount(item.likeCount)}`
-);
-likeButton.type = "button";
-likeButton.addEventListener("click", event => {
-  event.stopPropagation();
-  onLikeClick(item.id);
-});
-titleRow.appendChild(likeButton);
+    const title = createEl("div", "postcard-title", `No.${titleNumber}`);
+    titleRow.appendChild(title);
 
-info.appendChild(titleRow);
+    const likeButton = createEl(
+      "button",
+      `postcard-want ${liked ? "active" : ""}`,
+      `${liked ? "❤️" : "♡"} ${formatLikeCount(item.likeCount)}`
+    );
+    likeButton.type = "button";
+    likeButton.addEventListener("click", event => {
+      event.stopPropagation();
+      onLikeClick(item.id);
+    });
+    titleRow.appendChild(likeButton);
 
-info.appendChild(createEl("div", "postcard-coords", item.locationText || ""));
-info.appendChild(createEl("span", "postcard-country", category));
+    info.appendChild(titleRow);
 
-const bottomActions = createEl("div", "v28-card-secondary-actions");
+    const location = createEl("div", "postcard-coords", item.locationText || "");
+    info.appendChild(location);
 
-const shareButton = createEl("button", "v28-soft-action", "分享");
-shareButton.type = "button";
-shareButton.addEventListener("click", event => {
-  event.stopPropagation();
-  onShareClick(item.id);
-});
-bottomActions.appendChild(shareButton);
+    const country = createEl("span", "postcard-country", category);
+    info.appendChild(country);
 
-if (canDelete) {
-  const deleteButton = createEl("button", "v28-soft-action danger", "刪除");
-  deleteButton.type = "button";
-  deleteButton.addEventListener("click", event => {
-    event.stopPropagation();
-    onDeleteClick(item.id);
-  });
-  bottomActions.appendChild(deleteButton);
-}
+    const bottomActions = createEl("div", "v28-card-secondary-actions");
 
-info.appendChild(bottomActions);
-card.appendChild(info);
+    const shareButton = createEl("button", "v28-soft-action", "分享");
+    shareButton.type = "button";
+    shareButton.addEventListener("click", event => {
+      event.stopPropagation();
+      onShareClick(item.id);
+    });
+    bottomActions.appendChild(shareButton);
 
-grid.appendChild(card);
+    if (canDelete) {
+      const deleteButton = createEl("button", "v28-soft-action danger", "刪除");
+      deleteButton.type = "button";
+      deleteButton.addEventListener("click", event => {
+        event.stopPropagation();
+        onDeleteClick(item.id);
+      });
+      bottomActions.appendChild(deleteButton);
+    }
+
+    info.appendChild(bottomActions);
+    card.appendChild(info);
+
+    grid.appendChild(card);
   });
 }
 

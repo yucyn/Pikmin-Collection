@@ -91,3 +91,25 @@
 @media(max-width:520px){
   #grid.grid,#grid{column-count:1}
 }
+/* 👇👇👇 這裡開始貼 */
+
+.v28-card-secondary-actions{
+  display:flex;
+  gap:8px;
+  margin-top:10px;
+}
+
+.v28-soft-action{
+  flex:1;
+  border:1px solid var(--v28-line);
+  background:rgba(255,255,255,.86);
+  color:#3f5942;
+  border-radius:999px;
+  padding:8px 10px;
+  font-weight:700;
+  cursor:pointer;
+}
+
+.v28-soft-action.danger{
+  color:#a85858;
+}

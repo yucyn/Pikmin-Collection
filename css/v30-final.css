@@ -208,3 +208,13 @@
 .v28-scope .delete-button{
   display:none !important;
 }
+.v28-scope .postcard-photo{
+  aspect-ratio: 4 / 3;
+  background:#f1f2ea;
+}
+
+.v28-scope .postcard-photo img{
+  width:100%;
+  height:100%;
+  object-fit: contain;
+}

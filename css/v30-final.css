@@ -280,3 +280,16 @@
   object-fit: cover;
   object-position: center;
 }
+/* 🌿 精緻收藏卡比例 */
+.v28-scope .postcard-photo{
+  aspect-ratio: 3 / 4;   /* ⭐ 直卡片比例 */
+  border-radius: 22px;
+  overflow: hidden;
+}
+
+/* 圖片填滿 + 裁切 */
+.v28-scope .postcard-photo img{
+  width: 100%;
+  height: 100%;
+  object-fit: cover;     /* ⭐ 重點 */
+}

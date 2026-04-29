@@ -377,3 +377,65 @@
   padding: 12px !important;
   box-shadow: 0 8px 20px rgba(0,0,0,0.08) !important;
 }
+/* ===== 強制改成固定格狀白框卡片 ===== */
+
+/* 取消瀑布流，改成真正 grid */
+.v28-scope #grid,
+.v28-scope #grid.grid{
+  display: grid !important;
+  grid-template-columns: repeat(4, minmax(0, 1fr)) !important;
+  gap: 24px !important;
+  column-count: unset !important;
+}
+
+/* 白框卡片 */
+.v28-scope #grid .postcard-card{
+  display: block !important;
+  background: #ffffff !important;
+  border-radius: 20px !important;
+  padding: 12px !important;
+  box-shadow: 0 8px 22px rgba(0,0,0,0.08) !important;
+  border: 1px solid rgba(0,0,0,0.04) !important;
+  margin: 0 !important;
+  max-width: none !important;
+}
+
+/* 圖片固定比例 */
+.v28-scope #grid .postcard-photo{
+  width: 100% !important;
+  aspect-ratio: 3 / 4 !important;
+  border-radius: 16px !important;
+  overflow: hidden !important;
+  background: #f3f4ef !important;
+}
+
+.v28-scope #grid .postcard-photo img{
+  width: 100% !important;
+  height: 100% !important;
+  object-fit: cover !important;
+  display: block !important;
+}
+
+/* 資訊在白框內 */
+.v28-scope #grid .postcard-info{
+  margin: 10px 0 0 0 !important;
+  padding: 0 2px 4px !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  border: none !important;
+}
+
+/* RWD */
+@media(max-width:1200px){
+  .v28-scope #grid,
+  .v28-scope #grid.grid{
+    grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+  }
+}
+
+@media(max-width:760px){
+  .v28-scope #grid,
+  .v28-scope #grid.grid{
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+  }
+}

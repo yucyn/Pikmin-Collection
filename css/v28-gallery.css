@@ -112,3 +112,36 @@
 .v28-soft-action.danger{
   color:#a85858;
 }
+.postcard-hover-actions{
+  position:absolute !important;
+  inset:0 !important;
+  opacity:0 !important;
+  pointer-events:none !important;
+  transition:.2s ease !important;
+  z-index:5 !important;
+}
+
+.postcard-card:hover .postcard-hover-actions{
+  opacity:1 !important;
+  pointer-events:auto !important;
+}
+
+.postcard-photo{
+  position:relative !important;
+}
+
+.postcard-hover-actions .map-btn{
+  position:absolute !important;
+  left:12px !important;
+  bottom:12px !important;
+  width:auto !important;
+  display:inline-flex !important;
+}
+
+.postcard-hover-actions .copy-btn{
+  position:absolute !important;
+  right:12px !important;
+  bottom:12px !important;
+  width:auto !important;
+  display:inline-flex !important;
+}

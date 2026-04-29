@@ -148,3 +148,45 @@
 .v28-card-secondary-actions{
   display:none !important;
 }
+/* V28 clean readable card info */
+.v28-scope .postcard-info{
+  padding:8px 2px 18px !important;
+}
+
+.v28-scope .postcard-title-row{
+  display:block !important;
+}
+
+.v28-scope .postcard-title{
+  font-size:15px !important;
+  font-weight:700 !important;
+  margin-bottom:3px !important;
+}
+
+.v28-scope .postcard-want{
+  margin-top:4px !important;
+  padding:3px 8px !important;
+  font-size:13px !important;
+  background:transparent !important;
+  border:1px solid rgba(0,0,0,.18) !important;
+}
+
+.v28-scope .postcard-coords{
+  margin-top:4px !important;
+  font-size:13px !important;
+  color:#444 !important;
+}
+
+.v28-scope .postcard-country{
+  display:block !important;
+  margin-top:3px !important;
+  padding:0 !important;
+  background:transparent !important;
+  color:#222 !important;
+  font-size:13px !important;
+  font-weight:600 !important;
+}
+
+.v28-scope .v28-card-secondary-actions{
+  display:none !important;
+}

@@ -49,7 +49,43 @@ function createEl(tagName, className, textContent) {
   return el;
 }
 
-function renderPostcards({ grid, emptyState, onCardClick, onLikeClick, onCopyClick, onDeleteClick, onShareClick, filters }) {
+function getFilteredPostcards(filters = {}) {
+  const list = getPostcards();
+  const query = String(filters.query || "").trim().toLowerCase();
+  const category = String(filters.category || "").trim();
+  const tag = String(filters.tag || "").trim();
+
+  return list
+    .map((item, originalIndex) => ({ ...item, originalIndex }))
+    .filter(item => {
+      const itemCategory = item.category || "全球";
+      const itemTag = item.tag || "";
+
+      const text = [
+        item.locationText || "",
+        itemCategory,
+        item.note || "",
+        itemTag
+      ].join(" ").toLowerCase();
+
+      const matchQuery = !query || text.includes(query);
+      const matchCategory = !category || itemCategory === category;
+      const matchTag = !tag || itemTag === tag;
+
+      return matchQuery && matchCategory && matchTag;
+    });
+}
+
+function renderPostcards({
+  grid,
+  emptyState,
+  onCardClick,
+  onLikeClick,
+  onCopyClick,
+  onDeleteClick,
+  onShareClick,
+  filters
+}) {
   const list = getFilteredPostcards(filters);
 
   grid.innerHTML = "";
@@ -60,19 +96,12 @@ function renderPostcards({ grid, emptyState, onCardClick, onLikeClick, onCopyCli
     const category = item.category || "全球";
     const liked = isLikedByCurrentUser(item);
     const canDelete = isOwnedByCurrentUser(item);
-
-    // 未來若你有 tags 欄位，可直接吃 item.tags，例如：["花", "蘑菇"]
-    const tags = Array.isArray(item.tags)
-      ? item.tags
-      : item.tag
-        ? [item.tag]
-        : item.type
-          ? [item.type]
-          : [];
+    const tag = item.tag || "";
 
     const card = createEl("article", "postcard-card");
     card.dataset.id = item.id;
 
+    /* 圖片區 */
     const photo = createEl("div", "postcard-photo");
 
     const image = createEl("img");
@@ -95,7 +124,9 @@ function renderPostcards({ grid, emptyState, onCardClick, onLikeClick, onCopyCli
     moreButton.title = "更多操作";
     moreButton.addEventListener("click", event => {
       event.stopPropagation();
-      if (canDelete) onDeleteClick(item.id);
+      if (canDelete) {
+        onDeleteClick(item.id);
+      }
     });
     hoverActions.appendChild(moreButton);
 
@@ -103,10 +134,13 @@ function renderPostcards({ grid, emptyState, onCardClick, onLikeClick, onCopyCli
     photo.addEventListener("click", () => onCardClick(item));
     card.appendChild(photo);
 
+    /* 資訊區 */
     const info = createEl("div", "postcard-info");
 
     const titleRow = createEl("div", "postcard-title-row");
-    titleRow.appendChild(createEl("div", "postcard-title", `No.${titleNumber}`));
+
+    const title = createEl("div", "postcard-title", `No.${titleNumber}`);
+    titleRow.appendChild(title);
 
     const likeButton = createEl(
       "button",
@@ -133,9 +167,19 @@ function renderPostcards({ grid, emptyState, onCardClick, onLikeClick, onCopyCli
     const taxonomy = createEl("div", "postcard-taxonomy");
     taxonomy.appendChild(createEl("span", "postcard-country", category));
 
-    tags.forEach(tag => {
-      taxonomy.appendChild(createEl("span", "postcard-tag", tag));
-    });
+    if (tag) {
+      const tagEl = createEl("button", `postcard-tag tag-${tag}`, tag);
+      tagEl.type = "button";
+      tagEl.title = `篩選：${tag}`;
+      tagEl.addEventListener("click", event => {
+        event.stopPropagation();
+
+        const tagButton = document.querySelector(`.tag-filter[data-tag="${tag}"]`);
+        if (tagButton) tagButton.click();
+      });
+
+      taxonomy.appendChild(tagEl);
+    }
 
     info.appendChild(taxonomy);
 
@@ -173,6 +217,7 @@ function renderPostcards({ grid, emptyState, onCardClick, onLikeClick, onCopyCli
     grid.appendChild(card);
   });
 }
+
 
 
 function renderMapList({ mapList, onSelect, filters }) {

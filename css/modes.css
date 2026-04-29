@@ -1,0 +1,40 @@
+.mode-view{
+  display:none;
+}
+
+.mode-view.active{
+  display:block;
+}
+
+.mode-card{
+  max-width:760px;
+  margin:0 auto;
+  border:1px solid var(--line);
+  border-radius:30px;
+  padding:26px;
+  background:rgba(255,255,255,.72);
+  backdrop-filter:blur(14px);
+}
+
+.mode-card h2{
+  margin:0 0 8px;
+}
+
+.mode-card p{
+  color:var(--muted);
+}
+
+.map-list,
+.collage-list,
+.preview-list{
+  display:grid;
+  gap:10px;
+  margin-top:18px;
+}
+
+.mode-item{
+  padding:12px 14px;
+  border-radius:18px;
+  background:white;
+  border:1px solid var(--line);
+}

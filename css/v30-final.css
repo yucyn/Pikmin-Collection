@@ -369,3 +369,11 @@
   border: none;
   color: #3f7650;
 }
+/* ===== 強制白框卡片（覆蓋所有舊設定） ===== */
+
+.v28-scope .postcard-card{
+  background: #ffffff !important;   /* ⭐ 關鍵 */
+  border-radius: 18px !important;
+  padding: 12px !important;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.08) !important;
+}

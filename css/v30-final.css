@@ -218,3 +218,17 @@
   height:100%;
   object-fit: contain;
 }
+.v28-scope .postcard-photo{
+  aspect-ratio: 4 / 3;
+  background:#f7f7f2;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+}
+
+.v28-scope .postcard-photo img{
+  width:100%;
+  height:100%;
+  object-fit:contain;
+  background:#f7f7f2;
+}

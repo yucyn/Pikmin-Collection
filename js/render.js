@@ -61,68 +61,85 @@ function renderPostcards({ grid, emptyState, onCardClick, onLikeClick, onCopyCli
     const liked = isLikedByCurrentUser(item);
     const canDelete = isOwnedByCurrentUser(item);
 
-    const card = createEl("article", "card");
-    card.dataset.id = item.id;
+    const card = createEl("article", "postcard-card");
+card.dataset.id = item.id;
 
-    const image = createEl("img");
-    image.src = item.image;
-    image.alt = "Pikmin postcard image";
-    card.appendChild(image);
+const photo = createEl("div", "postcard-photo");
 
-    card.appendChild(createEl("div", "card-title", `No.${titleNumber}`));
-    card.appendChild(createEl("div", "card-location", item.locationText || ""));
+const image = createEl("img");
+image.src = item.image;
+image.alt = "Pikmin postcard image";
+photo.appendChild(image);
 
-    const meta = createEl("div", "card-meta-row");
-    meta.appendChild(createEl("span", "category-badge", category));
+const hoverActions = createEl("div", "postcard-hover-actions");
 
-    const likeButton = createEl("button", `like-button ${liked ? "liked" : ""}`, `${liked ? "❤️" : "🤍"} ${formatLikeCount(item.likeCount)}`);
-    likeButton.type = "button";
-    likeButton.addEventListener("click", event => {
-      event.stopPropagation();
-      onLikeClick(item.id);
-    });
-    meta.appendChild(likeButton);
-    card.appendChild(meta);
+const mapButton = createEl("button", "float-btn map-btn", "Map");
+mapButton.type = "button";
+mapButton.addEventListener("click", event => {
+  event.stopPropagation();
+  window.open(createGoogleMapUrl(item.lat, item.lng), "_blank");
+});
+hoverActions.appendChild(mapButton);
 
-    const actions = createEl("div", "card-actions");
+const copyButton = createEl("button", "float-btn copy-btn", "📍");
+copyButton.type = "button";
+copyButton.addEventListener("click", event => {
+  event.stopPropagation();
+  onCopyClick(item.locationText);
+});
+hoverActions.appendChild(copyButton);
 
-    const copyButton = createEl("button", "copy-button", "複製座標");
-    copyButton.type = "button";
-    copyButton.addEventListener("click", event => {
-      event.stopPropagation();
-      onCopyClick(item.locationText);
-    });
-    actions.appendChild(copyButton);
+photo.appendChild(hoverActions);
+photo.addEventListener("click", () => onCardClick(item));
+card.appendChild(photo);
 
-    const shareButton = createEl("button", "share-button", "分享");
-    shareButton.type = "button";
-    shareButton.addEventListener("click", event => {
-      event.stopPropagation();
-      onShareClick(item.id);
-    });
-    actions.appendChild(shareButton);
+const info = createEl("div", "postcard-info");
 
-    if (canDelete) {
-      const deleteButton = createEl("button", "delete-button", "刪除");
-      deleteButton.type = "button";
-      deleteButton.addEventListener("click", event => {
-        event.stopPropagation();
-        onDeleteClick(item.id);
-      });
-      actions.appendChild(deleteButton);
-    }
+const titleRow = createEl("div", "postcard-title-row");
 
-    card.appendChild(actions);
+titleRow.appendChild(createEl("div", "postcard-title", `No.${titleNumber}`));
 
-    const mapLink = createEl("a", "map-btn", "Open Google Map");
-    mapLink.href = createGoogleMapUrl(item.lat, item.lng);
-    mapLink.target = "_blank";
-    mapLink.rel = "noopener noreferrer";
-    mapLink.addEventListener("click", event => event.stopPropagation());
-    card.appendChild(mapLink);
+const likeButton = createEl(
+  "button",
+  `postcard-want ${liked ? "active" : ""}`,
+  `${liked ? "❤️" : "♡"} ${formatLikeCount(item.likeCount)}`
+);
+likeButton.type = "button";
+likeButton.addEventListener("click", event => {
+  event.stopPropagation();
+  onLikeClick(item.id);
+});
+titleRow.appendChild(likeButton);
 
-    card.addEventListener("click", () => onCardClick(item));
-    grid.appendChild(card);
+info.appendChild(titleRow);
+
+info.appendChild(createEl("div", "postcard-coords", item.locationText || ""));
+info.appendChild(createEl("span", "postcard-country", category));
+
+const bottomActions = createEl("div", "v28-card-secondary-actions");
+
+const shareButton = createEl("button", "v28-soft-action", "分享");
+shareButton.type = "button";
+shareButton.addEventListener("click", event => {
+  event.stopPropagation();
+  onShareClick(item.id);
+});
+bottomActions.appendChild(shareButton);
+
+if (canDelete) {
+  const deleteButton = createEl("button", "v28-soft-action danger", "刪除");
+  deleteButton.type = "button";
+  deleteButton.addEventListener("click", event => {
+    event.stopPropagation();
+    onDeleteClick(item.id);
+  });
+  bottomActions.appendChild(deleteButton);
+}
+
+info.appendChild(bottomActions);
+card.appendChild(info);
+
+grid.appendChild(card);
   });
 }
 

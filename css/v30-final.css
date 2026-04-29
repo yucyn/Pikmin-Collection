@@ -439,3 +439,10 @@
     grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
   }
 }
+/* 首頁卡片：自動擷取中間主體 */
+.v28-scope #grid .postcard-photo img{
+  width: 100% !important;
+  height: 100% !important;
+  object-fit: cover !important;
+  object-position: center center !important;
+}

@@ -441,3 +441,10 @@ body.preview-mode .delete-button { display: none; }
   .search-input { width: 100%; }
   .map-view { grid-template-columns: 1fr; }
 }
+/* V28 覆蓋舊卡片樣式 */
+.v28-scope .card{
+  background: transparent !important;
+  box-shadow: none !important;
+  border: none !important;
+  padding: 0 !important;
+}

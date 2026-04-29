@@ -1,0 +1,210 @@
+/* V30 Final UI：資料優先、功能輕量、好閱讀 */
+.v28-scope #grid.grid,
+.v28-scope #grid{
+  column-count:4;
+  column-gap:18px;
+  display:block !important;
+}
+
+@media(max-width:1050px){
+  .v28-scope #grid.grid,
+  .v28-scope #grid{ column-count:3; }
+}
+
+@media(max-width:760px){
+  .v28-scope #grid.grid,
+  .v28-scope #grid{ column-count:2; }
+}
+
+@media(max-width:520px){
+  .v28-scope #grid.grid,
+  .v28-scope #grid{ column-count:1; }
+}
+
+.v28-scope .postcard-card{
+  break-inside:avoid;
+  margin:0 0 22px;
+  background:transparent !important;
+  box-shadow:none !important;
+  border:none !important;
+  padding:0 !important;
+}
+
+.v28-scope .postcard-card::before{
+  display:none !important;
+}
+
+.v28-scope .postcard-photo{
+  position:relative;
+  border-radius:22px;
+  overflow:hidden;
+  background:#f1f2ea;
+  cursor:pointer;
+}
+
+.v28-scope .postcard-photo img{
+  width:100%;
+  display:block;
+  height:auto;
+  max-height:520px;
+  object-fit:contain;
+  border-radius:22px;
+  transition:transform .2s ease, box-shadow .2s ease;
+}
+
+.v28-scope .postcard-card:hover .postcard-photo img{
+  transform:translateY(-2px);
+  box-shadow:0 14px 36px rgba(32,36,28,.08);
+}
+
+.v28-scope .postcard-hover-actions{
+  position:absolute !important;
+  inset:0 !important;
+  opacity:0 !important;
+  pointer-events:none !important;
+  transition:.18s ease !important;
+  z-index:5 !important;
+}
+
+.v28-scope .postcard-card:hover .postcard-hover-actions{
+  opacity:1 !important;
+  pointer-events:auto !important;
+}
+
+.v28-scope .float-btn{
+  position:absolute !important;
+  border:0 !important;
+  border-radius:999px !important;
+  background:rgba(255,255,255,.88) !important;
+  backdrop-filter:blur(10px);
+  color:#263322 !important;
+  font-size:12px !important;
+  font-weight:750 !important;
+  padding:7px 11px !important;
+  cursor:pointer;
+  width:auto !important;
+  display:inline-flex !important;
+  align-items:center;
+  justify-content:center;
+}
+
+.v28-scope .float-btn.map-btn{
+  left:12px !important;
+  bottom:12px !important;
+}
+
+.v28-scope .float-btn.more-btn{
+  right:12px !important;
+  bottom:12px !important;
+}
+
+.v28-scope .postcard-info{
+  padding:9px 2px 18px !important;
+  background:transparent !important;
+}
+
+.v28-scope .postcard-title-row{
+  display:flex !important;
+  justify-content:space-between !important;
+  align-items:center !important;
+  gap:10px !important;
+}
+
+.v28-scope .postcard-title{
+  font-size:15px !important;
+  font-weight:750 !important;
+  color:#2b2f27 !important;
+  letter-spacing:.01em;
+}
+
+.v28-scope .postcard-want{
+  border:0 !important;
+  border-radius:999px !important;
+  background:transparent !important;
+  color:#8b6b72 !important;
+  padding:2px 4px !important;
+  font-size:13px !important;
+  font-weight:700 !important;
+  cursor:pointer;
+}
+
+.v28-scope .postcard-want.active{
+  color:#4f8b4b !important;
+}
+
+.v28-scope .postcard-coords{
+  margin-top:5px !important;
+  font-size:13.5px !important;
+  font-weight:600 !important;
+  color:#33382f !important;
+  letter-spacing:.15px;
+  cursor:pointer;
+  user-select:text;
+}
+
+.v28-scope .postcard-coords:hover{
+  text-decoration:underline;
+  text-underline-offset:3px;
+}
+
+.v28-scope .postcard-taxonomy{
+  display:flex;
+  align-items:center;
+  gap:6px;
+  flex-wrap:wrap;
+  margin-top:5px;
+}
+
+.v28-scope .postcard-country{
+  display:inline-flex !important;
+  padding:0 !important;
+  margin:0 !important;
+  background:transparent !important;
+  color:#666f60 !important;
+  font-size:13px !important;
+  font-weight:650 !important;
+}
+
+.v28-scope .postcard-tag{
+  display:inline-flex;
+  align-items:center;
+  border-radius:999px;
+  padding:2px 8px;
+  background:#eeeeea;
+  color:#60675c;
+  font-size:12px;
+  font-weight:650;
+}
+
+.v28-scope .v30-card-actions{
+  display:flex;
+  gap:14px;
+  margin-top:9px;
+}
+
+.v28-scope .v30-text-action{
+  border:0 !important;
+  background:transparent !important;
+  color:#4f6f51 !important;
+  padding:0 !important;
+  font-size:13px !important;
+  font-weight:750 !important;
+  cursor:pointer;
+}
+
+.v28-scope .v30-text-action:hover{
+  text-decoration:underline;
+  text-underline-offset:3px;
+}
+
+.v28-scope .v30-text-action.danger{
+  color:#a85858 !important;
+}
+
+.v28-scope .card-actions,
+.v28-scope .map-btn:not(.float-btn),
+.v28-scope .copy-button,
+.v28-scope .share-button,
+.v28-scope .delete-button{
+  display:none !important;
+}

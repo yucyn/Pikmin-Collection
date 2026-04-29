@@ -1,0 +1,93 @@
+/* V28 gallery skin for your existing #grid */
+#grid.grid,
+#grid{
+  column-count:4;
+  column-gap:18px;
+  display:block !important;
+}
+
+#grid > *{
+  break-inside:avoid;
+  margin:0 0 22px !important;
+}
+
+/* Try to cover common card class names in your existing render.js */
+#grid .card,
+#grid .postcard-card,
+#grid article,
+#grid > div{
+  border-radius:0 !important;
+  background:transparent !important;
+  box-shadow:none !important;
+}
+
+#grid img{
+  max-width:100%;
+  height:auto;
+}
+
+/* Visual treatment for cards with images */
+#grid .card img,
+#grid .postcard-card img,
+#grid article img,
+#grid > div img{
+  border-radius:24px !important;
+  background:var(--v28-soft);
+  transition:transform .22s ease, box-shadow .22s ease;
+}
+
+#grid .card:hover img,
+#grid .postcard-card:hover img,
+#grid article:hover img,
+#grid > div:hover img{
+  transform:translateY(-3px);
+  box-shadow:var(--v28-shadow);
+}
+
+/* Lower information density */
+#grid .card-content,
+#grid .content,
+#grid .postcard-info,
+#grid .info{
+  padding:10px 4px 0 !important;
+  background:transparent !important;
+}
+
+/* Existing buttons become softer */
+#grid button{
+  border-radius:999px !important;
+}
+
+#grid .like-button,
+#grid .heart-button,
+#grid .want-button{
+  background:var(--v28-pink) !important;
+  color:#9a5963 !important;
+  border:0 !important;
+}
+
+#grid .copy-button,
+#grid .share-button{
+  background:rgba(255,255,255,.84) !important;
+  border:1px solid var(--v28-line) !important;
+}
+
+/* category pill */
+#grid .category,
+#grid .tag,
+#grid .country{
+  display:inline-flex;
+  border-radius:999px !important;
+  background:var(--v28-green-soft) !important;
+  color:#4d8d4c !important;
+}
+
+@media(max-width:1050px){
+  #grid.grid,#grid{column-count:3}
+}
+@media(max-width:760px){
+  #grid.grid,#grid{column-count:2}
+}
+@media(max-width:520px){
+  #grid.grid,#grid{column-count:1}
+}

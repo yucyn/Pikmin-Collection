@@ -297,3 +297,25 @@
   object-fit: cover;
   display: block;
 }
+/* V31：縮小卡片寬度，讓它更像收藏卡 */
+.v28-scope #grid{
+  column-count: 4 !important;
+  column-gap: 26px !important;
+}
+
+.v28-scope .postcard-card{
+  max-width: 280px !important;
+  margin-bottom: 34px !important;
+}
+
+/* 資訊卡浮起來 */
+.v28-scope .postcard-info{
+  width: 90% !important;
+  margin: -18px auto 0 !important;
+  background: rgba(255,255,250,.96) !important;
+  border-radius: 18px !important;
+  padding: 12px 14px !important;
+  box-shadow: 0 10px 24px rgba(54,86,52,.12) !important;
+  position: relative !important;
+  z-index: 2 !important;
+}

@@ -76,6 +76,94 @@ function getFilteredPostcards(filters = {}) {
     });
 }
 
+/* ===== Pikmin Tag System ===== */
+
+.tag{
+  display:inline-flex;
+  align-items:center;
+  gap:6px;
+
+  padding:3px 10px;
+  border-radius:999px;
+
+  background:rgba(255,255,255,0.85);
+  border:1px solid rgba(60,70,50,0.12);
+  box-shadow:0 2px 6px rgba(0,0,0,0.04);
+
+  font-size:12px;
+  font-weight:700;
+  color:#2f2f2f;
+}
+
+/* 花 */
+.tag-花::before{
+  content:"✿";
+  color:#b98390;
+}
+
+/* 蘑菇（最終版） */
+.tag-蘑菇{
+  position:relative;
+  padding-left:18px;
+}
+
+.tag-蘑菇::before{
+  content:"";
+  position:absolute;
+  left:6px;
+  top:50%;
+  transform:translateY(-65%);
+  width:7.5px;
+  height:5.5px;
+  background:#8a6042;
+  border-radius:9px 9px 4px 4px;
+}
+
+/* 👉 莖（你剛剛調整的） */
+.tag-蘑菇::after{
+  content:"";
+  position:absolute;
+  left:9px;
+  top:50%;
+  transform:translateY(-5%);
+  width:2.3px;
+  height:5.2px;
+  background:#8a6042;
+  border-radius:2px;
+}
+
+/* 🌈 隱藏 */
+.tag-隱藏{
+  color:transparent;
+  background-image:linear-gradient(
+    90deg,
+    #00c2ff,
+    #38d16a,
+    #ffd93d,
+    #ff7a18,
+    #ff2d95,
+    #6c5ce7
+  );
+  -webkit-background-clip:text;
+  background-clip:text;
+}
+
+.tag-隱藏::before{
+  content:"";
+  width:6px;
+  height:6px;
+  border-radius:50%;
+  background:linear-gradient(
+    135deg,
+    #00c2ff,
+    #38d16a,
+    #ffd93d,
+    #ff7a18,
+    #ff2d95,
+    #6c5ce7
+  );
+}
+
 function renderPostcards({
   grid,
   emptyState,
@@ -104,15 +192,26 @@ function renderPostcards({
     /* 圖片區 */
     const photo = createEl("div", "postcard-photo");
 
-   const image = createEl("img");
+  const image = createEl("img");
 
-image.onload = () => {
+/* 判斷橫圖 */
+const applyOrientation = () => {
   const ratio = image.naturalWidth / image.naturalHeight;
-
   if (ratio > 1.2) {
     image.classList.add("landscape");
   }
 };
+
+/* 圖片載入時 */
+image.onload = applyOrientation;
+
+/* 👉 關鍵：已載入也要跑一次 */
+if (image.complete) {
+  applyOrientation();
+}
+
+image.src = item.image;
+image.alt = "Pikmin postcard image";
 
 image.src = item.image;
 image.alt = "Pikmin postcard image";
@@ -159,8 +258,11 @@ photo.appendChild(image);
 
     const titleRow = createEl("div", "postcard-title-row");
 
-    const title = createEl("div", "postcard-title", `No.${titleNumber}`);
-    titleRow.appendChild(title);
+   const titleText = isMobileView()
+  ? formatCoords(item.locationText)
+  : `No.${titleNumber}`;
+
+const title = createEl("div", "postcard-title", titleText);
 
     const likeButton = createEl(
       "button",

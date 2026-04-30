@@ -570,8 +570,8 @@
 #v28CreateFab.scroll-top-fab svg,
 #scrollTopBtn svg,
 .v28-create-fab.scroll-top-fab svg{
-  width:24px !important;
-  height:24px !important;
+  width:26px !important;
+  height:26px !important;
   display:block !important;
   color:#fff !important;
   background:transparent !important;
@@ -590,7 +590,7 @@
   transform:scale(.92) !important;
 }
 
-/* 停用舊的 V28 展開選單 */
 #v28CreateMenu{
   display:none !important;
 }
+

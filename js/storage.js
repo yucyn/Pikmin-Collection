@@ -141,3 +141,20 @@ async function togglePostcardLike(id) {
     likeCount: nextLikedBy.length
   });
 }
+async function updatePostcard(id, updates) {
+  if (!assertWriteReady()) return;
+
+  const item = getPostcardById(id);
+
+  if (!isOwnedByCurrentUser(item)) {
+    alert("你只能編輯自己建立的明信片");
+    return;
+  }
+
+  const collectionName = window.PIKMIN_FIREBASE_COLLECTION || "pikmin_postcards";
+
+  await db.collection(collectionName).doc(id).update({
+    ...updates,
+    updatedAt: new Date().toISOString()
+  });
+}

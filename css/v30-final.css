@@ -626,3 +626,173 @@ postcard-photo img.landscape{
     #6c5ce7
   );
 }
+/* ===== Render Integrated UI Addon ===== */
+
+.v28-scope #grid .postcard-photo img.landscape,
+.postcard-photo img.landscape{
+  object-position:left center !important;
+}
+
+.postcard-photo{
+  position:relative;
+}
+
+.postcard-hover-actions{
+  position:absolute;
+  inset:0;
+  opacity:0;
+  pointer-events:none;
+  transition:.18s ease;
+  z-index:5;
+}
+
+.postcard-card:hover .postcard-hover-actions{
+  opacity:1;
+  pointer-events:auto;
+}
+
+.float-btn{
+  position:absolute;
+  border:0;
+  border-radius:999px;
+  background:rgba(255,255,255,.88);
+  backdrop-filter:blur(8px);
+  color:#263322;
+  font-size:12px;
+  font-weight:800;
+  padding:6px 9px;
+  cursor:pointer;
+  box-shadow:0 6px 16px rgba(0,0,0,.10);
+}
+
+.map-btn{ left:8px; top:8px; }
+.like-btn{ right:8px; top:8px; color:#a65b66; }
+.more-btn{ right:8px; bottom:8px; }
+
+.postcard-more-menu{
+  position:absolute;
+  right:8px;
+  bottom:44px;
+  display:none;
+  width:120px;
+  padding:7px;
+  border-radius:14px;
+  background:rgba(255,255,255,.96);
+  box-shadow:0 10px 24px rgba(0,0,0,.14);
+  z-index:6;
+}
+
+.postcard-more-menu.show{ display:block; }
+
+.postcard-menu-action{
+  width:100%;
+  border:0;
+  background:transparent;
+  border-radius:10px;
+  padding:8px;
+  text-align:left;
+  cursor:pointer;
+  font-weight:750;
+}
+
+.postcard-menu-action:hover{ background:#f0f2e9; }
+.postcard-menu-action.danger{ color:#a85858; }
+
+.postcard-tag{
+  display:inline-flex !important;
+  align-items:center !important;
+  gap:6px !important;
+  padding:3px 10px !important;
+  border-radius:999px !important;
+  background:rgba(255,255,255,0.85) !important;
+  border:1px solid rgba(60,70,50,0.12) !important;
+  box-shadow:0 2px 6px rgba(0,0,0,0.04) !important;
+  font-size:12px !important;
+  font-weight:700 !important;
+  color:#2f2f2f !important;
+}
+
+.tag-花::before{
+  content:"✿";
+  color:#b98390;
+}
+
+.tag-蘑菇{
+  position:relative !important;
+  padding-left:18px !important;
+}
+
+.tag-蘑菇::before{
+  content:"";
+  position:absolute;
+  left:6px;
+  top:50%;
+  transform:translateY(-65%);
+  width:7.5px;
+  height:5.5px;
+  background:#8a6042;
+  border-radius:9px 9px 4px 4px;
+}
+
+.tag-蘑菇::after{
+  content:"";
+  position:absolute;
+  left:9px;
+  top:50%;
+  transform:translateY(-5%);
+  width:2.3px;
+  height:5.2px;
+  background:#8a6042;
+  border-radius:2px;
+}
+
+.tag-隱藏{
+  color:transparent !important;
+  background-image:linear-gradient(90deg,#00c2ff,#38d16a,#ffd93d,#ff7a18,#ff2d95,#6c5ce7) !important;
+  -webkit-background-clip:text !important;
+  background-clip:text !important;
+}
+
+.tag-隱藏::before{
+  content:"";
+  width:6px;
+  height:6px;
+  border-radius:50%;
+  background:linear-gradient(135deg,#00c2ff,#38d16a,#ffd93d,#ff7a18,#ff2d95,#6c5ce7);
+}
+
+@media(max-width:600px){
+  .postcard-card{
+    padding:0 !important;
+    background:transparent !important;
+    box-shadow:none !important;
+    border:none !important;
+  }
+
+  .postcard-photo{
+    border-radius:18px !important;
+  }
+
+  .postcard-hover-actions{
+    opacity:1;
+    pointer-events:auto;
+  }
+
+  .postcard-coords{
+    display:none !important;
+  }
+
+  .postcard-title{
+    font-size:11px !important;
+    line-height:1.25 !important;
+    letter-spacing:-.02em !important;
+    white-space:nowrap !important;
+    overflow:hidden !important;
+    text-overflow:ellipsis !important;
+  }
+
+  .postcard-tag{
+    padding:2px 7px !important;
+    font-size:10px !important;
+  }
+}

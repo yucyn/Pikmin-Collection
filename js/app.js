@@ -564,3 +564,9 @@ document.addEventListener("DOMContentLoaded", () => {
     sidebar.classList.remove("open");
   });
 });
+// ⭐ Hero 收合控制
+function toggleHero() {
+  const hero = document.querySelector('.hero');
+  if (!hero) return;
+  hero.classList.toggle('collapsed');
+}

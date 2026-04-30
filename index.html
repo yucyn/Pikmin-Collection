@@ -110,22 +110,41 @@
       👀 預覽模式：可搜尋、篩選、點愛心、複製座標、查看地圖；不能刪除卡片。
     </div>
 
-    <header class="main-header">
+   <div class="control-panel">
 
-  <div class="hero collapsible">
+  <!-- ⭐ Top bar -->
+  <div class="top-bar">
 
-    <div class="hero-header" onclick="toggleHero()">
-      <h2>明信片收藏冊</h2>
-      <span class="toggle-icon">▼</span>
+    <!-- 搜尋 -->
+    <div class="search-box">
+      <input id="searchInput"
+             class="search-input"
+             type="search"
+             placeholder="搜尋座標 / 國家">
+      <div class="search-leaf"></div>
     </div>
 
-    <div class="hero-body">
-      <p>點擊卡片可放大查看；切換地圖模式可查看座標位置。</p>
+    <!-- 按鈕列 -->
+    <div class="filter-row">
+
+      <button id="collectionViewBtn" class="pill-btn active">收藏冊</button>
+      <button id="mapViewBtn" class="pill-btn">地圖</button>
+      <button id="collageViewBtn" class="pill-btn">拼貼</button>
+
+      <button class="pill-btn active" data-tag="">全部</button>
+      <button class="pill-btn" data-tag="花">花</button>
+      <button class="pill-btn" data-tag="蘑菇">蘑菇</button>
+      <button class="pill-btn" data-tag="隱藏">隱藏</button>
+
+      <button id="previewModeBtn" class="pill-btn preview-btn">
+        預覽模式
+      </button>
+
     </div>
 
   </div>
 
-     
+</div>
 
 
       <div class="toolbar pikmin-toolbar">

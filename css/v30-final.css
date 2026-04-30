@@ -56,6 +56,9 @@
   display:block;
   border-radius:18px;
 }
+postcard-photo img.landscape{
+  object-position:left center !important;
+}
 
 .v28-scope .postcard-hover-actions{
   position:absolute;

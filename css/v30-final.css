@@ -594,3 +594,65 @@
   display:none !important;
 }
 
+/* ===== 手機版：上傳區縮小（精準命中）===== */
+@media (max-width: 768px) {
+
+  /* 整個左側上傳區縮小 */
+  .sidebar {
+    padding: 12px !important;
+  }
+
+  /* 標題縮小 */
+  .brand {
+    gap: 8px !important;
+  }
+
+  .brand h1 {
+    font-size: 18px !important;
+  }
+
+  .brand p {
+    font-size: 12px !important;
+  }
+
+  /* 三個上傳按鈕 */
+  .upload-tabs {
+    gap: 6px !important;
+    margin-bottom: 8px !important;
+  }
+
+  .tab-button {
+    padding: 6px 4px !important;
+    font-size: 12px !important;
+  }
+
+  /* 上傳框（你畫面最大那塊）🔥 */
+  .upload-box {
+    min-height: 80px !important;
+    padding: 8px !important;
+    font-size: 13px !important;
+  }
+
+  /* 上傳提示文字 */
+  .upload-box strong {
+    font-size: 14px !important;
+  }
+
+  .upload-box small {
+    font-size: 11px !important;
+  }
+
+  /* input 欄位 */
+  .input {
+    padding: 9px !important;
+    font-size: 13px !important;
+    margin: 6px 0 !important;
+  }
+
+  /* 新增按鈕 */
+  .primary-button {
+    padding: 10px !important;
+    font-size: 14px !important;
+  }
+
+}

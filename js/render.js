@@ -126,15 +126,6 @@ function renderPostcards({
 
     const hoverActions = createEl("div", "postcard-hover-actions");
 
-    const mapButton = createEl("button", "float-btn map-btn", "📍");
-    mapButton.type = "button";
-    mapButton.title = "Open Google Map";
-    mapButton.addEventListener("click", event => {
-      event.stopPropagation();
-      window.open(getGoogleMapUrlFromItem(item), "_blank");
-    });
-    hoverActions.appendChild(mapButton);
-
     const likeButton = createEl(
       "button",
       `float-btn like-btn postcard-want ${liked ? "active" : ""}`,

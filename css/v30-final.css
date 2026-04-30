@@ -810,3 +810,78 @@
   gap: 8px !important;
   margin: 0 !important;
 }
+/* ⭐ 控制區 */
+.control-panel {
+  background: #f6f6f2;
+  border-radius: 24px;
+  padding: 16px;
+  margin-bottom: 20px;
+}
+
+/* ⭐ top bar */
+.top-bar {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+/* 搜尋 */
+.search-box {
+  flex: 1;
+  min-width: 220px;
+  max-width: 480px;
+  position: relative;
+}
+
+.search-input {
+  width: 100%;
+  padding: 12px 18px;
+  border-radius: 999px;
+  border: none;
+  background: #f8f8f5;
+}
+
+/* 葉子 */
+.search-leaf {
+  position: absolute;
+  right: 18px;
+  top: -12px;
+  width: 14px;
+  height: 20px;
+  background: #74b657;
+  border-radius: 80% 20% 80% 20%;
+  animation: swing 1.8s infinite;
+}
+
+@keyframes swing {
+  0%,100%{transform:rotate(-10deg)}
+  50%{transform:rotate(14deg)}
+}
+
+/* 按鈕列 */
+.filter-row {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+/* 按鈕 */
+.pill-btn {
+  padding: 8px 14px;
+  border-radius: 999px;
+  border: none;
+  background: #dfe6d6;
+}
+
+.pill-btn.active {
+  background: #7fa35a;
+  color: white;
+}
+
+/* 預覽 */
+.preview-btn {
+  background: #5f7f45;
+  color: white;
+  font-weight: bold;
+}

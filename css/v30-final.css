@@ -737,3 +737,47 @@
     pointer-events: none !important;
   }
 }
+.hero {
+  background: #f6f6f2;
+  border-radius: 20px;
+  padding: 14px 16px;
+}
+
+.hero-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  cursor: pointer;
+}
+
+.hero-body {
+  margin-top: 6px;
+  color: #666;
+  font-size: 14px;
+}
+
+/* 收合 */
+.hero.collapsed .hero-body {
+  display: none;
+}
+
+/* 收起來變超精簡 */
+.hero.collapsed {
+  padding: 8px 16px;
+}
+
+/* 箭頭動畫 */
+.toggle-icon {
+  transition: transform 0.3s;
+}
+
+.hero.collapsed .toggle-icon {
+  transform: rotate(-90deg);
+}
+
+/* ⭐ 手機預設收合（超重要） */
+@media (max-width: 768px) {
+  .hero-body {
+    display: none;
+  }
+}

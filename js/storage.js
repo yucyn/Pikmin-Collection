@@ -1,3 +1,11 @@
+const ADMIN_USER_IDS = [
+  "你的Firebase UID"
+];
+
+function isAdminUser() {
+  return ADMIN_USER_IDS.includes(getCurrentUserId());
+}
+
 const USER_ID_KEY = "pikmin_current_user_id";
 
 let postcardsCache = [];

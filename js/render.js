@@ -189,10 +189,10 @@ function renderPostcards({
     const card = createEl("article", "postcard-card");
     card.dataset.id = item.id;
 
-    /* 圖片區 */
-    const photo = createEl("div", "postcard-photo");
+   /* 圖片區 */
+const photo = createEl("div", "postcard-photo");
 
- const image = createEl("img");
+const image = createEl("img");
 
 image.onload = () => {
   const ratio = image.naturalWidth / image.naturalHeight;
@@ -206,9 +206,7 @@ image.src = item.image;
 image.alt = "Pikmin postcard image";
 
 photo.appendChild(image);
-};
     
-    photo.appendChild(image);
 
     const hoverActions = createEl("div", "postcard-hover-actions");
 

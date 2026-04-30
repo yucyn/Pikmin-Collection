@@ -28,13 +28,15 @@ function normalizePostcard(id, data) {
     id,
     image: data.image || "",
     category: data.category || "全球",
+    tag: data.tag || "", // 🔥 加這行
     ownerId: data.ownerId || "",
     likedBy: Array.isArray(data.likedBy) ? data.likedBy : [],
     likeCount: Number(data.likeCount || 0),
     locationText: data.locationText || "",
     lat: Number(data.lat),
     lng: Number(data.lng),
-    createdAt: data.createdAt || new Date().toISOString()
+    createdAt: data.createdAt || new Date().toISOString(),
+    updatedAt: data.updatedAt || ""
   };
 }
 

@@ -507,3 +507,14 @@ document.addEventListener("DOMContentLoaded", function () {
     openSharedCardFromUrl();
   });
 });
+// 回到頂部按鈕
+const scrollBtn = document.getElementById("scrollTopBtn");
+
+if (scrollBtn) {
+  scrollBtn.addEventListener("click", () => {
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth"
+    });
+  });
+}

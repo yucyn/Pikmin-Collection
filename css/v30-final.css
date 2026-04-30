@@ -1,72 +1,77 @@
-/* V30 Final UI：乾淨穩定版
-   直接覆蓋原本 css/v30-final.css
-   不要再貼在舊檔下面
-*/
+/* V30 Repair Clean Version */
 
-.v28-scope #grid.grid,
-.v28-scope #grid{
-  column-count:4;
-  column-gap:22px;
-  display:block !important;
+/* Grid */
+.v28-scope #grid,
+.v28-scope #grid.grid{
+  display:grid !important;
+  grid-template-columns:repeat(4,minmax(0,1fr)) !important;
+  gap:24px !important;
+  column-count:unset !important;
 }
 
-@media(max-width:1050px){
-  .v28-scope #grid.grid,
-  .v28-scope #grid{ column-count:3; }
+@media(max-width:1200px){
+  .v28-scope #grid,
+  .v28-scope #grid.grid{
+    grid-template-columns:repeat(3,minmax(0,1fr)) !important;
+  }
 }
 
 @media(max-width:760px){
-  .v28-scope #grid.grid,
-  .v28-scope #grid{ column-count:2; }
+  .v28-scope #grid,
+  .v28-scope #grid.grid{
+    grid-template-columns:repeat(2,minmax(0,1fr)) !important;
+  }
 }
 
-@media(max-width:520px){
-  .v28-scope #grid.grid,
-  .v28-scope #grid{ column-count:1; }
-}
-
-.v28-scope .postcard-card{
-  break-inside:avoid;
-  margin:0 0 28px;
-  background:transparent !important;
-  box-shadow:none !important;
-  border:none !important;
-  padding:0 !important;
+/* Card */
+.v28-scope #grid .postcard-card{
+  display:block !important;
+  background:#fff !important;
+  border-radius:20px !important;
+  padding:12px !important;
+  box-shadow:0 8px 22px rgba(0,0,0,.08) !important;
+  border:1px solid rgba(0,0,0,.04) !important;
+  margin:0 !important;
+  max-width:none !important;
+  break-inside:avoid !important;
 }
 
 .v28-scope .postcard-card::before{
   display:none !important;
 }
 
-.v28-scope .postcard-photo{
-  position:relative;
-  width:100%;
-  aspect-ratio:3 / 4;
-  border-radius:18px;
-  overflow:hidden;
-  background:#f3f4ef;
-  cursor:pointer;
+/* Photo */
+.v28-scope #grid .postcard-photo{
+  position:relative !important;
+  width:100% !important;
+  aspect-ratio:3/4 !important;
+  border-radius:16px !important;
+  overflow:hidden !important;
+  background:#f3f4ef !important;
+  cursor:pointer !important;
 }
 
-.v28-scope .postcard-photo img{
-  width:100%;
-  height:100%;
-  object-fit:cover;
-  object-position:center;
-  display:block;
-  border-radius:18px;
+.v28-scope #grid .postcard-photo img{
+  width:100% !important;
+  height:100% !important;
+  object-fit:cover !important;
+  object-position:center center !important;
+  display:block !important;
+  border-radius:16px !important;
 }
-postcard-photo img.landscape{
+
+.v28-scope #grid .postcard-photo img.landscape{
   object-position:left center !important;
 }
 
+/* Hover UI */
 .v28-scope .postcard-hover-actions{
-  position:absolute;
-  inset:0;
+  position:absolute !important;
+  inset:0 !important;
   opacity:0;
   pointer-events:none;
   transition:.18s ease;
-  z-index:5;
+  z-index:10 !important;
 }
 
 .v28-scope .postcard-card:hover .postcard-hover-actions{
@@ -74,40 +79,103 @@ postcard-photo img.landscape{
   pointer-events:auto;
 }
 
-.v28-scope .float-btn{
+.v28-scope .postcard-photo .float-btn{
+  position:absolute !important;
+  width:auto !important;
+  height:auto !important;
+  min-width:auto !important;
+  min-height:auto !important;
+  max-width:none !important;
+  max-height:none !important;
+  display:inline-flex !important;
+  align-items:center !important;
+  justify-content:center !important;
+  border:0 !important;
+  border-radius:999px !important;
+  padding:6px 9px !important;
+  background:rgba(255,255,255,.88) !important;
+  box-shadow:0 6px 16px rgba(0,0,0,.10) !important;
+  backdrop-filter:blur(8px);
+  transform:none !important;
+  color:#263322 !important;
+  font-size:12px !important;
+  font-weight:800 !important;
+  cursor:pointer !important;
+}
+
+.v28-scope .postcard-photo .map-btn{
+  left:8px !important;
+  top:8px !important;
+  right:auto !important;
+  bottom:auto !important;
+}
+
+.v28-scope .postcard-photo .like-btn{
+  right:8px !important;
+  top:8px !important;
+  left:auto !important;
+  bottom:auto !important;
+  color:#a65b66 !important;
+}
+
+.v28-scope .postcard-photo .edit-btn{
+  left:8px !important;
+  bottom:8px !important;
+  right:auto !important;
+  top:auto !important;
+}
+
+.v28-scope .postcard-photo .more-btn{
+  right:8px !important;
+  bottom:8px !important;
+  left:auto !important;
+  top:auto !important;
+}
+
+/* Menu */
+.v28-scope .postcard-more-menu{
   position:absolute;
+  right:8px;
+  bottom:44px;
+  display:none;
+  width:120px;
+  padding:7px;
+  border-radius:14px;
+  background:rgba(255,255,255,.96);
+  box-shadow:0 10px 24px rgba(0,0,0,.14);
+  z-index:20;
+}
+
+.v28-scope .postcard-more-menu.show{
+  display:block;
+}
+
+.v28-scope .postcard-menu-action{
+  width:100%;
   border:0;
-  border-radius:999px;
-  background:rgba(255,255,255,.9);
-  backdrop-filter:blur(10px);
-  color:#263322;
-  font-size:12px;
-  font-weight:750;
-  padding:7px 11px;
+  background:transparent;
+  border-radius:10px;
+  padding:8px;
+  text-align:left;
   cursor:pointer;
-  width:auto;
-  display:inline-flex;
-  align-items:center;
-  justify-content:center;
+  font-weight:750;
 }
 
-.v28-scope .float-btn.map-btn{
-  left:12px;
-  bottom:12px;
+.v28-scope .postcard-menu-action:hover{
+  background:#f0f2e9;
 }
 
-.v28-scope .float-btn.more-btn{
-  right:12px;
-  bottom:12px;
+.v28-scope .postcard-menu-action.danger{
+  color:#a85858;
 }
 
-.v28-scope .postcard-info{
-  margin-top:10px;
-  padding:0 2px 14px;
+/* Info */
+.v28-scope #grid .postcard-info{
+  margin:10px 0 0 0 !important;
+  padding:0 2px 4px !important;
   background:transparent !important;
   box-shadow:none !important;
   border:none !important;
-  border-radius:0 !important;
 }
 
 .v28-scope .postcard-title-row{
@@ -124,20 +192,6 @@ postcard-photo img.landscape{
   letter-spacing:.01em;
 }
 
-.v28-scope .postcard-want{
-  border:0;
-  background:transparent;
-  color:#8b6b72;
-  padding:0;
-  font-size:13px;
-  font-weight:700;
-  cursor:pointer;
-}
-
-.v28-scope .postcard-want.active{
-  color:#4f8b4b;
-}
-
 .v28-scope .postcard-coords{
   margin-top:5px;
   font-size:13px;
@@ -146,11 +200,6 @@ postcard-photo img.landscape{
   letter-spacing:.1px;
   cursor:pointer;
   user-select:text;
-}
-
-.v28-scope .postcard-coords:hover{
-  text-decoration:underline;
-  text-underline-offset:3px;
 }
 
 .v28-scope .postcard-taxonomy{
@@ -171,34 +220,72 @@ postcard-photo img.landscape{
   font-weight:650;
 }
 
+/* Tag */
 .v28-scope .postcard-tag{
-  border:0;
-  display:inline-flex;
-  align-items:center;
-  border-radius:999px;
-  padding:2px 8px;
-  background:#eeeeea;
-  color:#60675c;
-  font-size:12px;
-  font-weight:700;
+  display:inline-flex !important;
+  align-items:center !important;
+  gap:6px !important;
+  padding:3px 10px !important;
+  border-radius:999px !important;
+  background:rgba(255,255,255,0.85) !important;
+  border:1px solid rgba(60,70,50,0.12) !important;
+  box-shadow:0 2px 6px rgba(0,0,0,0.04) !important;
+  font-size:12px !important;
+  font-weight:700 !important;
+  color:#2f2f2f !important;
   cursor:pointer;
 }
 
-.v28-scope .tag-花{
-  background:#ffe8ef;
-  color:#b35a72;
+.v28-scope .tag-花::before{
+  content:"✿";
+  color:#b98390;
 }
 
 .v28-scope .tag-蘑菇{
-  background:#f1e7dc;
-  color:#8a6042;
+  position:relative !important;
+  padding-left:18px !important;
+}
+
+.v28-scope .tag-蘑菇::before{
+  content:"";
+  position:absolute;
+  left:6px;
+  top:50%;
+  transform:translateY(-65%);
+  width:7.5px;
+  height:5.5px;
+  background:#8a6042;
+  border-radius:9px 9px 4px 4px;
+}
+
+.v28-scope .tag-蘑菇::after{
+  content:"";
+  position:absolute;
+  left:9px;
+  top:50%;
+  transform:translateY(-5%);
+  width:2.3px;
+  height:5.2px;
+  background:#8a6042;
+  border-radius:2px;
 }
 
 .v28-scope .tag-隱藏{
-  background:#eceef2;
-  color:#66707c;
+  color:transparent !important;
+  background-image:linear-gradient(90deg,#00c2ff,#38d16a,#ffd93d,#ff7a18,#ff2d95,#6c5ce7) !important;
+  -webkit-background-clip:text !important;
+  background-clip:text !important;
 }
 
+.v28-scope .tag-隱藏::before{
+  content:"";
+  width:6px;
+  height:6px;
+  border-radius:50%;
+  background:linear-gradient(135deg,#00c2ff,#38d16a,#ffd93d,#ff7a18,#ff2d95,#6c5ce7);
+}
+
+/* Card actions */
 .v28-scope .v30-card-actions{
   display:flex;
   gap:12px;
@@ -215,23 +302,7 @@ postcard-photo img.landscape{
   cursor:pointer;
 }
 
-.v28-scope .v30-text-action:hover{
-  text-decoration:underline;
-  text-underline-offset:3px;
-}
-
-.v28-scope .v30-text-action.danger{
-  color:#a85858;
-}
-
-.v28-scope .card-actions,
-.v28-scope .map-btn:not(.float-btn),
-.v28-scope .copy-button,
-.v28-scope .share-button,
-.v28-scope .delete-button{
-  display:none !important;
-}
-
+/* Tag filter */
 .tag-filter-row{
   display:flex;
   gap:8px;
@@ -250,539 +321,34 @@ postcard-photo img.landscape{
   transition:.16s ease;
 }
 
-.tag-filter:hover{
-  background:#e7eadf;
-}
-
 .tag-filter.active{
   background:#6aa85e;
   color:white;
 }
 
-.tag-filter[data-tag="花"].active{
-  background:#ffe8ef;
-  color:#b35a72;
-}
-
-.tag-filter[data-tag="蘑菇"].active{
-  background:#f1e7dc;
-  color:#8a6042;
-}
-
-.tag-filter[data-tag="隱藏"].active{
-  background:#eceef2;
-  color:#66707c;
-}
-/* ===== V33 白框卡片版（穩定好看版）===== */
-
-/* 卡片 */
-.v28-scope .postcard-card{
-  break-inside: avoid;
-  margin: 0 0 28px;
-  padding: 12px;
-  background: #ffffff;
-  border-radius: 18px;
-  box-shadow: 0 6px 18px rgba(0,0,0,0.06);
-}
-
-/* 圖片區 */
-.v28-scope .postcard-photo{
-  width: 100%;
-  aspect-ratio: 3 / 4;
-  border-radius: 14px;
-  overflow: hidden;
-  background: #f3f4ef;
-}
-
-/* 圖片 */
-.v28-scope .postcard-photo img{
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  display: block;
-}
-
-/* 資訊 */
-.v28-scope .postcard-info{
-  margin-top: 10px;
-  padding: 0 4px;
-}
-
-/* 標題列 */
-.v28-scope .postcard-title-row{
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
-/* No.xxx */
-.v28-scope .postcard-title{
-  font-size: 15px;
-  font-weight: 800;
-}
-
-/* 愛心 */
-.v28-scope .postcard-want{
-  background: transparent;
-  border: none;
-  font-size: 13px;
-  font-weight: 700;
-}
-
-/* 座標 */
-.v28-scope .postcard-coords{
-  margin-top: 4px;
-  font-size: 13px;
-  font-weight: 600;
-  color: #333;
-}
-
-/* 國家 + Tag */
-.v28-scope .postcard-taxonomy{
-  margin-top: 4px;
-  display: flex;
-  gap: 6px;
-  flex-wrap: wrap;
-}
-
-.v28-scope .postcard-country{
-  font-size: 13px;
-  color: #666;
-}
-
-/* Tag */
-.v28-scope .postcard-tag{
-  font-size: 12px;
-  padding: 2px 8px;
-  border-radius: 999px;
-  background: #eeeeea;
-}
-
-/* 動作 */
-.v28-scope .v30-card-actions{
-  margin-top: 6px;
-  display: flex;
-  gap: 12px;
-}
-
-.v28-scope .v30-text-action{
-  font-size: 13px;
-  font-weight: 700;
-  background: none;
-  border: none;
-  color: #3f7650;
-}
-/* ===== 強制白框卡片（覆蓋所有舊設定） ===== */
-
-.v28-scope .postcard-card{
-  background: #ffffff !important;   /* ⭐ 關鍵 */
-  border-radius: 18px !important;
-  padding: 12px !important;
-  box-shadow: 0 8px 20px rgba(0,0,0,0.08) !important;
-}
-/* ===== 強制改成固定格狀白框卡片 ===== */
-
-/* 取消瀑布流，改成真正 grid */
-.v28-scope #grid,
-.v28-scope #grid.grid{
-  display: grid !important;
-  grid-template-columns: repeat(4, minmax(0, 1fr)) !important;
-  gap: 24px !important;
-  column-count: unset !important;
-}
-
-/* 白框卡片 */
-.v28-scope #grid .postcard-card{
-  display: block !important;
-  background: #ffffff !important;
-  border-radius: 20px !important;
-  padding: 12px !important;
-  box-shadow: 0 8px 22px rgba(0,0,0,0.08) !important;
-  border: 1px solid rgba(0,0,0,0.04) !important;
-  margin: 0 !important;
-  max-width: none !important;
-}
-
-/* 圖片固定比例 */
-.v28-scope #grid .postcard-photo{
-  width: 100% !important;
-  aspect-ratio: 3 / 4 !important;
-  border-radius: 16px !important;
-  overflow: hidden !important;
-  background: #f3f4ef !important;
-}
-
-.v28-scope #grid .postcard-photo img{
-  width: 100% !important;
-  height: 100% !important;
-  object-fit: cover !important;
-  display: block !important;
-}
-
-/* 資訊在白框內 */
-.v28-scope #grid .postcard-info{
-  margin: 10px 0 0 0 !important;
-  padding: 0 2px 4px !important;
-  background: transparent !important;
-  box-shadow: none !important;
-  border: none !important;
-}
-
-/* RWD */
-@media(max-width:1200px){
-  .v28-scope #grid,
-  .v28-scope #grid.grid{
-    grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
-  }
-}
-
-@media(max-width:760px){
-  .v28-scope #grid,
-  .v28-scope #grid.grid{
-    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
-  }
-}
-/* 首頁卡片：自動擷取中間主體 */
-.v28-scope #grid .postcard-photo img{
-  width: 100% !important;
-  height: 100% !important;
-  object-fit: cover !important;
-  object-position: center center !important;
-}
-.v28-scope #grid .postcard-photo img.landscape{
-  object-position: left center !important;
-}
-/* ===== Pikmin Tag System ===== */
-
-.tag{
-  display:inline-flex;
-  align-items:center;
-  gap:6px;
-
-  padding:3px 10px;
-  border-radius:999px;
-
-  background:rgba(255,255,255,0.85);
-  border:1px solid rgba(60,70,50,0.12);
-  box-shadow:0 2px 6px rgba(0,0,0,0.04);
-
-  font-size:12px;
-  font-weight:700;
-  color:#2f2f2f;
-}
-
-/* 花 */
-.tag-花::before{
-  content:"✿";
-  color:#b98390;
-}
-
-/* 蘑菇（最終版） */
-.tag-蘑菇{
-  position:relative;
-  padding-left:18px;
-}
-
-.tag-蘑菇::before{
-  content:"";
-  position:absolute;
-  left:6px;
-  top:50%;
-  transform:translateY(-65%);
-  width:7.5px;
-  height:5.5px;
-  background:#8a6042;
-  border-radius:9px 9px 4px 4px;
-}
-
-/* 👉 莖（你剛剛調整的） */
-.tag-蘑菇::after{
-  content:"";
-  position:absolute;
-  left:9px;
-  top:50%;
-  transform:translateY(-5%);
-  width:2.3px;
-  height:5.2px;
-  background:#8a6042;
-  border-radius:2px;
-}
-
-/* 🌈 隱藏 */
-.tag-隱藏{
-  color:transparent;
-  background-image:linear-gradient(
-    90deg,
-    #00c2ff,
-    #38d16a,
-    #ffd93d,
-    #ff7a18,
-    #ff2d95,
-    #6c5ce7
-  );
-  -webkit-background-clip:text;
-  background-clip:text;
-}
-
-.tag-隱藏::before{
-  content:"";
-  width:6px;
-  height:6px;
-  border-radius:50%;
-  background:linear-gradient(
-    135deg,
-    #00c2ff,
-    #38d16a,
-    #ffd93d,
-    #ff7a18,
-    #ff2d95,
-    #6c5ce7
-  );
-}
-/* ===== Pikmin Tag System ===== */
-
-.tag{
-  display:inline-flex;
-  align-items:center;
-  gap:6px;
-
-  padding:3px 10px;
-  border-radius:999px;
-
-  background:rgba(255,255,255,0.85);
-  border:1px solid rgba(60,70,50,0.12);
-  box-shadow:0 2px 6px rgba(0,0,0,0.04);
-
-  font-size:12px;
-  font-weight:700;
-  color:#2f2f2f;
-}
-
-/* 花 */
-.tag-花::before{
-  content:"✿";
-  color:#b98390;
-}
-
-/* 蘑菇（最終版） */
-.tag-蘑菇{
-  position:relative;
-  padding-left:18px;
-}
-
-.tag-蘑菇::before{
-  content:"";
-  position:absolute;
-  left:6px;
-  top:50%;
-  transform:translateY(-65%);
-  width:7.5px;
-  height:5.5px;
-  background:#8a6042;
-  border-radius:9px 9px 4px 4px;
-}
-
-/* 👉 莖（你剛剛調整的） */
-.tag-蘑菇::after{
-  content:"";
-  position:absolute;
-  left:9px;
-  top:50%;
-  transform:translateY(-5%);
-  width:2.3px;
-  height:5.2px;
-  background:#8a6042;
-  border-radius:2px;
-}
-
-/* 🌈 隱藏 */
-.tag-隱藏{
-  color:transparent;
-  background-image:linear-gradient(
-    90deg,
-    #00c2ff,
-    #38d16a,
-    #ffd93d,
-    #ff7a18,
-    #ff2d95,
-    #6c5ce7
-  );
-  -webkit-background-clip:text;
-  background-clip:text;
-}
-
-.tag-隱藏::before{
-  content:"";
-  width:6px;
-  height:6px;
-  border-radius:50%;
-  background:linear-gradient(
-    135deg,
-    #00c2ff,
-    #38d16a,
-    #ffd93d,
-    #ff7a18,
-    #ff2d95,
-    #6c5ce7
-  );
-}
-/* ===== Render Integrated UI Addon ===== */
-
-.v28-scope #grid .postcard-photo img.landscape,
-.postcard-photo img.landscape{
-  object-position:left center !important;
-}
-
-.postcard-photo{
-  position:relative;
-}
-
-.postcard-hover-actions{
-  position:absolute;
-  inset:0;
-  opacity:0;
-  pointer-events:none;
-  transition:.18s ease;
-  z-index:5;
-}
-
-.postcard-card:hover .postcard-hover-actions{
-  opacity:1;
-  pointer-events:auto;
-}
-
-.float-btn{
-  position:absolute;
-  border:0;
-  border-radius:999px;
-  background:rgba(255,255,255,.88);
-  backdrop-filter:blur(8px);
-  color:#263322;
-  font-size:12px;
-  font-weight:800;
-  padding:6px 9px;
-  cursor:pointer;
-  box-shadow:0 6px 16px rgba(0,0,0,.10);
-}
-
-.map-btn{ left:8px; top:8px; }
-.like-btn{ right:8px; top:8px; color:#a65b66; }
-.more-btn{ right:8px; bottom:8px; }
-
-.postcard-more-menu{
-  position:absolute;
-  right:8px;
-  bottom:44px;
-  display:none;
-  width:120px;
-  padding:7px;
-  border-radius:14px;
-  background:rgba(255,255,255,.96);
-  box-shadow:0 10px 24px rgba(0,0,0,.14);
-  z-index:6;
-}
-
-.postcard-more-menu.show{ display:block; }
-
-.postcard-menu-action{
-  width:100%;
-  border:0;
-  background:transparent;
-  border-radius:10px;
-  padding:8px;
-  text-align:left;
-  cursor:pointer;
-  font-weight:750;
-}
-
-.postcard-menu-action:hover{ background:#f0f2e9; }
-.postcard-menu-action.danger{ color:#a85858; }
-
-.postcard-tag{
-  display:inline-flex !important;
-  align-items:center !important;
-  gap:6px !important;
-  padding:3px 10px !important;
-  border-radius:999px !important;
-  background:rgba(255,255,255,0.85) !important;
-  border:1px solid rgba(60,70,50,0.12) !important;
-  box-shadow:0 2px 6px rgba(0,0,0,0.04) !important;
-  font-size:12px !important;
-  font-weight:700 !important;
-  color:#2f2f2f !important;
-}
-
-.tag-花::before{
-  content:"✿";
-  color:#b98390;
-}
-
-.tag-蘑菇{
-  position:relative !important;
-  padding-left:18px !important;
-}
-
-.tag-蘑菇::before{
-  content:"";
-  position:absolute;
-  left:6px;
-  top:50%;
-  transform:translateY(-65%);
-  width:7.5px;
-  height:5.5px;
-  background:#8a6042;
-  border-radius:9px 9px 4px 4px;
-}
-
-.tag-蘑菇::after{
-  content:"";
-  position:absolute;
-  left:9px;
-  top:50%;
-  transform:translateY(-5%);
-  width:2.3px;
-  height:5.2px;
-  background:#8a6042;
-  border-radius:2px;
-}
-
-.tag-隱藏{
-  color:transparent !important;
-  background-image:linear-gradient(90deg,#00c2ff,#38d16a,#ffd93d,#ff7a18,#ff2d95,#6c5ce7) !important;
-  -webkit-background-clip:text !important;
-  background-clip:text !important;
-}
-
-.tag-隱藏::before{
-  content:"";
-  width:6px;
-  height:6px;
-  border-radius:50%;
-  background:linear-gradient(135deg,#00c2ff,#38d16a,#ffd93d,#ff7a18,#ff2d95,#6c5ce7);
-}
-
+/* Mobile */
 @media(max-width:600px){
-  .postcard-card{
+  .v28-scope #grid .postcard-card{
     padding:0 !important;
     background:transparent !important;
     box-shadow:none !important;
     border:none !important;
   }
 
-  .postcard-photo{
+  .v28-scope #grid .postcard-photo{
     border-radius:18px !important;
   }
 
-  .postcard-hover-actions{
+  .v28-scope .postcard-hover-actions{
     opacity:1;
     pointer-events:auto;
   }
 
-  .postcard-coords{
+  .v28-scope .postcard-coords{
     display:none !important;
   }
 
-  .postcard-title{
+  .v28-scope .postcard-title{
     font-size:11px !important;
     line-height:1.25 !important;
     letter-spacing:-.02em !important;
@@ -791,76 +357,8 @@ postcard-photo img.landscape{
     text-overflow:ellipsis !important;
   }
 
-  .postcard-tag{
+  .v28-scope .postcard-tag{
     padding:2px 7px !important;
     font-size:10px !important;
   }
-}
-/* ===== Fix: prevent floating buttons from being hijacked ===== */
-
-.postcard-photo .postcard-hover-actions{
-  position:absolute !important;
-  inset:0 !important;
-  z-index:10 !important;
-}
-
-.postcard-photo .float-btn{
-  width:auto !important;
-  height:auto !important;
-  min-width:auto !important;
-  min-height:auto !important;
-  max-width:none !important;
-  max-height:none !important;
-
-  display:inline-flex !important;
-  align-items:center !important;
-  justify-content:center !important;
-
-  border:0 !important;
-  border-radius:999px !important;
-  padding:6px 9px !important;
-
-  background:rgba(255,255,255,.88) !important;
-  box-shadow:0 6px 16px rgba(0,0,0,.10) !important;
-  transform:none !important;
-}
-
-.postcard-photo .map-btn{
-  left:8px !important;
-  top:8px !important;
-  right:auto !important;
-  bottom:auto !important;
-}
-
-.postcard-photo .like-btn{
-  right:8px !important;
-  top:8px !important;
-  left:auto !important;
-  bottom:auto !important;
-}
-
-.postcard-photo .more-btn{
-  right:8px !important;
-  bottom:8px !important;
-  left:auto !important;
-  top:auto !important;
-}
-/* minimal UI fix */
-.postcard-photo{position:relative;}
-.postcard-hover-actions{
- position:absolute; inset:0; opacity:0;
-}
-.postcard-card:hover .postcard-hover-actions{
- opacity:1;
-}
-.float-btn{
- position:absolute; background:#fff;
- border-radius:999px; padding:6px;
-}
-.map-btn{left:8px;top:8px;}
-.like-btn{right:8px;top:8px;}
-.edit-btn{left:8px;bottom:8px;}
-.more-btn{right:8px;bottom:8px;}
-.postcard-photo img.landscape{
- object-position:left center;
 }

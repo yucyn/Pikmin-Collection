@@ -117,28 +117,63 @@
      
 
 
-      <div class="toolbar">
-        <div class="search-box">
-          <input id="searchInput" class="search-input" type="search" placeholder="搜尋座標 / 國家">
-          <select id="categoryFilter" class="category-filter">
-            <option value="">全球</option>
-          </select>
-        </div>
+      <div class="toolbar pikmin-toolbar">
 
-        <div class="tag-filter-row">
-    <button class="tag-filter active" data-tag="">全部</button>
-    <button class="tag-filter" data-tag="花">花</button>
-    <button class="tag-filter" data-tag="蘑菇">蘑菇</button>
-    <button class="tag-filter" data-tag="隱藏">隱藏</button>
+  <!-- 搜尋 -->
+  <div class="pikmin-search search-box">
+    <input id="searchInput"
+           class="pikmin-search-input search-input"
+           type="search"
+           placeholder="搜尋座標 / 國家">
+
+    <span class="pikmin-leaf"></span>
+
+    <!-- 保留原本 select（但隱藏） -->
+    <select id="categoryFilter" class="category-filter" style="display:none;">
+      <option value="">全球</option>
+    </select>
   </div>
 
-        <div class="view-switch">
-          <button id="collectionViewBtn" class="view-button active" type="button">收藏冊</button>
-          <button id="mapViewBtn" class="view-button" type="button">地圖模式</button>
-          <button id="collageViewBtn" class="view-button" type="button">拼貼模式</button>
-          <button id="previewModeBtn" class="view-button" type="button">預覽模式</button>
-        </div>
-      </div>
+  <!-- 功能按鈕 -->
+  <div class="pikmin-toolbar-actions">
+
+    <!-- 模式 -->
+    <button id="collectionViewBtn"
+            class="pikmin-pill view-button is-active active">
+      收藏冊
+    </button>
+
+    <button id="mapViewBtn"
+            class="pikmin-pill view-button">
+      地圖
+    </button>
+
+    <!-- 分類（沿用原 class） -->
+    <button class="pikmin-pill tag-filter active is-active" data-tag="">
+      全部
+    </button>
+
+    <button class="pikmin-pill tag-filter" data-tag="花">
+      花
+    </button>
+
+    <button class="pikmin-pill tag-filter" data-tag="蘑菇">
+      蘑菇
+    </button>
+
+    <button class="pikmin-pill tag-filter" data-tag="隱藏">
+      隱藏
+    </button>
+
+    <!-- 預覽（沿用原 ID） -->
+    <button id="previewModeBtn"
+            class="pikmin-pill pikmin-preview-btn view-button">
+      預覽
+    </button>
+
+  </div>
+
+</div>
     </header>
 
     <section id="collectionView">

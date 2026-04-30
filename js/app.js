@@ -551,3 +551,17 @@ document.addEventListener("click", (e) => {
     sidebar.classList.remove("open");
   }
 });
+
+// ===== Mobile Upload Sheet =====
+document.addEventListener("DOMContentLoaded", () => {
+  const fab = document.getElementById("v28CreateFab");
+  const sidebar = document.querySelector(".sidebar");
+
+  if (!fab || !sidebar) return;
+
+  fab.addEventListener("click", (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    sidebar.classList.toggle("open");
+  });
+});

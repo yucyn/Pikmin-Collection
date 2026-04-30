@@ -487,3 +487,21 @@
     font-size:10px !important;
   }
 }
+/* Open Google Map 按鈕 */
+.open-map-btn,
+.map-open-btn,
+button[data-map] {
+  width: 100%;
+  border: none;
+  border-radius: 18px;
+  padding: 14px;
+
+  background: linear-gradient(135deg, #7fbf6a, #9cd67f);
+  color: white;
+
+  font-size: 16px;
+  font-weight: 900;
+
+  box-shadow: 0 6px 18px rgba(120, 180, 100, 0.3);
+  cursor: pointer;
+}

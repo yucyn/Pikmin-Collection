@@ -531,3 +531,23 @@ document.addEventListener("DOMContentLoaded", function () {
   });
 });
 
+// ===== Mobile App UI =====
+const fab = document.getElementById("v28CreateFab");
+const sidebar = document.querySelector(".sidebar");
+
+if (fab && sidebar) {
+  fab.addEventListener("click", () => {
+    sidebar.classList.toggle("open");
+  });
+}
+
+// 點背景關閉
+document.addEventListener("click", (e) => {
+  if (
+    sidebar.classList.contains("open") &&
+    !sidebar.contains(e.target) &&
+    !fab.contains(e.target)
+  ) {
+    sidebar.classList.remove("open");
+  }
+});

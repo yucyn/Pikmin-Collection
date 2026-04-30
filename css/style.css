@@ -545,8 +545,4 @@ body.preview-mode .delete-button { display: none; }
     margin-top: 28px !important;
   }
 }
-@media (max-width: 768px) {
-  * {
-    outline: 1px solid red;
-  }
-}
+

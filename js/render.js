@@ -225,17 +225,7 @@ function renderPostcards({
 
     info.appendChild(taxonomy);
 
-    const actions = createEl("div", "v30-card-actions");
-
-    const copyButton = createEl("button", "v30-text-action", "複製");
-    copyButton.type = "button";
-    copyButton.addEventListener("click", event => {
-      event.stopPropagation();
-      onCopyClick(item.locationText);
-    });
-    actions.appendChild(copyButton);
-
-    info.appendChild(actions);
+    
     card.appendChild(info);
 
     grid.appendChild(card);

@@ -1,8 +1,10 @@
-/* V30 Repair Clean Version */
+/* V30 Final Integrated Clean Version */
 
 /* Grid */
 .v28-scope #grid,
-.v28-scope #grid.grid{
+.v28-scope #grid.grid,
+#grid,
+#grid.grid{
   display:grid !important;
   grid-template-columns:repeat(4,minmax(0,1fr)) !important;
   gap:24px !important;
@@ -11,20 +13,25 @@
 
 @media(max-width:1200px){
   .v28-scope #grid,
-  .v28-scope #grid.grid{
+  .v28-scope #grid.grid,
+  #grid,
+  #grid.grid{
     grid-template-columns:repeat(3,minmax(0,1fr)) !important;
   }
 }
 
 @media(max-width:760px){
   .v28-scope #grid,
-  .v28-scope #grid.grid{
+  .v28-scope #grid.grid,
+  #grid,
+  #grid.grid{
     grid-template-columns:repeat(2,minmax(0,1fr)) !important;
   }
 }
 
 /* Card */
-.v28-scope #grid .postcard-card{
+.v28-scope #grid .postcard-card,
+#grid .postcard-card{
   display:block !important;
   background:#fff !important;
   border-radius:20px !important;
@@ -36,12 +43,14 @@
   break-inside:avoid !important;
 }
 
-.v28-scope .postcard-card::before{
+.v28-scope .postcard-card::before,
+.postcard-card::before{
   display:none !important;
 }
 
 /* Photo */
-.v28-scope #grid .postcard-photo{
+.v28-scope #grid .postcard-photo,
+#grid .postcard-photo{
   position:relative !important;
   width:100% !important;
   aspect-ratio:3/4 !important;
@@ -51,7 +60,8 @@
   cursor:pointer !important;
 }
 
-.v28-scope #grid .postcard-photo img{
+.v28-scope #grid .postcard-photo img,
+#grid .postcard-photo img{
   width:100% !important;
   height:100% !important;
   object-fit:cover !important;
@@ -60,12 +70,14 @@
   border-radius:16px !important;
 }
 
-.v28-scope #grid .postcard-photo img.landscape{
+.v28-scope #grid .postcard-photo img.landscape,
+#grid .postcard-photo img.landscape{
   object-position:left center !important;
 }
 
 /* Hover UI */
-.v28-scope .postcard-hover-actions{
+.v28-scope .postcard-hover-actions,
+.postcard-hover-actions{
   position:absolute !important;
   inset:0 !important;
   opacity:0;
@@ -74,12 +86,14 @@
   z-index:10 !important;
 }
 
-.v28-scope .postcard-card:hover .postcard-hover-actions{
+.v28-scope .postcard-card:hover .postcard-hover-actions,
+.postcard-card:hover .postcard-hover-actions{
   opacity:1;
   pointer-events:auto;
 }
 
-.v28-scope .postcard-photo .float-btn{
+.v28-scope .postcard-photo .float-btn,
+.postcard-photo .float-btn{
   position:absolute !important;
   width:auto !important;
   height:auto !important;
@@ -101,16 +115,19 @@
   font-size:12px !important;
   font-weight:800 !important;
   cursor:pointer !important;
+  line-height:1 !important;
 }
 
-.v28-scope .postcard-photo .map-btn{
+.v28-scope .postcard-photo .map-btn,
+.postcard-photo .map-btn{
   left:8px !important;
   top:8px !important;
   right:auto !important;
   bottom:auto !important;
 }
 
-.v28-scope .postcard-photo .like-btn{
+.v28-scope .postcard-photo .like-btn,
+.postcard-photo .like-btn{
   right:8px !important;
   top:8px !important;
   left:auto !important;
@@ -118,14 +135,16 @@
   color:#a65b66 !important;
 }
 
-.v28-scope .postcard-photo .edit-btn{
+.v28-scope .postcard-photo .edit-btn,
+.postcard-photo .edit-btn{
   left:8px !important;
   bottom:8px !important;
   right:auto !important;
   top:auto !important;
 }
 
-.v28-scope .postcard-photo .more-btn{
+.v28-scope .postcard-photo .more-btn,
+.postcard-photo .more-btn{
   right:8px !important;
   bottom:8px !important;
   left:auto !important;
@@ -133,7 +152,8 @@
 }
 
 /* Menu */
-.v28-scope .postcard-more-menu{
+.v28-scope .postcard-more-menu,
+.postcard-more-menu{
   position:absolute;
   right:8px;
   bottom:44px;
@@ -146,11 +166,13 @@
   z-index:20;
 }
 
-.v28-scope .postcard-more-menu.show{
+.v28-scope .postcard-more-menu.show,
+.postcard-more-menu.show{
   display:block;
 }
 
-.v28-scope .postcard-menu-action{
+.v28-scope .postcard-menu-action,
+.postcard-menu-action{
   width:100%;
   border:0;
   background:transparent;
@@ -161,16 +183,19 @@
   font-weight:750;
 }
 
-.v28-scope .postcard-menu-action:hover{
+.v28-scope .postcard-menu-action:hover,
+.postcard-menu-action:hover{
   background:#f0f2e9;
 }
 
-.v28-scope .postcard-menu-action.danger{
+.v28-scope .postcard-menu-action.danger,
+.postcard-menu-action.danger{
   color:#a85858;
 }
 
 /* Info */
-.v28-scope #grid .postcard-info{
+.v28-scope #grid .postcard-info,
+#grid .postcard-info{
   margin:10px 0 0 0 !important;
   padding:0 2px 4px !important;
   background:transparent !important;
@@ -178,21 +203,24 @@
   border:none !important;
 }
 
-.v28-scope .postcard-title-row{
+.v28-scope .postcard-title-row,
+.postcard-title-row{
   display:flex;
   justify-content:space-between;
   align-items:center;
   gap:10px;
 }
 
-.v28-scope .postcard-title{
+.v28-scope .postcard-title,
+.postcard-title{
   font-size:15px;
   font-weight:800;
   color:#2b2f27;
   letter-spacing:.01em;
 }
 
-.v28-scope .postcard-coords{
+.v28-scope .postcard-coords,
+.postcard-coords{
   margin-top:5px;
   font-size:13px;
   font-weight:600;
@@ -202,7 +230,8 @@
   user-select:text;
 }
 
-.v28-scope .postcard-taxonomy{
+.v28-scope .postcard-taxonomy,
+.postcard-taxonomy{
   display:flex;
   align-items:center;
   gap:6px;
@@ -210,7 +239,8 @@
   margin-top:5px;
 }
 
-.v28-scope .postcard-country{
+.v28-scope .postcard-country,
+.postcard-country{
   display:inline-flex;
   padding:0;
   margin:0;
@@ -221,7 +251,8 @@
 }
 
 /* Tag */
-.v28-scope .postcard-tag{
+.v28-scope .postcard-tag,
+.postcard-tag{
   display:inline-flex !important;
   align-items:center !important;
   gap:6px !important;
@@ -236,17 +267,20 @@
   cursor:pointer;
 }
 
-.v28-scope .tag-花::before{
+.v28-scope .tag-花::before,
+.tag-花::before{
   content:"✿";
   color:#b98390;
 }
 
-.v28-scope .tag-蘑菇{
+.v28-scope .tag-蘑菇,
+.tag-蘑菇{
   position:relative !important;
   padding-left:18px !important;
 }
 
-.v28-scope .tag-蘑菇::before{
+.v28-scope .tag-蘑菇::before,
+.tag-蘑菇::before{
   content:"";
   position:absolute;
   left:6px;
@@ -258,7 +292,8 @@
   border-radius:9px 9px 4px 4px;
 }
 
-.v28-scope .tag-蘑菇::after{
+.v28-scope .tag-蘑菇::after,
+.tag-蘑菇::after{
   content:"";
   position:absolute;
   left:9px;
@@ -270,14 +305,16 @@
   border-radius:2px;
 }
 
-.v28-scope .tag-隱藏{
+.v28-scope .tag-隱藏,
+.tag-隱藏{
   color:transparent !important;
   background-image:linear-gradient(90deg,#00c2ff,#38d16a,#ffd93d,#ff7a18,#ff2d95,#6c5ce7) !important;
   -webkit-background-clip:text !important;
   background-clip:text !important;
 }
 
-.v28-scope .tag-隱藏::before{
+.v28-scope .tag-隱藏::before,
+.tag-隱藏::before{
   content:"";
   width:6px;
   height:6px;
@@ -286,13 +323,15 @@
 }
 
 /* Card actions */
-.v28-scope .v30-card-actions{
+.v28-scope .v30-card-actions,
+.v30-card-actions{
   display:flex;
   gap:12px;
   margin-top:7px;
 }
 
-.v28-scope .v30-text-action{
+.v28-scope .v30-text-action,
+.v30-text-action{
   border:0;
   background:transparent;
   color:#3f7650;
@@ -326,29 +365,114 @@
   color:white;
 }
 
+/* Edit Modal */
+.edit-modal{
+  position:fixed;
+  inset:0;
+  z-index:9999;
+}
+
+.edit-modal.hidden{
+  display:none;
+}
+
+.edit-modal-backdrop{
+  position:absolute;
+  inset:0;
+  background:rgba(40,45,36,.48);
+  backdrop-filter:blur(8px);
+}
+
+.edit-modal-panel{
+  position:relative;
+  z-index:2;
+  width:min(420px,92vw);
+  margin:12vh auto 0;
+  background:#fffef8;
+  border-radius:24px;
+  padding:24px 28px 26px;
+  box-shadow:0 28px 80px rgba(0,0,0,.2);
+}
+
+.edit-modal-panel h2{
+  margin:0 0 18px;
+  font-size:24px;
+  color:#273020;
+}
+
+.edit-modal-panel label{
+  display:block;
+  margin:14px 0 6px;
+  font-size:14px;
+  font-weight:800;
+  color:#273020;
+}
+
+.edit-modal-panel input,
+.edit-modal-panel select{
+  width:100%;
+  border:1px solid rgba(0,0,0,.12);
+  border-radius:16px;
+  padding:13px 14px;
+  font-size:15px;
+  background:#fff;
+}
+
+.edit-modal-close{
+  position:absolute;
+  right:16px;
+  top:16px;
+  width:38px;
+  height:38px;
+  border:0;
+  border-radius:50%;
+  background:#efefe8;
+  cursor:pointer;
+  font-size:18px;
+  font-weight:900;
+}
+
+.edit-save-btn{
+  width:100%;
+  margin-top:20px;
+  border:0;
+  border-radius:18px;
+  padding:14px;
+  background:#76a966;
+  color:#fff;
+  font-size:16px;
+  font-weight:900;
+  cursor:pointer;
+}
+
 /* Mobile */
 @media(max-width:600px){
-  .v28-scope #grid .postcard-card{
+  .v28-scope #grid .postcard-card,
+  #grid .postcard-card{
     padding:0 !important;
     background:transparent !important;
     box-shadow:none !important;
     border:none !important;
   }
 
-  .v28-scope #grid .postcard-photo{
+  .v28-scope #grid .postcard-photo,
+  #grid .postcard-photo{
     border-radius:18px !important;
   }
 
-  .v28-scope .postcard-hover-actions{
+  .v28-scope .postcard-hover-actions,
+  .postcard-hover-actions{
     opacity:1;
     pointer-events:auto;
   }
 
-  .v28-scope .postcard-coords{
+  .v28-scope .postcard-coords,
+  .postcard-coords{
     display:none !important;
   }
 
-  .v28-scope .postcard-title{
+  .v28-scope .postcard-title,
+  .postcard-title{
     font-size:11px !important;
     line-height:1.25 !important;
     letter-spacing:-.02em !important;
@@ -357,7 +481,8 @@
     text-overflow:ellipsis !important;
   }
 
-  .v28-scope .postcard-tag{
+  .v28-scope .postcard-tag,
+  .postcard-tag{
     padding:2px 7px !important;
     font-size:10px !important;
   }

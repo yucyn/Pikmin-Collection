@@ -868,3 +868,12 @@
     grid-template-columns: repeat(2, 1fr) !important;
   }
 }
+#mobileUploadFab {
+  display: none;
+}
+
+@media (max-width: 768px) {
+  #mobileUploadFab {
+    display: flex !important;
+  }
+}

@@ -1,380 +1,712 @@
-<!DOCTYPE html>
-<html lang="zh-Hant">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Pikmin Collection</title>
-  <link rel="stylesheet" href="./css/style.css" />
-  <link rel="stylesheet" href="./css/collage.css" />
-
-  <!-- V28 Integrated UI Layer -->
-  <link rel="stylesheet" href="./css/v28-theme.css" />
-  <link rel="stylesheet" href="./css/v28-gallery.css" />
-  <link rel="stylesheet" href="./css/v28-modal.css" />
-
-  <link rel="stylesheet" href="./css/v30-final.css">
-  
-  <link rel="stylesheet" href="./css/tag-system.css">
-
-  <link rel="stylesheet" href="./css/toolbar.css">
-  
-
-  <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-app-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-auth-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore-compat.js"></script>
-
-</head>
-
-
-
-<body>
-  <aside class="sidebar">
-    <div class="brand">
-      <div class="brand-icon">🌱</div>
-      <div>
-        <h1>Pikmin Collection</h1>
-        <p>收藏你的明信片座標｜手機圖片自動壓縮｜座標自動判定國家</p>
-      </div>
-    </div>
-
-    <div class="upload-tabs">
-      <button id="modeFileBtn" class="tab-button active" type="button">選擇圖片</button>
-      <button id="modeDragBtn" class="tab-button" type="button">拖曳圖片</button>
-      <button id="modePasteBtn" class="tab-button" type="button">貼上圖片</button>
-    </div>
-
-    <section id="filePanel" class="upload-panel">
-      <button id="selectFileBtn" class="upload-box" type="button">🍃 點擊選擇圖片</button>
-      <input id="fileInput" type="file" accept="image/*" hidden />
-    </section>
-
-    <section id="dragPanel" class="upload-panel hidden">
-      <div id="dropZone" class="upload-box">
-        <strong>把圖片拖曳到這裡</strong>
-        <small>支援資料夾圖片、網頁圖片</small>
-      </div>
-    </section>
-
-    <section id="pastePanel" class="upload-panel hidden">
-      <div id="pasteZone" class="upload-box" tabindex="0">
-        <strong>點擊這裡貼上圖片</strong>
-        <small>支援 LINE / 網頁圖片</small>
-      </div>
-    </section>
-
-    <p id="uploadMessage" class="message"></p>
-
-    <div id="previewBox" class="preview-box hidden">
-      <img id="previewImage" alt="preview">
-      <button id="clearImageBtn" class="secondary-button" type="button">清除圖片</button>
-    </div>
-
-    <input id="locationInput" class="input" placeholder="輸入座標，例如：43.587789, 142.465553" />
-    <input id="categoryInput" class="input" placeholder="分類國家會依座標自動判定，也可手動修改" list="categorySuggestions" />
-
-     <select id="tagInput" class="input">
-  <option value="">選擇標籤</option>
-  <option value="花">花</option>
-  <option value="蘑菇">蘑菇</option>
-  <option value="隱藏">隱藏</option>
-</select>
-
-    <datalist id="categorySuggestions">
-      <option value="全球"></option>
-      <option value="台灣"></option>
-      <option value="日本"></option>
-      <option value="香港"></option>
-      <option value="埃及"></option>
-      <option value="希臘"></option>
-      <option value="哥倫比亞"></option>
-      <option value="紐西蘭"></option>
-      <option value="阿根廷"></option>
-      <option value="杜拜"></option>
-      <option value="布拉格"></option>
-      <option value="斯洛維尼亞"></option>
-      <option value="英國"></option>
-      <option value="義大利"></option>
-      <option value="冰島"></option>
-      <option value="德國"></option>
-      <option value="土耳其"></option>
-      <option value="美國"></option>
-      <option value="韓國"></option>
-    </datalist>
-
-    <button id="addCardBtn" class="primary-button" type="button">新增明信片</button>
-  </aside>
-
-  
-  <main class="main v28-scope">
-    <div id="previewModeBanner" class="preview-banner hidden">
-      👀 預覽模式：可搜尋、篩選、點愛心、複製座標、查看地圖；不能刪除卡片。
-    </div>
-
-   <div class="control-panel">
-
-  <!-- ⭐ Top bar -->
-  <div class="top-bar">
-
-    <!-- 搜尋 -->
-    <div class="search-box">
-      <input id="searchInput"
-             class="search-input"
-             type="search"
-             placeholder="搜尋座標 / 國家">
-      <div class="search-leaf"></div>
-    </div>
-
-    <!-- 按鈕列 -->
-    <div class="filter-row">
-
-      <button id="collectionViewBtn" class="pill-btn active">收藏冊</button>
-      <button id="mapViewBtn" class="pill-btn">地圖</button>
-      <button id="collageViewBtn" class="pill-btn">拼貼</button>
-
-      <button class="pill-btn active" data-tag="">全部</button>
-      <button class="pill-btn" data-tag="花">花</button>
-      <button class="pill-btn" data-tag="蘑菇">蘑菇</button>
-      <button class="pill-btn" data-tag="隱藏">隱藏</button>
-
-      <button id="previewModeBtn" class="pill-btn preview-btn">
-        預覽模式
-      </button>
-
-    </div>
-
-  </div>
-
-</div>
-
-
-      <div class="toolbar pikmin-toolbar">
-
-  <!-- 搜尋 -->
-  <div class="pikmin-search search-box">
-    <input id="searchInput"
-           class="pikmin-search-input search-input"
-           type="search"
-           placeholder="搜尋座標 / 國家">
-
-    <span class="pikmin-leaf"></span>
-
-    <!-- 保留原本 select（但隱藏） -->
-    <select id="categoryFilter" class="category-filter" style="display:none;">
-      <option value="">全球</option>
-    </select>
-  </div>
-
-  <!-- 功能按鈕 -->
-  <div class="pikmin-toolbar-actions">
-
-    <!-- 模式 -->
-    <button id="collectionViewBtn"
-            class="pikmin-pill view-button is-active active">
-      收藏冊
-    </button>
-
-    <button id="mapViewBtn"
-            class="pikmin-pill view-button">
-      地圖
-      </button>
-    <button id="collageViewBtn" class="pikmin-pill view-button">
-    拼貼
-      
-    </button>
-
-    <!-- 分類（沿用原 class） -->
-    <button class="pikmin-pill tag-filter active is-active" data-tag="">
-      全部
-    </button>
-
-    <button class="pikmin-pill tag-filter" data-tag="花">
-      花
-    </button>
-
-    <button class="pikmin-pill tag-filter" data-tag="蘑菇">
-      蘑菇
-    </button>
-
-    <button class="pikmin-pill tag-filter" data-tag="隱藏">
-      隱藏
-    </button>
-
-    <!-- 預覽（沿用原 ID） -->
-    <button id="previewModeBtn"
-            class="pikmin-pill pikmin-preview-btn view-button">
-      預覽
-    </button>
-
-  </div>
-
-</div>
-    </header>
-
-    <section id="collectionView">
-      <div id="emptyState" class="empty-state hidden">
-        <div>🌼</div>
-        <strong>還沒有明信片</strong>
-        <p>先上傳圖片並輸入座標，就能建立第一張收藏卡。</p>
-      </div>
-      <div id="grid" class="grid"></div>
-    </section>
-
-    <section id="mapView" class="map-view hidden">
-      <div id="mapList" class="map-list"></div>
-      <div class="map-frame-wrap">
-        <iframe id="mapFrame" class="map-frame" loading="lazy"></iframe>
-        <div id="mapEmpty" class="map-empty">選擇一張明信片查看地圖</div>
-      </div>
-    </section>
-
-    <section id="collageView" class="collage-view hidden">
-      <div class="collage-shell">
-        <aside class="collage-side">
-          <div class="collage-side-head">
-            <h3>建立拼貼</h3>
-            <p>從已上傳明信片加入圖片，也可以加文字與改背景。</p>
-          </div>
-
-          <div class="collage-panel">
-            <h4>明信片圖片庫</h4>
-            <div id="collageLibraryGrid" class="collage-library-grid"></div>
-          </div>
-
-          <div class="collage-panel">
-            <h4>背景</h4>
-            <div class="color-row">
-              <button class="bg-swatch" data-bg="#fffef8" style="background:#fffef8"></button>
-              <button class="bg-swatch" data-bg="#f8f1d6" style="background:#f8f1d6"></button>
-              <button class="bg-swatch" data-bg="#eaf4ff" style="background:#eaf4ff"></button>
-              <button class="bg-swatch" data-bg="#ffeef3" style="background:#ffeef3"></button>
-              <button class="bg-swatch" data-bg="#eaf8e5" style="background:#eaf8e5"></button>
-            </div>
-            <label class="inline-control">
-              自訂
-              <input id="collageBgColor" type="color" value="#fffef8">
-            </label>
-          </div>
-
-          <div class="collage-panel">
-            <h4>新增元素</h4>
-            <button id="collageAddTextBtn" class="collage-action" type="button">加文字</button>
-            <button id="collageAddBrushBtn" class="collage-action" type="button">畫筆模式</button>
-          </div>
-        </aside>
-
-        <section class="collage-editor">
-          <div class="collage-topbar">
-            <button id="collageBackBtn" class="collage-icon-btn" type="button">← 收藏冊</button>
-            <div class="collage-history">
-              <button id="collageUndoBtn" class="collage-icon-btn" type="button">↶ 上一步</button>
-              <button id="collageRedoBtn" class="collage-icon-btn" type="button">↷ 下一步</button>
-            </div>
-            <div class="collage-export-actions">
-              <button id="collageClearBtn" class="collage-icon-btn" type="button">清空</button>
-              <button id="collageExportBtn" class="collage-icon-btn primary" type="button">匯出 PNG</button>
-            </div>
-          </div>
-
-          <div class="collage-canvas-wrap">
-            <div id="collageCanvas" class="collage-canvas">
-              <canvas id="collageBrushCanvas" class="collage-brush-canvas"></canvas>
-              <div class="collage-empty-hint">從左側圖片庫點「＋」開始拼貼</div>
-            </div>
-          </div>
-
-          <div id="collageFloatingToolbar" class="collage-floating-toolbar hidden">
-            <button id="collageDuplicateBtn" type="button" title="複製">⧉</button>
-            <button id="collageDeleteBtn" type="button" title="刪除">🗑</button>
-            <button id="collageCropBtn" type="button" title="裁切比例">✂</button>
-            <button id="collageFrontBtn" type="button" title="移到上層">⬆</button>
-            <button id="collageBackLayerBtn" type="button" title="移到下層">⬇</button>
-          </div>
-
-          <div class="collage-bottom-tools">
-            <button id="collageTextToolBtn" type="button">A 文字</button>
-            <button id="collageBrushToolBtn" type="button">〰 畫筆</button>
-            <button id="collageImageToolBtn" type="button">▧ 圖片</button>
-          </div>
-        </section>
-      </div>
-    </section>
-
-  </main>
-
-  <!-- V28 Floating Create Menu -->
-  <button id="v28CreateFab" class="v28-create-fab" type="button" aria-label="建立">＋</button>
-  <button id="mobileUploadFab" class="mobile-upload-fab" type="button" aria-label="上傳明信片">＋</button>
-
-  <div id="v28CreateMenu" class="v28-create-menu" aria-hidden="true" style="display:none;">
-    <button class="v28-create-item" type="button" data-v28-action="upload">
-      <span>📷</span>
-      <div>
-        <strong>上傳明信片</strong>
-        <small>沿用左側圖片上傳流程</small>
-      </div>
-    </button>
-
-    <button class="v28-create-item" type="button" data-v28-action="collage">
-      <span>🧩</span>
-      <div>
-        <strong>加入拼貼</strong>
-        <small>切換到拼貼模式</small>
-      </div>
-    </button>
-
-    <button class="v28-create-item" type="button" data-v28-action="coords">
-      <span>📍</span>
-      <div>
-        <strong>輸入座標</strong>
-        <small>快速建立座標卡片</small>
-      </div>
-    </button>
-  </div>
-
-  <section id="v28CoordDialog" class="v28-coord-dialog" aria-hidden="true">
-    <div class="v28-coord-card">
-      <button id="v28CoordClose" class="v28-coord-close" type="button">×</button>
-      <h3>📍 新增座標</h3>
-      <p>會自動填入原本左側表單，仍沿用你的新增明信片流程。</p>
-
-      <label>座標</label>
-      <input id="v28CoordValue" placeholder="例如：43.592002, 142.463733">
-
-      <label>國家 / 分類</label>
-      <input id="v28CoordCountry" placeholder="例如：日本">
-
-      <button id="v28CoordApply" class="v28-coord-submit" type="button">填入原表單</button>
-    </div>
-  </section>
-
-  <div id="cardModal" class="modal hidden">
-    <div id="cardModalBackdrop" class="modal-backdrop"></div>
-    <article class="modal-panel">
-      <button id="closeCardModalBtn" class="modal-close" type="button">✕</button>
-      <img id="modalCardImage" alt="postcard">
-      <div class="modal-content">
-        <h3 id="modalCardTitle"></h3>
-        <p id="modalCardLocation"></p>
-        
-       <a id="modalMapLink" class="btn-primary" target="_blank">
-  Open Google Map
-</a>
-        <button id="modalShareCardBtn" class="share-button" type="button">分享這張明信片</button>
-      </div>
-    </article>
-  </div>
-
-  <script src="./js/firebaseConfig.js"></script>
-  <script src="./js/storage.js"></script>
-  <script src="./js/locationParser.js"></script>
-  <script src="./js/imageUpload.js"></script>
-  <script src="./js/render.js"></script>
-  <script src="./js/collageEngine.js"></script>
-
-  <!-- V28 Integrated UI Layer -->
-  <script src="./js/v28/v28-plus-menu.js"></script>
-  <script src="./js/v28/v28-ui-bridge.js"></script>
-
-  <script src="./js/app.js"></script>
-</body>
-</html>
+/* V30 Final Integrated Clean Version */
+
+/* Grid */
+.v28-scope #grid,
+.v28-scope #grid.grid,
+#grid,
+#grid.grid{
+  display:grid !important;
+  grid-template-columns:repeat(4,minmax(0,1fr)) !important;
+  gap:24px !important;
+  column-count:unset !important;
+}
+
+@media(max-width:1200px){
+  .v28-scope #grid,
+  .v28-scope #grid.grid,
+  #grid,
+  #grid.grid{
+    grid-template-columns:repeat(3,minmax(0,1fr)) !important;
+  }
+}
+
+@media(max-width:760px){
+  .v28-scope #grid,
+  .v28-scope #grid.grid,
+  #grid,
+  #grid.grid{
+    grid-template-columns:repeat(2,minmax(0,1fr)) !important;
+  }
+}
+
+/* Card */
+.v28-scope #grid .postcard-card,
+#grid .postcard-card{
+  display:block !important;
+  background:#fff !important;
+  border-radius:20px !important;
+  padding:12px !important;
+  box-shadow:0 8px 22px rgba(0,0,0,.08) !important;
+  border:1px solid rgba(0,0,0,.04) !important;
+  margin:0 !important;
+  max-width:none !important;
+  break-inside:avoid !important;
+}
+
+.v28-scope .postcard-card::before,
+.postcard-card::before{
+  display:none !important;
+}
+
+/* Photo */
+.v28-scope #grid .postcard-photo,
+#grid .postcard-photo{
+  position:relative !important;
+  width:100% !important;
+  aspect-ratio:3/4 !important;
+  border-radius:16px !important;
+  overflow:hidden !important;
+  background:#f3f4ef !important;
+  cursor:pointer !important;
+}
+
+.v28-scope #grid .postcard-photo img,
+#grid .postcard-photo img{
+  width:100% !important;
+  height:100% !important;
+  object-fit:cover !important;
+  object-position:center center !important;
+  display:block !important;
+  border-radius:16px !important;
+}
+
+.v28-scope #grid .postcard-photo img.landscape,
+#grid .postcard-photo img.landscape{
+  object-position:left center !important;
+}
+
+/* Hover UI */
+.v28-scope .postcard-hover-actions,
+.postcard-hover-actions{
+  position:absolute !important;
+  inset:0 !important;
+  opacity:0;
+  pointer-events:none;
+  transition:.18s ease;
+  z-index:10 !important;
+}
+
+.v28-scope .postcard-card:hover .postcard-hover-actions,
+.postcard-card:hover .postcard-hover-actions{
+  opacity:1;
+  pointer-events:auto;
+}
+
+.v28-scope .postcard-photo .float-btn,
+.postcard-photo .float-btn{
+  position:absolute !important;
+  width:auto !important;
+  height:auto !important;
+  min-width:auto !important;
+  min-height:auto !important;
+  max-width:none !important;
+  max-height:none !important;
+  display:inline-flex !important;
+  align-items:center !important;
+  justify-content:center !important;
+  border:0 !important;
+  border-radius:999px !important;
+  padding:6px 9px !important;
+  background:rgba(255,255,255,.88) !important;
+  box-shadow:0 6px 16px rgba(0,0,0,.10) !important;
+  backdrop-filter:blur(8px);
+  transform:none !important;
+  color:#263322 !important;
+  font-size:12px !important;
+  font-weight:800 !important;
+  cursor:pointer !important;
+  line-height:1 !important;
+}
+
+.v28-scope .postcard-photo .map-btn,
+.postcard-photo .map-btn{
+  left:8px !important;
+  top:8px !important;
+  right:auto !important;
+  bottom:auto !important;
+}
+
+.v28-scope .postcard-photo .like-btn,
+.postcard-photo .like-btn{
+  right:8px !important;
+  top:8px !important;
+  left:auto !important;
+  bottom:auto !important;
+  color:#a65b66 !important;
+}
+
+.v28-scope .postcard-photo .edit-btn,
+.postcard-photo .edit-btn{
+  left:8px !important;
+  bottom:8px !important;
+  right:auto !important;
+  top:auto !important;
+}
+
+.v28-scope .postcard-photo .more-btn,
+.postcard-photo .more-btn{
+  right:8px !important;
+  bottom:8px !important;
+  left:auto !important;
+  top:auto !important;
+}
+
+/* Menu */
+.v28-scope .postcard-more-menu,
+.postcard-more-menu{
+  position:absolute;
+  right:8px;
+  bottom:44px;
+  display:none;
+  width:120px;
+  padding:7px;
+  border-radius:14px;
+  background:rgba(255,255,255,.96);
+  box-shadow:0 10px 24px rgba(0,0,0,.14);
+  z-index:20;
+}
+
+.v28-scope .postcard-more-menu.show,
+.postcard-more-menu.show{
+  display:block;
+}
+
+.v28-scope .postcard-menu-action,
+.postcard-menu-action{
+  width:100%;
+  border:0;
+  background:transparent;
+  border-radius:10px;
+  padding:8px;
+  text-align:left;
+  cursor:pointer;
+  font-weight:750;
+}
+
+.v28-scope .postcard-menu-action:hover,
+.postcard-menu-action:hover{
+  background:#f0f2e9;
+}
+
+.v28-scope .postcard-menu-action.danger,
+.postcard-menu-action.danger{
+  color:#a85858;
+}
+
+/* Info */
+.v28-scope #grid .postcard-info,
+#grid .postcard-info{
+  margin:10px 0 0 0 !important;
+  padding:0 2px 4px !important;
+  background:transparent !important;
+  box-shadow:none !important;
+  border:none !important;
+}
+
+.v28-scope .postcard-title-row,
+.postcard-title-row{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:10px;
+}
+
+.v28-scope .postcard-title,
+.postcard-title{
+  font-size:15px;
+  font-weight:800;
+  color:#2b2f27;
+  letter-spacing:.01em;
+}
+
+.v28-scope .postcard-coords,
+.postcard-coords{
+  margin-top:5px;
+  font-size:13px;
+  font-weight:600;
+  color:#33382f;
+  letter-spacing:.1px;
+  cursor:pointer;
+  user-select:text;
+}
+
+.v28-scope .postcard-taxonomy,
+.postcard-taxonomy{
+  display:flex;
+  align-items:center;
+  gap:6px;
+  flex-wrap:wrap;
+  margin-top:5px;
+}
+
+.v28-scope .postcard-country,
+.postcard-country{
+  display:inline-flex;
+  padding:0;
+  margin:0;
+  background:transparent;
+  color:#666f60;
+  font-size:13px;
+  font-weight:650;
+}
+
+/* Tag */
+.v28-scope .postcard-tag,
+.postcard-tag{
+  display:inline-flex !important;
+  align-items:center !important;
+  gap:6px !important;
+  padding:3px 10px !important;
+  border-radius:999px !important;
+  background:rgba(255,255,255,0.85) !important;
+  border:1px solid rgba(60,70,50,0.12) !important;
+  box-shadow:0 2px 6px rgba(0,0,0,0.04) !important;
+  font-size:12px !important;
+  font-weight:700 !important;
+  color:#2f2f2f !important;
+  cursor:pointer;
+}
+
+.v28-scope .tag-花::before,
+.tag-花::before{
+  content:"✿";
+  color:#b98390;
+}
+
+.v28-scope .tag-蘑菇,
+.tag-蘑菇{
+  position:relative !important;
+  padding-left:18px !important;
+}
+
+.v28-scope .tag-蘑菇::before,
+.tag-蘑菇::before{
+  content:"";
+  position:absolute;
+  left:6px;
+  top:50%;
+  transform:translateY(-65%);
+  width:7.5px;
+  height:5.5px;
+  background:#8a6042;
+  border-radius:9px 9px 4px 4px;
+}
+
+.v28-scope .tag-蘑菇::after,
+.tag-蘑菇::after{
+  content:"";
+  position:absolute;
+  left:9px;
+  top:50%;
+  transform:translateY(-5%);
+  width:2.3px;
+  height:5.2px;
+  background:#8a6042;
+  border-radius:2px;
+}
+
+.v28-scope .tag-隱藏,
+.tag-隱藏{
+  color:transparent !important;
+  background-image:linear-gradient(90deg,#00c2ff,#38d16a,#ffd93d,#ff7a18,#ff2d95,#6c5ce7) !important;
+  -webkit-background-clip:text !important;
+  background-clip:text !important;
+}
+
+.v28-scope .tag-隱藏::before,
+.tag-隱藏::before{
+  content:"";
+  width:6px;
+  height:6px;
+  border-radius:50%;
+  background:linear-gradient(135deg,#00c2ff,#38d16a,#ffd93d,#ff7a18,#ff2d95,#6c5ce7);
+}
+
+/* Card actions */
+.v28-scope .v30-card-actions,
+.v30-card-actions{
+  display:flex;
+  gap:12px;
+  margin-top:7px;
+}
+
+.v28-scope .v30-text-action,
+.v30-text-action{
+  border:0;
+  background:transparent;
+  color:#3f7650;
+  padding:0;
+  font-size:13px;
+  font-weight:800;
+  cursor:pointer;
+}
+
+/* Tag filter */
+.tag-filter-row{
+  display:flex;
+  gap:8px;
+  margin-top:10px;
+  flex-wrap:wrap;
+}
+
+.tag-filter{
+  border:0;
+  border-radius:999px;
+  padding:7px 13px;
+  background:#f1f2ea;
+  color:#4f584b;
+  font-weight:750;
+  cursor:pointer;
+  transition:.16s ease;
+}
+
+.tag-filter.active{
+  background:#6aa85e;
+  color:white;
+}
+
+/* Edit Modal */
+.edit-modal{
+  position:fixed;
+  inset:0;
+  z-index:9999;
+}
+
+.edit-modal.hidden{
+  display:none;
+}
+
+.edit-modal-backdrop{
+  position:absolute;
+  inset:0;
+  background:rgba(40,45,36,.48);
+  backdrop-filter:blur(8px);
+}
+
+.edit-modal-panel{
+  position:relative;
+  z-index:2;
+  width:min(420px,92vw);
+  margin:12vh auto 0;
+  background:#fffef8;
+  border-radius:24px;
+  padding:24px 28px 26px;
+  box-shadow:0 28px 80px rgba(0,0,0,.2);
+}
+
+.edit-modal-panel h2{
+  margin:0 0 18px;
+  font-size:24px;
+  color:#273020;
+}
+
+.edit-modal-panel label{
+  display:block;
+  margin:14px 0 6px;
+  font-size:14px;
+  font-weight:800;
+  color:#273020;
+}
+
+.edit-modal-panel input,
+.edit-modal-panel select{
+  width:100%;
+  border:1px solid rgba(0,0,0,.12);
+  border-radius:16px;
+  padding:13px 14px;
+  font-size:15px;
+  background:#fff;
+}
+
+.edit-modal-close{
+  position:absolute;
+  right:16px;
+  top:16px;
+  width:38px;
+  height:38px;
+  border:0;
+  border-radius:50%;
+  background:#efefe8;
+  cursor:pointer;
+  font-size:18px;
+  font-weight:900;
+}
+
+.edit-save-btn{
+  width:100%;
+  margin-top:20px;
+  border:0;
+  border-radius:18px;
+  padding:14px;
+  background:#76a966;
+  color:#fff;
+  font-size:16px;
+  font-weight:900;
+  cursor:pointer;
+}
+
+/* Mobile */
+@media(max-width:600px){
+  .v28-scope #grid .postcard-card,
+  #grid .postcard-card{
+    padding:0 !important;
+    background:transparent !important;
+    box-shadow:none !important;
+    border:none !important;
+  }
+
+  .v28-scope #grid .postcard-photo,
+  #grid .postcard-photo{
+    border-radius:18px !important;
+  }
+
+  .v28-scope .postcard-hover-actions,
+  .postcard-hover-actions{
+    opacity:1;
+    pointer-events:auto;
+  }
+
+  .v28-scope .postcard-coords,
+  .postcard-coords{
+    display:none !important;
+  }
+
+  .v28-scope .postcard-title,
+  .postcard-title{
+    font-size:11px !important;
+    line-height:1.25 !important;
+    letter-spacing:-.02em !important;
+    white-space:nowrap !important;
+    overflow:hidden !important;
+    text-overflow:ellipsis !important;
+  }
+
+  .v28-scope .postcard-tag,
+  .postcard-tag{
+    padding:2px 7px !important;
+    font-size:10px !important;
+  }
+}
+
+/* 強制覆蓋 Modal 裡的 Open Google Map 按鈕 */
+#cardModal #modalMapLink,
+#modalMapLink.btn-primary,
+#modalMapLink {
+  display: block !important;
+  width: 100% !important;
+  text-align: center !important;
+  text-decoration: none !important;
+
+  border: none !important;
+  border-radius: 18px !important;
+  padding: 14px !important;
+
+  background: linear-gradient(135deg, #7fbf6a, #9cd67f) !important;
+  color: #ffffff !important;
+
+  font-size: 16px !important;
+  font-weight: 900 !important;
+
+  box-shadow: 0 6px 18px rgba(120, 180, 100, 0.3) !important;
+}
+/* 手機版：修正蘑菇 icon 與文字重疊 */
+@media (max-width:600px){
+  .v28-scope .tag-蘑菇,
+  .tag-蘑菇{
+    padding-left:22px !important;
+    padding-right:8px !important;
+  }
+
+  .v28-scope .tag-蘑菇::before,
+  .tag-蘑菇::before{
+    left:7px !important;
+    width:8px !important;
+    height:5.8px !important;
+  }
+
+  .v28-scope .tag-蘑菇::after,
+  .tag-蘑菇::after{
+    left:10.2px !important;
+    height:5.5px !important;
+  }
+}
+
+/* ===== Scroll Top FAB Final ===== */
+#v28CreateFab.scroll-top-fab,
+#scrollTopBtn,
+.v28-create-fab.scroll-top-fab{
+  position:fixed !important;
+  right:20px !important;
+  bottom:20px !important;
+
+  width:58px !important;
+  height:58px !important;
+  min-width:58px !important;
+  min-height:58px !important;
+
+  border:none !important;
+  border-radius:50% !important;
+  padding:0 !important;
+
+  display:flex !important;
+  align-items:center !important;
+  justify-content:center !important;
+
+  background:linear-gradient(135deg,#7fbf6a,#9cd67f) !important;
+  color:#fff !important;
+
+  box-shadow:0 10px 24px rgba(120,180,100,.35) !important;
+  cursor:pointer !important;
+  z-index:9999 !important;
+
+  font-size:0 !important;
+  line-height:1 !important;
+  appearance:none !important;
+  -webkit-appearance:none !important;
+
+  transition:transform .22s ease, box-shadow .22s ease, opacity .22s ease !important;
+}
+
+#v28CreateFab.scroll-top-fab svg,
+#scrollTopBtn svg,
+.v28-create-fab.scroll-top-fab svg{
+  width:26px !important;
+  height:26px !important;
+  display:block !important;
+  color:#fff !important;
+  background:transparent !important;
+  box-shadow:none !important;
+  pointer-events:none !important;
+}
+
+#v28CreateFab.scroll-top-fab:hover,
+#scrollTopBtn:hover{
+  transform:translateY(-3px) !important;
+  box-shadow:0 14px 30px rgba(120,180,100,.42) !important;
+}
+
+#v28CreateFab.scroll-top-fab:active,
+#scrollTopBtn:active{
+  transform:scale(.92) !important;
+}
+
+#v28CreateMenu{
+  display:none !important;
+}
+
+
+/* ===== Mobile App Upload Sheet Final ===== */
+@media (max-width: 768px) {
+  #v28CreateFab,
+  #v28CreateMenu {
+    display: none !important;
+  }
+
+  .mobile-upload-fab,
+  #mobileUploadFab {
+    position: fixed !important;
+    right: 22px !important;
+    bottom: 86px !important;
+    width: 64px !important;
+    height: 64px !important;
+    border-radius: 999px !important;
+    border: none !important;
+    display: grid !important;
+    place-items: center !important;
+    background: linear-gradient(135deg, #78c96b, #9bd66b) !important;
+    color: white !important;
+    font-size: 34px !important;
+    font-weight: 800 !important;
+    line-height: 1 !important;
+    z-index: 6000 !important;
+    box-shadow: 0 14px 32px rgba(47, 116, 56, 0.35) !important;
+    cursor: pointer !important;
+  }
+
+  .sidebar {
+    position: fixed !important;
+    left: 0 !important;
+    right: 0 !important;
+    bottom: -100% !important;
+    width: 100% !important;
+    height: 78vh !important;
+    padding: 12px !important;
+    background: #fffdf2 !important;
+    border-radius: 24px 24px 0 0 !important;
+    z-index: 5000 !important;
+    overflow-y: auto !important;
+    transition: bottom 0.35s ease !important;
+    box-shadow: 0 -18px 40px rgba(31, 48, 28, 0.18) !important;
+  }
+
+  .sidebar.open {
+    bottom: 0 !important;
+  }
+
+  body {
+    flex-direction: column !important;
+  }
+
+  .main {
+    padding: 16px !important;
+  }
+
+  .main-header {
+    margin-bottom: 12px !important;
+  }
+
+  .brand {
+    gap: 8px !important;
+    margin-bottom: 10px !important;
+  }
+
+  .brand h1 {
+    font-size: 18px !important;
+  }
+
+  .brand p {
+    font-size: 12px !important;
+    line-height: 1.35 !important;
+  }
+
+  .upload-tabs {
+    gap: 6px !important;
+    margin-bottom: 8px !important;
+  }
+
+  .tab-button {
+    padding: 6px 4px !important;
+    font-size: 12px !important;
+  }
+
+  .upload-box {
+    min-height: 80px !important;
+    padding: 8px !important;
+    font-size: 13px !important;
+  }
+
+  .upload-box strong {
+    font-size: 14px !important;
+  }
+
+  .upload-box small {
+    font-size: 11px !important;
+  }
+
+  .input {
+    padding: 9px !important;
+    font-size: 13px !important;
+    margin: 6px 0 !important;
+  }
+
+  .primary-button {
+    padding: 10px !important;
+    font-size: 14px !important;
+  }
+}
+
+@media (min-width: 769px) {
+  #mobileUploadFab {
+    display: none !important;
+  }
+}

@@ -552,16 +552,24 @@ document.addEventListener("click", (e) => {
   }
 });
 
-// ===== Mobile Upload Sheet =====
-document.addEventListener("DOMContentLoaded", () => {
-  const fab = document.getElementById("v28CreateFab");
-  const sidebar = document.querySelector(".sidebar");
+// ===== Mobile Upload Sheet Toggle =====
+(function () {
+  function initMobileUploadSheet() {
+    const sidebar = document.querySelector(".sidebar");
+    const fab = document.getElementById("v28CreateFab");
 
-  if (!fab || !sidebar) return;
+    if (!sidebar || !fab) return;
 
-  fab.addEventListener("click", (e) => {
-    e.preventDefault();
-    e.stopPropagation();
-    sidebar.classList.toggle("open");
-  });
-});
+    fab.addEventListener("click", function (e) {
+      e.preventDefault();
+      e.stopPropagation();
+      sidebar.classList.toggle("open");
+    });
+  }
+
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", initMobileUploadSheet);
+  } else {
+    initMobileUploadSheet();
+  }
+})();

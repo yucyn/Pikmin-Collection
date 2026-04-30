@@ -877,3 +877,22 @@
     display: flex !important;
   }
 }
+/* ===== 桌機 / 平板拉寬後隱藏上傳 + 按鈕 ===== */
+@media (min-width: 900px) {
+  #mobileUploadFab {
+    display: none !important;
+    visibility: hidden !important;
+    opacity: 0 !important;
+    pointer-events: none !important;
+  }
+}
+
+/* 手機才顯示 + */
+@media (max-width: 899px) {
+  #mobileUploadFab {
+    display: flex !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+    pointer-events: auto !important;
+  }
+}

@@ -552,7 +552,7 @@ document.addEventListener("click", (e) => {
   }
 });
 
-// ===== Mobile Upload Sheet Toggle =====
+// ===== Mobile Upload Sheet Toggle - Force Override =====
 (function () {
   function initMobileUploadSheet() {
     const sidebar = document.querySelector(".sidebar");
@@ -560,11 +560,20 @@ document.addEventListener("click", (e) => {
 
     if (!sidebar || !fab) return;
 
-    fab.addEventListener("click", function (e) {
-      e.preventDefault();
-      e.stopPropagation();
-      sidebar.classList.toggle("open");
-    });
+    // 手機版：強制把 + 改成開啟上傳面板
+    fab.addEventListener(
+      "click",
+      function (e) {
+        if (window.innerWidth > 768) return;
+
+        e.preventDefault();
+        e.stopPropagation();
+        e.stopImmediatePropagation();
+
+        sidebar.classList.toggle("open");
+      },
+      true
+    );
   }
 
   if (document.readyState === "loading") {

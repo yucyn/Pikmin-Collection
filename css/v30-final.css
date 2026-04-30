@@ -796,3 +796,52 @@ postcard-photo img.landscape{
     font-size:10px !important;
   }
 }
+/* ===== Fix: prevent floating buttons from being hijacked ===== */
+
+.postcard-photo .postcard-hover-actions{
+  position:absolute !important;
+  inset:0 !important;
+  z-index:10 !important;
+}
+
+.postcard-photo .float-btn{
+  width:auto !important;
+  height:auto !important;
+  min-width:auto !important;
+  min-height:auto !important;
+  max-width:none !important;
+  max-height:none !important;
+
+  display:inline-flex !important;
+  align-items:center !important;
+  justify-content:center !important;
+
+  border:0 !important;
+  border-radius:999px !important;
+  padding:6px 9px !important;
+
+  background:rgba(255,255,255,.88) !important;
+  box-shadow:0 6px 16px rgba(0,0,0,.10) !important;
+  transform:none !important;
+}
+
+.postcard-photo .map-btn{
+  left:8px !important;
+  top:8px !important;
+  right:auto !important;
+  bottom:auto !important;
+}
+
+.postcard-photo .like-btn{
+  right:8px !important;
+  top:8px !important;
+  left:auto !important;
+  bottom:auto !important;
+}
+
+.postcard-photo .more-btn{
+  right:8px !important;
+  bottom:8px !important;
+  left:auto !important;
+  top:auto !important;
+}

@@ -19,7 +19,6 @@ document.addEventListener("DOMContentLoaded", function () {
 
   const locationInput = document.getElementById("locationInput");
   const categoryInput = document.getElementById("categoryInput");
-  const tagInput = document.getElementById("tagInput");
   const addCardBtn = document.getElementById("addCardBtn");
   const grid = document.getElementById("grid");
   const emptyState = document.getElementById("emptyState");
@@ -50,10 +49,9 @@ document.addEventListener("DOMContentLoaded", function () {
 
   let isPreviewMode = new URLSearchParams(window.location.search).get("mode") === "preview";
   let currentModalCardId = null;
-  let currentTagFilter = "";
 
   function getFilters() {
-    return { query: searchInput.value, category: categoryFilter.value, tag: currentTagFilter };
+    return { query: searchInput.value, category: categoryFilter.value };
   }
 
   function setMessage(text, isError = false) {
@@ -70,7 +68,35 @@ document.addEventListener("DOMContentLoaded", function () {
 
   function togglePreviewMode() {
     isPreviewMode = !isPreviewMode;
-    applyPreviewMode();
+  
+  function initScrollTopFab() {
+    const scrollBtn = document.getElementById("v28CreateFab");
+    const createMenu = document.getElementById("v28CreateMenu");
+
+    if (createMenu) {
+      createMenu.style.display = "none";
+      createMenu.setAttribute("aria-hidden", "true");
+    }
+
+    if (!scrollBtn) return;
+
+    scrollBtn.setAttribute("aria-label", "回到頂部");
+    scrollBtn.classList.add("scroll-top-fab");
+
+    scrollBtn.addEventListener("click", event => {
+      event.preventDefault();
+      event.stopPropagation();
+      event.stopImmediatePropagation();
+
+      window.scrollTo({
+        top: 0,
+        behavior: "smooth"
+      });
+    }, true);
+  }
+
+  initScrollTopFab();
+  applyPreviewMode();
 
     const url = new URL(window.location.href);
     if (isPreviewMode) {
@@ -262,132 +288,6 @@ document.addEventListener("DOMContentLoaded", function () {
     await deletePostcard(id);
   }
 
-  function ensureEditModal() {
-    let modal = document.getElementById("editModal");
-    if (modal) return modal;
-
-    modal = document.createElement("section");
-    modal.id = "editModal";
-    modal.className = "edit-modal hidden";
-    modal.innerHTML = `
-      <div class="edit-modal-backdrop" data-edit-close="true"></div>
-      <form id="editForm" class="edit-modal-panel">
-        <button type="button" id="closeEditModalBtn" class="edit-modal-close">×</button>
-        <h2>編輯明信片</h2>
-
-        <label for="editLocationInput">座標</label>
-        <input id="editLocationInput" type="text" required placeholder="例如：43.592002, 142.463733" />
-
-        <label for="editCategoryInput">國家分類</label>
-        <select id="editCategoryInput">
-          <option value="全球">全球</option>
-          <option value="台灣">台灣</option>
-          <option value="日本">日本</option>
-          <option value="香港">香港</option>
-          <option value="美國">美國</option>
-          <option value="德國">德國</option>
-          <option value="義大利">義大利</option>
-          <option value="杜拜">杜拜</option>
-          <option value="韓國">韓國</option>
-        </select>
-
-        <label for="editTagInput">標籤</label>
-        <select id="editTagInput">
-          <option value="">無</option>
-          <option value="花">花</option>
-          <option value="蘑菇">蘑菇</option>
-          <option value="隱藏">隱藏</option>
-        </select>
-
-        <button type="submit" class="edit-save-btn">儲存修改</button>
-      </form>
-    `;
-
-    document.body.appendChild(modal);
-
-    modal.addEventListener("click", event => {
-      if (event.target.dataset.editClose === "true" || event.target.id === "closeEditModalBtn") {
-        closeEditModal();
-      }
-    });
-
-    return modal;
-  }
-
-  function closeEditModal() {
-    const modal = document.getElementById("editModal");
-    if (modal) modal.classList.add("hidden");
-  }
-
-  async function updatePostcardSmart(id, changes) {
-    if (typeof updatePostcard === "function") {
-      await updatePostcard(id, changes);
-      return;
-    }
-
-    const item = getPostcardById(id);
-    if (item) Object.assign(item, changes);
-
-    if (typeof savePostcards === "function") {
-      await savePostcards(getPostcards());
-    } else if (typeof setPostcards === "function") {
-      await setPostcards(getPostcards());
-    }
-  }
-
-  function handleEditClick(item) {
-    if (isPreviewMode) {
-      alert("預覽模式不能編輯卡片");
-      return;
-    }
-
-    const modal = ensureEditModal();
-    const form = document.getElementById("editForm");
-    const locationField = document.getElementById("editLocationInput");
-    const categoryField = document.getElementById("editCategoryInput");
-    const tagField = document.getElementById("editTagInput");
-
-    locationField.value = item.locationText || "";
-    categoryField.value = item.category || "全球";
-    tagField.value = item.tag || "";
-
-    form.onsubmit = async event => {
-      event.preventDefault();
-
-      const location = parseLocation(locationField.value);
-      if (!location) {
-        alert("請輸入正確座標，例如：43.587789, 142.465553");
-        return;
-      }
-
-      const changes = {
-        locationText: location.locationText,
-        lat: location.lat,
-        lng: location.lng,
-        category: categoryField.value || location.country || "全球",
-        tag: tagField.value || ""
-      };
-
-      await updatePostcardSmart(item.id, changes);
-      closeEditModal();
-      refreshViews();
-      showToast("已更新明信片");
-    };
-
-    modal.classList.remove("hidden");
-  }
-
-  function bindTagFilterButtons() {
-    document.querySelectorAll(".tag-filter").forEach(button => {
-      button.addEventListener("click", () => {
-        document.querySelectorAll(".tag-filter").forEach(btn => btn.classList.remove("active"));
-        button.classList.add("active");
-        currentTagFilter = button.dataset.tag || "";
-        refreshViews();
-      });
-    });
-  }
-
   function refreshViews() {
     const selectedCategory = categoryFilter.value;
     renderCategoryFilter(categoryFilter, selectedCategory);
@@ -400,7 +300,6 @@ document.addEventListener("DOMContentLoaded", function () {
       onCopyClick: handleCopyClick,
       onDeleteClick: handleDeleteClick,
       onShareClick: handleShareClick,
-      onEditClick: handleEditClick,
       filters: getFilters()
     });
 
@@ -476,18 +375,43 @@ document.addEventListener("DOMContentLoaded", function () {
       locationText: location.locationText,
       lat: location.lat,
       lng: location.lng,
-      tag: tagInput ? tagInput.value : "",
       createdAt: new Date().toISOString()
     });
 
     clearPreview();
     locationInput.value = "";
     categoryInput.value = "";
-    if (tagInput) tagInput.value = "";
   });
 
+
+  function initScrollTopFab() {
+    const scrollBtn = document.getElementById("v28CreateFab");
+    const createMenu = document.getElementById("v28CreateMenu");
+
+    if (createMenu) {
+      createMenu.style.display = "none";
+      createMenu.setAttribute("aria-hidden", "true");
+    }
+
+    if (!scrollBtn) return;
+
+    scrollBtn.setAttribute("aria-label", "回到頂部");
+    scrollBtn.classList.add("scroll-top-fab");
+
+    scrollBtn.addEventListener("click", event => {
+      event.preventDefault();
+      event.stopPropagation();
+      event.stopImmediatePropagation();
+
+      window.scrollTo({
+        top: 0,
+        behavior: "smooth"
+      });
+    }, true);
+  }
+
+  initScrollTopFab();
   applyPreviewMode();
-  bindTagFilterButtons();
   setUploadMode("file");
   setView("collection");
 
@@ -507,16 +431,39 @@ document.addEventListener("DOMContentLoaded", function () {
     openSharedCardFromUrl();
   });
 });
+(function initTagFilterUI() {
+  function bindTagButtons() {
+    const buttons = document.querySelectorAll(".tag-filter");
+    if (!buttons.length) return;
 
-document.addEventListener("DOMContentLoaded", () => {
-  const scrollBtn = document.getElementById("scrollTopBtn");
+    if (typeof currentFilters === "undefined") {
+      console.warn("找不到 currentFilters，請確認 app.js 裡有 currentFilters 物件");
+      return;
+    }
 
-  if (scrollBtn) {
-    scrollBtn.addEventListener("click", () => {
-      window.scrollTo({
-        top: 0,
-        behavior: "smooth"
+    if (!("tag" in currentFilters)) {
+      currentFilters.tag = "";
+    }
+
+    buttons.forEach(button => {
+      button.addEventListener("click", () => {
+        buttons.forEach(btn => btn.classList.remove("active"));
+        button.classList.add("active");
+
+        currentFilters.tag = button.dataset.tag || "";
+
+        if (typeof renderAll === "function") {
+          renderAll();
+        } else {
+          console.warn("找不到 renderAll()，請把 tag patch 裡的 renderAll() 改成你原本的重繪函式名稱");
+        }
       });
     });
   }
-});
+
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", bindTagButtons);
+  } else {
+    bindTagButtons();
+  }
+})();

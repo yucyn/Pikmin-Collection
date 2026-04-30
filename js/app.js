@@ -582,3 +582,16 @@ document.addEventListener("click", (e) => {
     initMobileUploadSheet();
   }
 })();
+// ===== Dedicated Mobile Upload Button =====
+document.addEventListener("DOMContentLoaded", () => {
+  const mobileUploadFab = document.getElementById("mobileUploadFab");
+  const sidebar = document.querySelector(".sidebar");
+
+  if (!mobileUploadFab || !sidebar) return;
+
+  mobileUploadFab.addEventListener("click", (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    sidebar.classList.toggle("open");
+  });
+});

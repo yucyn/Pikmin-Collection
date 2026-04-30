@@ -594,156 +594,33 @@
   display:none !important;
 }
 
-/* ===== 手機版：上傳區縮小（精準命中）===== */
+
+/* ===== Mobile App Upload Sheet Final ===== */
 @media (max-width: 768px) {
-
-  /* 整個左側上傳區縮小 */
-  .sidebar {
-    padding: 12px !important;
-  }
-
-  /* 標題縮小 */
-  .brand {
-    gap: 8px !important;
-  }
-
-  .brand h1 {
-    font-size: 18px !important;
-  }
-
-  .brand p {
-    font-size: 12px !important;
-  }
-
-  /* 三個上傳按鈕 */
-  .upload-tabs {
-    gap: 6px !important;
-    margin-bottom: 8px !important;
-  }
-
-  .tab-button {
-    padding: 6px 4px !important;
-    font-size: 12px !important;
-  }
-
-  /* 上傳框（你畫面最大那塊）🔥 */
-  .upload-box {
-    min-height: 80px !important;
-    padding: 8px !important;
-    font-size: 13px !important;
-  }
-
-  /* 上傳提示文字 */
-  .upload-box strong {
-    font-size: 14px !important;
-  }
-
-  .upload-box small {
-    font-size: 11px !important;
-  }
-
-  /* input 欄位 */
-  .input {
-    padding: 9px !important;
-    font-size: 13px !important;
-    margin: 6px 0 !important;
-  }
-
-  /* 新增按鈕 */
-  .primary-button {
-    padding: 10px !important;
-    font-size: 14px !important;
-  }
-
-}
-/* ===== 手機 App 上傳面板（整合版）===== */
-@media (max-width: 768px) {
-
-  .sidebar {
-    position: fixed;
-    left: 0;
-    right: 0;
-    bottom: -100%;
-    width: 100%;
-    height: 78vh;
-    padding: 12px !important;
-
-    border-radius: 24px 24px 0 0;
-    background: #fffdf2;
-
-    z-index: 3000;
-    transition: bottom 0.35s ease;
-
-    overflow-y: auto;
-  }
-
-  .sidebar.open {
-    bottom: 0;
-  }
-
-  /* UI 縮小（保留你的設定） */
-  .brand h1 { font-size: 18px !important; }
-  .brand p { font-size: 12px !important; }
-
-  .tab-button {
-    padding: 6px 4px !important;
-    font-size: 12px !important;
-  }
-
-  .upload-box {
-    min-height: 80px !important;
-    padding: 8px !important;
-    font-size: 13px !important;
-  }
-
-  .input {
-    padding: 9px !important;
-    font-size: 13px !important;
-  }
-
-  .primary-button {
-    padding: 10px !important;
-    font-size: 14px !important;
-  }
-
-}
-
-@media (max-width: 768px) {
-  #v28CreateFab {
-    display: grid !important;
-    place-items: center !important;
-    z-index: 5000 !important;
-    pointer-events: auto !important;
-  }
-}
-@media (max-width: 768px) {
+  #v28CreateFab,
   #v28CreateMenu {
     display: none !important;
   }
 
-  #v28CreateFab {
-    z-index: 5000 !important;
-  }
-}
-@media (max-width: 768px) {
-  #v28CreateFab {
-    display: none !important;
-  }
-
+  .mobile-upload-fab,
   #mobileUploadFab {
-    position: fixed;
-    right: 22px;
-    bottom: 86px;
-    width: 64px;
-    height: 64px;
-    border-radius: 999px;
-    border: none;
-    background: linear-gradient(135deg, #78c96b, #9bd66b);
-    color: white;
-    font-size: 34px;
-    font-weight: 700;
-    z-index: 6000;
-    box-shadow: 0 14px 32px rgba(47, 116, 56, 0.35);
+    position: fixed !important;
+    right: 22px !important;
+    bottom: 86px !important;
+    width: 64px !important;
+    height: 64px !important;
+    border-radius: 999px !important;
+    border: none !important;
+    display: grid !important;
+    place-items: center !important;
+    background: linear-gradient(135deg, #78c96b, #9bd66b) !important;
+    color: white !important;
+    font-size: 34px !important;
+    font-weight: 800 !important;
+    line-height: 1 !important;
+    z-index: 6000 !important;
+    box-shadow: 0 14px 32px rgba(47, 116, 56, 0.35) !important;
+    cursor: pointer !important;
   }
 
   .sidebar {
@@ -759,10 +636,72 @@
     z-index: 5000 !important;
     overflow-y: auto !important;
     transition: bottom 0.35s ease !important;
+    box-shadow: 0 -18px 40px rgba(31, 48, 28, 0.18) !important;
   }
 
   .sidebar.open {
     bottom: 0 !important;
+  }
+
+  body {
+    flex-direction: column !important;
+  }
+
+  .main {
+    padding: 16px !important;
+  }
+
+  .main-header {
+    margin-bottom: 12px !important;
+  }
+
+  .brand {
+    gap: 8px !important;
+    margin-bottom: 10px !important;
+  }
+
+  .brand h1 {
+    font-size: 18px !important;
+  }
+
+  .brand p {
+    font-size: 12px !important;
+    line-height: 1.35 !important;
+  }
+
+  .upload-tabs {
+    gap: 6px !important;
+    margin-bottom: 8px !important;
+  }
+
+  .tab-button {
+    padding: 6px 4px !important;
+    font-size: 12px !important;
+  }
+
+  .upload-box {
+    min-height: 80px !important;
+    padding: 8px !important;
+    font-size: 13px !important;
+  }
+
+  .upload-box strong {
+    font-size: 14px !important;
+  }
+
+  .upload-box small {
+    font-size: 11px !important;
+  }
+
+  .input {
+    padding: 9px !important;
+    font-size: 13px !important;
+    margin: 6px 0 !important;
+  }
+
+  .primary-button {
+    padding: 10px !important;
+    font-size: 14px !important;
   }
 }
 

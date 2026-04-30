@@ -1,3 +1,18 @@
+function formatCoords(coords){
+  if(!coords) return "";
+  const [lat, lng] = coords.split(",").map(n => parseFloat(n));
+
+  if(Number.isNaN(lat) || Number.isNaN(lng)) {
+    return coords;
+  }
+
+  return `${lat.toFixed(4)}, ${lng.toFixed(4)}`;
+}
+
+function isMobileView(){
+  return window.matchMedia("(max-width:600px)").matches;
+}
+
 function formatLikeCount(count) {
   const number = Number(count || 0);
   if (number >= 10000) return `${(number / 10000).toFixed(1).replace(".0", "")} 萬`;

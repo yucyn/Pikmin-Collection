@@ -531,58 +531,7 @@ document.addEventListener("DOMContentLoaded", function () {
   });
 });
 
-// ===== Mobile App UI =====
-const fab = document.getElementById("v28CreateFab");
-const sidebar = document.querySelector(".sidebar");
-
-if (fab && sidebar) {
-  fab.addEventListener("click", () => {
-    sidebar.classList.toggle("open");
-  });
-}
-
-// 點背景關閉
-document.addEventListener("click", (e) => {
-  if (
-    sidebar.classList.contains("open") &&
-    !sidebar.contains(e.target) &&
-    !fab.contains(e.target)
-  ) {
-    sidebar.classList.remove("open");
-  }
-});
-
-// ===== Mobile Upload Sheet Toggle - Force Override =====
-(function () {
-  function initMobileUploadSheet() {
-    const sidebar = document.querySelector(".sidebar");
-    const fab = document.getElementById("v28CreateFab");
-
-    if (!sidebar || !fab) return;
-
-    // 手機版：強制把 + 改成開啟上傳面板
-    fab.addEventListener(
-      "click",
-      function (e) {
-        if (window.innerWidth > 768) return;
-
-        e.preventDefault();
-        e.stopPropagation();
-        e.stopImmediatePropagation();
-
-        sidebar.classList.toggle("open");
-      },
-      true
-    );
-  }
-
-  if (document.readyState === "loading") {
-    document.addEventListener("DOMContentLoaded", initMobileUploadSheet);
-  } else {
-    initMobileUploadSheet();
-  }
-})();
-// ===== Dedicated Mobile Upload Button =====
+// ===== Dedicated Mobile Upload Button（唯一控制）=====
 document.addEventListener("DOMContentLoaded", () => {
   const mobileUploadFab = document.getElementById("mobileUploadFab");
   const sidebar = document.querySelector(".sidebar");
@@ -593,5 +542,13 @@ document.addEventListener("DOMContentLoaded", () => {
     e.preventDefault();
     e.stopPropagation();
     sidebar.classList.toggle("open");
+  });
+
+  document.addEventListener("click", (e) => {
+    if (window.innerWidth > 768) return;
+    if (!sidebar.classList.contains("open")) return;
+    if (sidebar.contains(e.target)) return;
+    if (mobileUploadFab.contains(e.target)) return;
+    sidebar.classList.remove("open");
   });
 });

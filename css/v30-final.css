@@ -509,3 +509,24 @@
 
   box-shadow: 0 6px 18px rgba(120, 180, 100, 0.3) !important;
 }
+/* 手機版：修正蘑菇 icon 與文字重疊 */
+@media (max-width:600px){
+  .v28-scope .tag-蘑菇,
+  .tag-蘑菇{
+    padding-left:22px !important;
+    padding-right:8px !important;
+  }
+
+  .v28-scope .tag-蘑菇::before,
+  .tag-蘑菇::before{
+    left:7px !important;
+    width:8px !important;
+    height:5.8px !important;
+  }
+
+  .v28-scope .tag-蘑菇::after,
+  .tag-蘑菇::after{
+    left:10.2px !important;
+    height:5.5px !important;
+  }
+}

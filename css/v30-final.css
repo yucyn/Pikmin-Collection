@@ -530,3 +530,67 @@
     height:5.5px !important;
   }
 }
+
+/* ===== Scroll Top FAB Final ===== */
+#v28CreateFab.scroll-top-fab,
+#scrollTopBtn,
+.v28-create-fab.scroll-top-fab{
+  position:fixed !important;
+  right:20px !important;
+  bottom:20px !important;
+
+  width:58px !important;
+  height:58px !important;
+  min-width:58px !important;
+  min-height:58px !important;
+
+  border:none !important;
+  border-radius:50% !important;
+  padding:0 !important;
+
+  display:flex !important;
+  align-items:center !important;
+  justify-content:center !important;
+
+  background:linear-gradient(135deg,#7fbf6a,#9cd67f) !important;
+  color:#fff !important;
+
+  box-shadow:0 10px 24px rgba(120,180,100,.35) !important;
+  cursor:pointer !important;
+  z-index:9999 !important;
+
+  font-size:0 !important;
+  line-height:1 !important;
+  appearance:none !important;
+  -webkit-appearance:none !important;
+
+  transition:transform .22s ease, box-shadow .22s ease, opacity .22s ease !important;
+}
+
+#v28CreateFab.scroll-top-fab svg,
+#scrollTopBtn svg,
+.v28-create-fab.scroll-top-fab svg{
+  width:24px !important;
+  height:24px !important;
+  display:block !important;
+  color:#fff !important;
+  background:transparent !important;
+  box-shadow:none !important;
+  pointer-events:none !important;
+}
+
+#v28CreateFab.scroll-top-fab:hover,
+#scrollTopBtn:hover{
+  transform:translateY(-3px) !important;
+  box-shadow:0 14px 30px rgba(120,180,100,.42) !important;
+}
+
+#v28CreateFab.scroll-top-fab:active,
+#scrollTopBtn:active{
+  transform:scale(.92) !important;
+}
+
+/* 停用舊的 V28 展開選單 */
+#v28CreateMenu{
+  display:none !important;
+}

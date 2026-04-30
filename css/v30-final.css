@@ -710,3 +710,64 @@
     display: none !important;
   }
 }
+/* ===== 雙 FAB 統一風格 ===== */
+#mobileUploadFab,
+#v28CreateFab {
+
+  width: 60px !important;
+  height: 60px !important;
+  border-radius: 50% !important;
+
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+
+  font-size: 28px !important;
+  font-weight: 700 !important;
+
+  color: #fff !important;
+
+  background: linear-gradient(135deg, #6fcf6a, #8edc72) !important;
+
+  box-shadow: 
+    0 12px 28px rgba(80, 140, 80, 0.35),
+    inset 0 2px 4px rgba(255,255,255,0.25);
+
+  border: none !important;
+  cursor: pointer;
+
+  transition: all 0.2s ease;
+}
+
+/* hover */
+#mobileUploadFab:hover,
+#v28CreateFab:hover {
+  transform: translateY(-2px) scale(1.05);
+}
+
+/* 點擊 */
+#mobileUploadFab:active,
+#v28CreateFab:active {
+  transform: scale(0.92);
+}
+
+/* ===== 手機排列（重點）===== */
+@media (max-width: 768px) {
+
+  /* 上面：＋ 上傳 */
+  #mobileUploadFab {
+    position: fixed;
+    right: 20px;
+    bottom: 90px; /* 👈 在上面 */
+    z-index: 6000;
+  }
+
+  /* 下面：回頂部 */
+  #v28CreateFab {
+    position: fixed;
+    right: 20px;
+    bottom: 20px; /* 👈 在下面 */
+    z-index: 5000;
+  }
+
+}

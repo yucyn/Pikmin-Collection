@@ -708,3 +708,11 @@
 
 }
 
+@media (max-width: 768px) {
+  #v28CreateFab {
+    display: grid !important;
+    place-items: center !important;
+    z-index: 5000 !important;
+    pointer-events: auto !important;
+  }
+}

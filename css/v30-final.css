@@ -756,28 +756,57 @@
   font-size: 14px;
 }
 
-/* 收合 */
-.hero.collapsed .hero-body {
-  display: none;
+/* ⭐ main-header 改成 test version-8 的單一面板 */
+.main-header {
+  display: block !important;
+  background: #f6f6f2 !important;
+  border-radius: 24px !important;
+  padding: 16px !important;
+  margin-bottom: 20px !important;
 }
 
-/* 收起來變超精簡 */
-.hero.collapsed {
-  padding: 8px 16px;
+/* hero 不要再像一張卡片 */
+.main-header .hero {
+  background: transparent !important;
+  border-radius: 0 !important;
+  padding: 0 !important;
+  margin: 0 0 10px 0 !important;
+  max-width: none !important;
 }
 
-/* 箭頭動畫 */
-.toggle-icon {
-  transition: transform 0.3s;
+/* 收合時只留一行小標題，不要撐開 */
+.main-header .hero.collapsed .hero-body {
+  display: none !important;
 }
 
-.hero.collapsed .toggle-icon {
-  transform: rotate(-90deg);
+.main-header .hero.collapsed {
+  margin-bottom: 8px !important;
 }
 
-/* ⭐ 手機預設收合（超重要） */
-@media (max-width: 768px) {
-  .hero-body {
-    display: none;
-  }
+/* toolbar 回到 test version-8 排列 */
+.main-header .toolbar.pikmin-toolbar {
+  display: flex !important;
+  flex-wrap: wrap !important;
+  align-items: center !important;
+  gap: 12px !important;
+  background: transparent !important;
+  padding: 0 !important;
+  margin: 0 !important;
+}
+
+/* 搜尋框不要置中獨佔一排 */
+.main-header .pikmin-search {
+  flex: 1 1 220px !important;
+  max-width: 480px !important;
+  min-width: 220px !important;
+  margin: 0 !important;
+}
+
+/* 按鈕跟搜尋框同一列 */
+.main-header .pikmin-toolbar-actions {
+  display: flex !important;
+  flex-wrap: wrap !important;
+  align-items: center !important;
+  gap: 8px !important;
+  margin: 0 !important;
 }

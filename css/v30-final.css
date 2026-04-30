@@ -488,21 +488,24 @@
   }
 }
 
-/* 讓 <a> 看起來像按鈕 */
-.btn-primary {
-  display: block;
-  text-align: center;
-  text-decoration: none;
+/* 強制覆蓋 Modal 裡的 Open Google Map 按鈕 */
+#cardModal #modalMapLink,
+#modalMapLink.btn-primary,
+#modalMapLink {
+  display: block !important;
+  width: 100% !important;
+  text-align: center !important;
+  text-decoration: none !important;
 
-  width: 100%;
-  border-radius: 18px;
-  padding: 14px;
+  border: none !important;
+  border-radius: 18px !important;
+  padding: 14px !important;
 
-  background: linear-gradient(135deg, #7fbf6a, #9cd67f);
-  color: white !important;
+  background: linear-gradient(135deg, #7fbf6a, #9cd67f) !important;
+  color: #ffffff !important;
 
-  font-size: 16px;
-  font-weight: 900;
+  font-size: 16px !important;
+  font-weight: 900 !important;
 
-  box-shadow: 0 6px 18px rgba(120, 180, 100, 0.3);
+  box-shadow: 0 6px 18px rgba(120, 180, 100, 0.3) !important;
 }

@@ -845,3 +845,22 @@ postcard-photo img.landscape{
   left:auto !important;
   top:auto !important;
 }
+/* minimal UI fix */
+.postcard-photo{position:relative;}
+.postcard-hover-actions{
+ position:absolute; inset:0; opacity:0;
+}
+.postcard-card:hover .postcard-hover-actions{
+ opacity:1;
+}
+.float-btn{
+ position:absolute; background:#fff;
+ border-radius:999px; padding:6px;
+}
+.map-btn{left:8px;top:8px;}
+.like-btn{right:8px;top:8px;}
+.edit-btn{left:8px;bottom:8px;}
+.more-btn{right:8px;bottom:8px;}
+.postcard-photo img.landscape{
+ object-position:left center;
+}

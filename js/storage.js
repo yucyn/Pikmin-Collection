@@ -28,7 +28,7 @@ function getPostcardById(id) {
 }
 
 function isOwnedByCurrentUser(item) {
-  return Boolean(item && item.ownerId && item.ownerId === getCurrentUserId());
+  return isAdminUser() || Boolean(item && item.ownerId && item.ownerId === getCurrentUserId());
 }
 
 function normalizePostcard(id, data) {

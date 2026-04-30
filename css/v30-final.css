@@ -857,3 +857,14 @@
     0 12px 30px rgba(80, 140, 80, 0.35),
     inset 0 2px 6px rgba(255,255,255,0.25) !important;
 }
+/* 手機版隱藏拖曳功能 */
+@media (max-width: 768px) {
+  #modeDragBtn,
+  #dragPanel {
+    display: none !important;
+  }
+
+  .upload-tabs {
+    grid-template-columns: repeat(2, 1fr) !important;
+  }
+}

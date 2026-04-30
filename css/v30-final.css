@@ -656,8 +656,9 @@
   }
 
 }
-/* ===== 手機版：隱藏側邊欄 ===== */
+/* ===== 手機 App 上傳面板（整合版）===== */
 @media (max-width: 768px) {
+
   .sidebar {
     position: fixed;
     left: 0;
@@ -665,31 +666,45 @@
     bottom: -100%;
     width: 100%;
     height: 78vh;
+    padding: 12px !important;
+
     border-radius: 24px 24px 0 0;
-    z-index: 2000;
-    transition: 0.35s;
+    background: #fffdf2;
+
+    z-index: 3000;
+    transition: bottom 0.35s ease;
+
+    overflow-y: auto;
   }
 
   .sidebar.open {
     bottom: 0;
   }
+
+  /* UI 縮小（保留你的設定） */
+  .brand h1 { font-size: 18px !important; }
+  .brand p { font-size: 12px !important; }
+
+  .tab-button {
+    padding: 6px 4px !important;
+    font-size: 12px !important;
+  }
+
+  .upload-box {
+    min-height: 80px !important;
+    padding: 8px !important;
+    font-size: 13px !important;
+  }
+
+  .input {
+    padding: 9px !important;
+    font-size: 13px !important;
+  }
+
+  .primary-button {
+    padding: 10px !important;
+    font-size: 14px !important;
+  }
+
 }
-/* 你原本的東西 */
-....
 
-/* ===== Mobile App UI ===== */
-@media (max-width: 768px) {
-
-  body {
-    flex-direction: column;
-  }
-
-  .main {
-    padding: 16px !important;
-  }
-
-  .main-header {
-    margin-bottom: 12px !important;
-  }
-
-}

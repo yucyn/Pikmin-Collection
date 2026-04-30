@@ -192,38 +192,20 @@ function renderPostcards({
     /* 圖片區 */
     const photo = createEl("div", "postcard-photo");
 
-  const image = createEl("img");
+ const image = createEl("img");
 
-/* 判斷橫圖 */
-const applyOrientation = () => {
+image.onload = () => {
   const ratio = image.naturalWidth / image.naturalHeight;
+
   if (ratio > 1.2) {
     image.classList.add("landscape");
   }
 };
 
-/* 圖片載入時 */
-image.onload = applyOrientation;
-
-/* 👉 關鍵：已載入也要跑一次 */
-if (image.complete) {
-  applyOrientation();
-}
-
-image.src = item.image;
-image.alt = "Pikmin postcard image";
-
 image.src = item.image;
 image.alt = "Pikmin postcard image";
 
 photo.appendChild(image);
-
-    image.onload = () => {
-  const ratio = image.naturalWidth / image.naturalHeight;
-
-  if (ratio > 1.2) {
-    image.classList.add("landscape"); // 橫圖
-  }
 };
     
     photo.appendChild(image);
@@ -246,6 +228,7 @@ photo.appendChild(image);
       if (canDelete) {
         onDeleteClick(item.id);
       }
+      
     });
     hoverActions.appendChild(moreButton);
 

@@ -531,118 +531,74 @@
   }
 }
 
-/* ===== Scroll Top FAB Final ===== */
+/* ===== Scroll Top FAB + Mobile Upload FAB Clean Final ===== */
+
+/* 隱藏原本 V28 選單 */
+#v28CreateMenu {
+  display: none !important;
+}
+
+/* 桌機預設：隱藏手機上傳 + */
+#mobileUploadFab {
+  display: none !important;
+}
+
+/* 回頂部 FAB：桌機/手機都保留 */
 #v28CreateFab.scroll-top-fab,
-#scrollTopBtn,
-.v28-create-fab.scroll-top-fab{
-  position:fixed !important;
-  right:20px !important;
-  bottom:20px !important;
+#v28CreateFab {
+  position: fixed !important;
+  right: 20px !important;
+  bottom: 20px !important;
 
-  width:58px !important;
-  height:58px !important;
-  min-width:58px !important;
-  min-height:58px !important;
+  width: 64px !important;
+  height: 64px !important;
+  min-width: 64px !important;
+  min-height: 64px !important;
 
-  border:none !important;
-  border-radius:50% !important;
-  padding:0 !important;
+  border: none !important;
+  border-radius: 50% !important;
+  padding: 0 !important;
 
-  display:flex !important;
-  align-items:center !important;
-  justify-content:center !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
 
-  background:linear-gradient(135deg,#7fbf6a,#9cd67f) !important;
-  color:#fff !important;
+  background: linear-gradient(135deg, #7fcf6d, #9be37c) !important;
+  color: #fff !important;
 
-  box-shadow:0 10px 24px rgba(120,180,100,.35) !important;
-  cursor:pointer !important;
-  z-index:9999 !important;
+  box-shadow:
+    0 12px 30px rgba(80, 140, 80, 0.35),
+    inset 0 2px 6px rgba(255,255,255,0.25) !important;
 
-  font-size:0 !important;
-  line-height:1 !important;
-  appearance:none !important;
-  -webkit-appearance:none !important;
+  cursor: pointer !important;
+  z-index: 5000 !important;
 
-  transition:transform .22s ease, box-shadow .22s ease, opacity .22s ease !important;
+  font-size: 0 !important;
+  line-height: 1 !important;
+
+  transition: transform 0.2s ease, box-shadow 0.2s ease !important;
 }
 
-#v28CreateFab.scroll-top-fab svg,
-#scrollTopBtn svg,
-.v28-create-fab.scroll-top-fab svg{
-  width:26px !important;
-  height:26px !important;
-  display:block !important;
-  color:#fff !important;
-  background:transparent !important;
-  box-shadow:none !important;
-  pointer-events:none !important;
+#v28CreateFab svg {
+  width: 28px !important;
+  height: 28px !important;
+  color: #fff !important;
+  display: block !important;
+  pointer-events: none !important;
 }
 
-#v28CreateFab.scroll-top-fab:hover,
-#scrollTopBtn:hover{
-  transform:translateY(-3px) !important;
-  box-shadow:0 14px 30px rgba(120,180,100,.42) !important;
+#v28CreateFab:hover,
+#mobileUploadFab:hover {
+  transform: translateY(-3px) scale(1.05) !important;
 }
 
-#v28CreateFab.scroll-top-fab:active,
-#scrollTopBtn:active{
-  transform:scale(.92) !important;
+#v28CreateFab:active,
+#mobileUploadFab:active {
+  transform: scale(0.92) !important;
 }
 
-#v28CreateMenu{
-  display:none !important;
-}
-
-
-/* ===== Mobile App Upload Sheet Final ===== */
+/* 手機版：上傳面板 */
 @media (max-width: 768px) {
-  #v28CreateFab,
-  #v28CreateMenu {
-    display: none !important;
-  }
-
-  .mobile-upload-fab,
-  #mobileUploadFab {
-    position: fixed !important;
-    right: 22px !important;
-    bottom: 86px !important;
-    width: 64px !important;
-    height: 64px !important;
-    border-radius: 999px !important;
-    border: none !important;
-    display: grid !important;
-    place-items: center !important;
-    background: linear-gradient(135deg, #78c96b, #9bd66b) !important;
-    color: white !important;
-    font-size: 34px !important;
-    font-weight: 800 !important;
-    line-height: 1 !important;
-    z-index: 6000 !important;
-    box-shadow: 0 14px 32px rgba(47, 116, 56, 0.35) !important;
-    cursor: pointer !important;
-  }
-
-  .sidebar {
-    position: fixed !important;
-    left: 0 !important;
-    right: 0 !important;
-    bottom: -100% !important;
-    width: 100% !important;
-    height: 78vh !important;
-    padding: 12px !important;
-    background: #fffdf2 !important;
-    border-radius: 24px 24px 0 0 !important;
-    z-index: 5000 !important;
-    overflow-y: auto !important;
-    transition: bottom 0.35s ease !important;
-    box-shadow: 0 -18px 40px rgba(31, 48, 28, 0.18) !important;
-  }
-
-  .sidebar.open {
-    bottom: 0 !important;
-  }
-
   body {
     flex-direction: column !important;
   }
@@ -653,6 +609,78 @@
 
   .main-header {
     margin-bottom: 12px !important;
+  }
+
+  .sidebar {
+    position: fixed !important;
+    left: 0 !important;
+    right: 0 !important;
+    bottom: -100% !important;
+
+    width: 100% !important;
+    height: 78vh !important;
+    padding: 12px !important;
+
+    background: #fffdf2 !important;
+    border-radius: 24px 24px 0 0 !important;
+    box-shadow: 0 -18px 40px rgba(31, 48, 28, 0.18) !important;
+
+    z-index: 5000 !important;
+    overflow-y: auto !important;
+    transition: bottom 0.35s ease !important;
+  }
+
+  .sidebar.open {
+    bottom: 0 !important;
+  }
+
+  /* 手機上傳 + */
+  #mobileUploadFab {
+    position: fixed !important;
+    right: 20px !important;
+    bottom: 100px !important;
+
+    width: 64px !important;
+    height: 64px !important;
+    border-radius: 50% !important;
+    border: none !important;
+
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+
+    background: linear-gradient(135deg, #7fcf6d, #9be37c) !important;
+    color: #fff !important;
+
+    font-size: 34px !important;
+    font-weight: 800 !important;
+    line-height: 1 !important;
+
+    box-shadow:
+      0 12px 30px rgba(80, 140, 80, 0.35),
+      inset 0 2px 6px rgba(255,255,255,0.25) !important;
+
+    z-index: 6000 !important;
+    cursor: pointer !important;
+    transition: transform 0.2s ease, box-shadow 0.2s ease !important;
+  }
+
+  /* 回頂部 */
+  #v28CreateFab {
+    right: 20px !important;
+    bottom: 20px !important;
+  }
+
+  /* 手機版隱藏拖曳功能 */
+  #modeDragBtn,
+  #dragPanel {
+    display: none !important;
+  }
+
+  .upload-tabs {
+    grid-template-columns: repeat(2, 1fr) !important;
+    gap: 6px !important;
+    margin-bottom: 8px !important;
   }
 
   .brand {
@@ -667,11 +695,6 @@
   .brand p {
     font-size: 12px !important;
     line-height: 1.35 !important;
-  }
-
-  .upload-tabs {
-    gap: 6px !important;
-    margin-bottom: 8px !important;
   }
 
   .tab-button {
@@ -705,194 +728,12 @@
   }
 }
 
+/* 桌機 / 平板拉寬：強制隱藏手機上傳 + */
 @media (min-width: 769px) {
-  #mobileUploadFab {
-    display: none !important;
-  }
-}
-/* ===== 雙 FAB 統一風格 ===== */
-#mobileUploadFab,
-#v28CreateFab {
-
-  width: 60px !important;
-  height: 60px !important;
-  border-radius: 50% !important;
-
-  display: flex !important;
-  align-items: center !important;
-  justify-content: center !important;
-
-  font-size: 28px !important;
-  font-weight: 700 !important;
-
-  color: #fff !important;
-
-  background: linear-gradient(135deg, #6fcf6a, #8edc72) !important;
-
-  box-shadow: 
-    0 12px 28px rgba(80, 140, 80, 0.35),
-    inset 0 2px 4px rgba(255,255,255,0.25);
-
-  border: none !important;
-  cursor: pointer;
-
-  transition: all 0.2s ease;
-}
-
-/* hover */
-#mobileUploadFab:hover,
-#v28CreateFab:hover {
-  transform: translateY(-2px) scale(1.05);
-}
-
-/* 點擊 */
-#mobileUploadFab:active,
-#v28CreateFab:active {
-  transform: scale(0.92);
-}
-
-/* ===== 手機排列（重點）===== */
-@media (max-width: 768px) {
-
-  /* 上面：＋ 上傳 */
-  #mobileUploadFab {
-    position: fixed;
-    right: 20px;
-    bottom: 90px; /* 👈 在上面 */
-    z-index: 6000;
-  }
-
-  /* 下面：回頂部 */
-  #v28CreateFab {
-    position: fixed;
-    right: 20px;
-    bottom: 20px; /* 👈 在下面 */
-    z-index: 5000;
-  }
-
-}
-#v28CreateFab svg {
-  width: 26px !important;
-  height: 26px !important;
-  color: #fff !important;
-}
-/* ===== FAB 完全統一版本（最終）===== */
-
-#mobileUploadFab,
-#v28CreateFab {
-
-  /* 尺寸完全一致 */
-  width: 64px !important;
-  height: 64px !important;
-  border-radius: 50% !important;
-
-  /* 置中 */
-  display: flex !important;
-  align-items: center !important;
-  justify-content: center !important;
-
-  /* 字體 / icon */
-  font-size: 32px !important;
-  color: #ffffff !important;
-
-  /* 顏色統一（柔和綠） */
-  background: linear-gradient(135deg, #7fcf6d, #9be37c) !important;
-
-  /* 陰影統一 */
-  box-shadow: 
-    0 12px 30px rgba(80, 140, 80, 0.35),
-    inset 0 2px 6px rgba(255,255,255,0.25) !important;
-
-  border: none !important;
-  cursor: pointer;
-
-  /* 動畫 */
-  transition: all 0.2s ease !important;
-}
-
-/* hover */
-#mobileUploadFab:hover,
-#v28CreateFab:hover {
-  transform: translateY(-3px) scale(1.05);
-}
-
-/* 點擊 */
-#mobileUploadFab:active,
-#v28CreateFab:active {
-  transform: scale(0.92);
-}
-
-/* SVG（箭頭）大小一致 */
-#v28CreateFab svg {
-  width: 28px !important;
-  height: 28px !important;
-}
-
-/* ===== 手機位置（上下排列）===== */
-@media (max-width: 768px) {
-
-  #mobileUploadFab {
-    position: fixed;
-    right: 20px;
-    bottom: 100px; /* 上 */
-    z-index: 6000;
-  }
-
-  #v28CreateFab {
-    position: fixed;
-    right: 20px;
-    bottom: 20px; /* 下 */
-    z-index: 5000;
-  }
-
-}
-/* ===== 強制統一 scroll FAB（解衝突）===== */
-#v28CreateFab.scroll-top-fab {
-  width: 64px !important;
-  height: 64px !important;
-
-  background: linear-gradient(135deg, #7fcf6d, #9be37c) !important;
-
-  box-shadow: 
-    0 12px 30px rgba(80, 140, 80, 0.35),
-    inset 0 2px 6px rgba(255,255,255,0.25) !important;
-}
-/* 手機版隱藏拖曳功能 */
-@media (max-width: 768px) {
-  #modeDragBtn,
-  #dragPanel {
-    display: none !important;
-  }
-
-  .upload-tabs {
-    grid-template-columns: repeat(2, 1fr) !important;
-  }
-}
-#mobileUploadFab {
-  display: none;
-}
-
-@media (max-width: 768px) {
-  #mobileUploadFab {
-    display: flex !important;
-  }
-}
-/* ===== 桌機 / 平板拉寬後隱藏上傳 + 按鈕 ===== */
-@media (min-width: 900px) {
   #mobileUploadFab {
     display: none !important;
     visibility: hidden !important;
     opacity: 0 !important;
     pointer-events: none !important;
-  }
-}
-
-/* 手機才顯示 + */
-@media (max-width: 899px) {
-  #mobileUploadFab {
-    display: flex !important;
-    visibility: visible !important;
-    opacity: 1 !important;
-    pointer-events: auto !important;
   }
 }

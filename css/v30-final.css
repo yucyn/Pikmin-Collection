@@ -716,3 +716,12 @@
     pointer-events: auto !important;
   }
 }
+@media (max-width: 768px) {
+  #v28CreateMenu {
+    display: none !important;
+  }
+
+  #v28CreateFab {
+    z-index: 5000 !important;
+  }
+}

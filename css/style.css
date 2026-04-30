@@ -32,6 +32,11 @@ body {
   padding: 20px;
   background: rgba(255, 253, 242, 0.95);
   box-shadow: 8px 0 30px rgba(72, 58, 24, 0.08);
+
+  height: 100vh;        /* ⭐ 新增 */
+  display: flex;        /* ⭐ 新增 */
+  flex-direction: column; /* ⭐ 新增 */
+  
   overflow-y: auto;
 }
 

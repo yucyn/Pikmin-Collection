@@ -1,11 +1,3 @@
-const ADMIN_USER_IDS = [
-  "你的Firebase UID"
-];
-
-function isAdminUser() {
-  return ADMIN_USER_IDS.includes(getCurrentUserId());
-}
-
 document.addEventListener("DOMContentLoaded", function () {
   const modeFileBtn = document.getElementById("modeFileBtn");
   const modeDragBtn = document.getElementById("modeDragBtn");

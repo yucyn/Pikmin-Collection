@@ -1,85 +1,380 @@
-body {
-  margin: 0;
-  font-family: sans-serif;
-  background: linear-gradient(90deg,#eef1e6,#efe3c9);
-}
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Pikmin Collection</title>
+  <link rel="stylesheet" href="./css/style.css" />
+  <link rel="stylesheet" href="./css/collage.css" />
 
-.main {
-  padding: 20px;
-}
+  <!-- V28 Integrated UI Layer -->
+  <link rel="stylesheet" href="./css/v28-theme.css" />
+  <link rel="stylesheet" href="./css/v28-gallery.css" />
+  <link rel="stylesheet" href="./css/v28-modal.css" />
 
-/* ⭐ 控制區 */
-.control-panel {
-  background: #f6f6f2;
-  border-radius: 24px;
-  padding: 16px;
-  margin-bottom: 20px;
-}
+  <link rel="stylesheet" href="./css/v30-final.css">
+  
+  <link rel="stylesheet" href="./css/tag-system.css">
 
-/* ⭐ top bar */
-.top-bar {
-  display: flex;
-  gap: 12px;
-  flex-wrap: wrap;
-  align-items: center;
-}
+  <link rel="stylesheet" href="./css/toolbar.css">
+  
 
-/* 搜尋 */
-.search-box {
-  flex: 1;
-  min-width: 220px;
-  max-width: 480px;
-  position: relative;
-}
+  <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore-compat.js"></script>
 
-.search-input {
-  width: 100%;
-  padding: 12px 18px;
-  border-radius: 999px;
-  border: none;
-  background: #f8f8f5;
-}
+</head>
 
-/* 葉子 */
-.search-leaf {
-  position: absolute;
-  right: 18px;
-  top: -12px;
-  width: 14px;
-  height: 20px;
-  background: #74b657;
-  border-radius: 80% 20% 80% 20%;
-  animation: swing 1.8s infinite;
-}
 
-@keyframes swing {
-  0%,100%{transform:rotate(-10deg)}
-  50%{transform:rotate(14deg)}
-}
 
-/* 按鈕列 */
-.filter-row {
-  display: flex;
-  gap: 8px;
-  flex-wrap: wrap;
-}
+<body>
+  <aside class="sidebar">
+    <div class="brand">
+      <div class="brand-icon">🌱</div>
+      <div>
+        <h1>Pikmin Collection</h1>
+        <p>收藏你的明信片座標｜手機圖片自動壓縮｜座標自動判定國家</p>
+      </div>
+    </div>
 
-/* 按鈕 */
-.pill-btn {
-  padding: 8px 14px;
-  border-radius: 999px;
-  border: none;
-  background: #dfe6d6;
-  cursor: pointer;
-}
+    <div class="upload-tabs">
+      <button id="modeFileBtn" class="tab-button active" type="button">選擇圖片</button>
+      <button id="modeDragBtn" class="tab-button" type="button">拖曳圖片</button>
+      <button id="modePasteBtn" class="tab-button" type="button">貼上圖片</button>
+    </div>
 
-.pill-btn.active {
-  background: #7fa35a;
-  color: white;
-}
+    <section id="filePanel" class="upload-panel">
+      <button id="selectFileBtn" class="upload-box" type="button">🍃 點擊選擇圖片</button>
+      <input id="fileInput" type="file" accept="image/*" hidden />
+    </section>
 
-.preview-btn {
-  background: #5f7f45;
-  color: white;
-  font-weight: bold;
-}
+    <section id="dragPanel" class="upload-panel hidden">
+      <div id="dropZone" class="upload-box">
+        <strong>把圖片拖曳到這裡</strong>
+        <small>支援資料夾圖片、網頁圖片</small>
+      </div>
+    </section>
+
+    <section id="pastePanel" class="upload-panel hidden">
+      <div id="pasteZone" class="upload-box" tabindex="0">
+        <strong>點擊這裡貼上圖片</strong>
+        <small>支援 LINE / 網頁圖片</small>
+      </div>
+    </section>
+
+    <p id="uploadMessage" class="message"></p>
+
+    <div id="previewBox" class="preview-box hidden">
+      <img id="previewImage" alt="preview">
+      <button id="clearImageBtn" class="secondary-button" type="button">清除圖片</button>
+    </div>
+
+    <input id="locationInput" class="input" placeholder="輸入座標，例如：43.587789, 142.465553" />
+    <input id="categoryInput" class="input" placeholder="分類國家會依座標自動判定，也可手動修改" list="categorySuggestions" />
+
+     <select id="tagInput" class="input">
+  <option value="">選擇標籤</option>
+  <option value="花">花</option>
+  <option value="蘑菇">蘑菇</option>
+  <option value="隱藏">隱藏</option>
+</select>
+
+    <datalist id="categorySuggestions">
+      <option value="全球"></option>
+      <option value="台灣"></option>
+      <option value="日本"></option>
+      <option value="香港"></option>
+      <option value="埃及"></option>
+      <option value="希臘"></option>
+      <option value="哥倫比亞"></option>
+      <option value="紐西蘭"></option>
+      <option value="阿根廷"></option>
+      <option value="杜拜"></option>
+      <option value="布拉格"></option>
+      <option value="斯洛維尼亞"></option>
+      <option value="英國"></option>
+      <option value="義大利"></option>
+      <option value="冰島"></option>
+      <option value="德國"></option>
+      <option value="土耳其"></option>
+      <option value="美國"></option>
+      <option value="韓國"></option>
+    </datalist>
+
+    <button id="addCardBtn" class="primary-button" type="button">新增明信片</button>
+  </aside>
+
+  
+  <main class="main v28-scope">
+    <div id="previewModeBanner" class="preview-banner hidden">
+      👀 預覽模式：可搜尋、篩選、點愛心、複製座標、查看地圖；不能刪除卡片。
+    </div>
+
+   <div class="control-panel">
+
+  <!-- ⭐ Top bar -->
+  <div class="top-bar">
+
+    <!-- 搜尋 -->
+    <div class="search-box">
+      <input id="searchInput"
+             class="search-input"
+             type="search"
+             placeholder="搜尋座標 / 國家">
+      <div class="search-leaf"></div>
+    </div>
+
+    <!-- 按鈕列 -->
+    <div class="filter-row">
+
+      <button id="collectionViewBtn" class="pill-btn active">收藏冊</button>
+      <button id="mapViewBtn" class="pill-btn">地圖</button>
+      <button id="collageViewBtn" class="pill-btn">拼貼</button>
+
+      <button class="pill-btn active" data-tag="">全部</button>
+      <button class="pill-btn" data-tag="花">花</button>
+      <button class="pill-btn" data-tag="蘑菇">蘑菇</button>
+      <button class="pill-btn" data-tag="隱藏">隱藏</button>
+
+      <button id="previewModeBtn" class="pill-btn preview-btn">
+        預覽模式
+      </button>
+
+    </div>
+
+  </div>
+
+</div>
+
+
+      <div class="toolbar pikmin-toolbar">
+
+  <!-- 搜尋 -->
+  <div class="pikmin-search search-box">
+    <input id="searchInput"
+           class="pikmin-search-input search-input"
+           type="search"
+           placeholder="搜尋座標 / 國家">
+
+    <span class="pikmin-leaf"></span>
+
+    <!-- 保留原本 select（但隱藏） -->
+    <select id="categoryFilter" class="category-filter" style="display:none;">
+      <option value="">全球</option>
+    </select>
+  </div>
+
+  <!-- 功能按鈕 -->
+  <div class="pikmin-toolbar-actions">
+
+    <!-- 模式 -->
+    <button id="collectionViewBtn"
+            class="pikmin-pill view-button is-active active">
+      收藏冊
+    </button>
+
+    <button id="mapViewBtn"
+            class="pikmin-pill view-button">
+      地圖
+      </button>
+    <button id="collageViewBtn" class="pikmin-pill view-button">
+    拼貼
+      
+    </button>
+
+    <!-- 分類（沿用原 class） -->
+    <button class="pikmin-pill tag-filter active is-active" data-tag="">
+      全部
+    </button>
+
+    <button class="pikmin-pill tag-filter" data-tag="花">
+      花
+    </button>
+
+    <button class="pikmin-pill tag-filter" data-tag="蘑菇">
+      蘑菇
+    </button>
+
+    <button class="pikmin-pill tag-filter" data-tag="隱藏">
+      隱藏
+    </button>
+
+    <!-- 預覽（沿用原 ID） -->
+    <button id="previewModeBtn"
+            class="pikmin-pill pikmin-preview-btn view-button">
+      預覽
+    </button>
+
+  </div>
+
+</div>
+    </header>
+
+    <section id="collectionView">
+      <div id="emptyState" class="empty-state hidden">
+        <div>🌼</div>
+        <strong>還沒有明信片</strong>
+        <p>先上傳圖片並輸入座標，就能建立第一張收藏卡。</p>
+      </div>
+      <div id="grid" class="grid"></div>
+    </section>
+
+    <section id="mapView" class="map-view hidden">
+      <div id="mapList" class="map-list"></div>
+      <div class="map-frame-wrap">
+        <iframe id="mapFrame" class="map-frame" loading="lazy"></iframe>
+        <div id="mapEmpty" class="map-empty">選擇一張明信片查看地圖</div>
+      </div>
+    </section>
+
+    <section id="collageView" class="collage-view hidden">
+      <div class="collage-shell">
+        <aside class="collage-side">
+          <div class="collage-side-head">
+            <h3>建立拼貼</h3>
+            <p>從已上傳明信片加入圖片，也可以加文字與改背景。</p>
+          </div>
+
+          <div class="collage-panel">
+            <h4>明信片圖片庫</h4>
+            <div id="collageLibraryGrid" class="collage-library-grid"></div>
+          </div>
+
+          <div class="collage-panel">
+            <h4>背景</h4>
+            <div class="color-row">
+              <button class="bg-swatch" data-bg="#fffef8" style="background:#fffef8"></button>
+              <button class="bg-swatch" data-bg="#f8f1d6" style="background:#f8f1d6"></button>
+              <button class="bg-swatch" data-bg="#eaf4ff" style="background:#eaf4ff"></button>
+              <button class="bg-swatch" data-bg="#ffeef3" style="background:#ffeef3"></button>
+              <button class="bg-swatch" data-bg="#eaf8e5" style="background:#eaf8e5"></button>
+            </div>
+            <label class="inline-control">
+              自訂
+              <input id="collageBgColor" type="color" value="#fffef8">
+            </label>
+          </div>
+
+          <div class="collage-panel">
+            <h4>新增元素</h4>
+            <button id="collageAddTextBtn" class="collage-action" type="button">加文字</button>
+            <button id="collageAddBrushBtn" class="collage-action" type="button">畫筆模式</button>
+          </div>
+        </aside>
+
+        <section class="collage-editor">
+          <div class="collage-topbar">
+            <button id="collageBackBtn" class="collage-icon-btn" type="button">← 收藏冊</button>
+            <div class="collage-history">
+              <button id="collageUndoBtn" class="collage-icon-btn" type="button">↶ 上一步</button>
+              <button id="collageRedoBtn" class="collage-icon-btn" type="button">↷ 下一步</button>
+            </div>
+            <div class="collage-export-actions">
+              <button id="collageClearBtn" class="collage-icon-btn" type="button">清空</button>
+              <button id="collageExportBtn" class="collage-icon-btn primary" type="button">匯出 PNG</button>
+            </div>
+          </div>
+
+          <div class="collage-canvas-wrap">
+            <div id="collageCanvas" class="collage-canvas">
+              <canvas id="collageBrushCanvas" class="collage-brush-canvas"></canvas>
+              <div class="collage-empty-hint">從左側圖片庫點「＋」開始拼貼</div>
+            </div>
+          </div>
+
+          <div id="collageFloatingToolbar" class="collage-floating-toolbar hidden">
+            <button id="collageDuplicateBtn" type="button" title="複製">⧉</button>
+            <button id="collageDeleteBtn" type="button" title="刪除">🗑</button>
+            <button id="collageCropBtn" type="button" title="裁切比例">✂</button>
+            <button id="collageFrontBtn" type="button" title="移到上層">⬆</button>
+            <button id="collageBackLayerBtn" type="button" title="移到下層">⬇</button>
+          </div>
+
+          <div class="collage-bottom-tools">
+            <button id="collageTextToolBtn" type="button">A 文字</button>
+            <button id="collageBrushToolBtn" type="button">〰 畫筆</button>
+            <button id="collageImageToolBtn" type="button">▧ 圖片</button>
+          </div>
+        </section>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- V28 Floating Create Menu -->
+  <button id="v28CreateFab" class="v28-create-fab" type="button" aria-label="建立">＋</button>
+  <button id="mobileUploadFab" class="mobile-upload-fab" type="button" aria-label="上傳明信片">＋</button>
+
+  <div id="v28CreateMenu" class="v28-create-menu" aria-hidden="true" style="display:none;">
+    <button class="v28-create-item" type="button" data-v28-action="upload">
+      <span>📷</span>
+      <div>
+        <strong>上傳明信片</strong>
+        <small>沿用左側圖片上傳流程</small>
+      </div>
+    </button>
+
+    <button class="v28-create-item" type="button" data-v28-action="collage">
+      <span>🧩</span>
+      <div>
+        <strong>加入拼貼</strong>
+        <small>切換到拼貼模式</small>
+      </div>
+    </button>
+
+    <button class="v28-create-item" type="button" data-v28-action="coords">
+      <span>📍</span>
+      <div>
+        <strong>輸入座標</strong>
+        <small>快速建立座標卡片</small>
+      </div>
+    </button>
+  </div>
+
+  <section id="v28CoordDialog" class="v28-coord-dialog" aria-hidden="true">
+    <div class="v28-coord-card">
+      <button id="v28CoordClose" class="v28-coord-close" type="button">×</button>
+      <h3>📍 新增座標</h3>
+      <p>會自動填入原本左側表單，仍沿用你的新增明信片流程。</p>
+
+      <label>座標</label>
+      <input id="v28CoordValue" placeholder="例如：43.592002, 142.463733">
+
+      <label>國家 / 分類</label>
+      <input id="v28CoordCountry" placeholder="例如：日本">
+
+      <button id="v28CoordApply" class="v28-coord-submit" type="button">填入原表單</button>
+    </div>
+  </section>
+
+  <div id="cardModal" class="modal hidden">
+    <div id="cardModalBackdrop" class="modal-backdrop"></div>
+    <article class="modal-panel">
+      <button id="closeCardModalBtn" class="modal-close" type="button">✕</button>
+      <img id="modalCardImage" alt="postcard">
+      <div class="modal-content">
+        <h3 id="modalCardTitle"></h3>
+        <p id="modalCardLocation"></p>
+        
+       <a id="modalMapLink" class="btn-primary" target="_blank">
+  Open Google Map
+</a>
+        <button id="modalShareCardBtn" class="share-button" type="button">分享這張明信片</button>
+      </div>
+    </article>
+  </div>
+
+  <script src="./js/firebaseConfig.js"></script>
+  <script src="./js/storage.js"></script>
+  <script src="./js/locationParser.js"></script>
+  <script src="./js/imageUpload.js"></script>
+  <script src="./js/render.js"></script>
+  <script src="./js/collageEngine.js"></script>
+
+  <!-- V28 Integrated UI Layer -->
+  <script src="./js/v28/v28-plus-menu.js"></script>
+  <script src="./js/v28/v28-ui-bridge.js"></script>
+
+  <script src="./js/app.js"></script>
+</body>
+</html>

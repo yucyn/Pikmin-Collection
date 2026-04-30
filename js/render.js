@@ -91,7 +91,14 @@ function getFilteredPostcards(filters = {}) {
     });
 }
 
+function getGoogleMapUrlFromItem(item) {
+  if (typeof createGoogleMapUrl === "function" && item.lat !== undefined && item.lng !== undefined) {
+    return createGoogleMapUrl(item.lat, item.lng);
+  }
 
+  const coords = String(item.locationText || "").trim();
+  return `https://www.google.com/maps?q=${encodeURIComponent(coords)}`;
+}
 
 function renderPostcards({
   grid,
@@ -118,65 +125,31 @@ function renderPostcards({
     const card = createEl("article", "postcard-card");
     card.dataset.id = item.id;
 
-   /* 圖片區 */
-const photo = createEl("div", "postcard-photo");
+    const photo = createEl("div", "postcard-photo");
 
-const image = createEl("img");
-
-image.onload = () => {
-  const ratio = image.naturalWidth / image.naturalHeight;
-
-  if (ratio > 1.2) {
-    image.classList.add("landscape");
-  }
-};
-
-image.src = item.image;
-image.alt = "Pikmin postcard image";
-
-photo.appendChild(image);
-    
+    const image = createEl("img");
+    image.onload = () => {
+      const ratio = image.naturalWidth / image.naturalHeight;
+      if (ratio > 1.2) image.classList.add("landscape");
+    };
+    image.src = item.image;
+    image.alt = "Pikmin postcard image";
+    photo.appendChild(image);
 
     const hoverActions = createEl("div", "postcard-hover-actions");
 
-    const mapButton = createEl("button", "float-btn map-btn", "Map");
+    const mapButton = createEl("button", "float-btn map-btn", "📍");
     mapButton.type = "button";
+    mapButton.title = "Open Google Map";
     mapButton.addEventListener("click", event => {
       event.stopPropagation();
-      window.open(createGoogleMapUrl(item.lat, item.lng), "_blank");
+      window.open(getGoogleMapUrlFromItem(item), "_blank");
     });
     hoverActions.appendChild(mapButton);
 
-    const moreButton = createEl("button", "float-btn more-btn", "⋯");
-    moreButton.type = "button";
-    moreButton.title = "更多操作";
-    moreButton.addEventListener("click", event => {
-      event.stopPropagation();
-      if (canDelete) {
-        onDeleteClick(item.id);
-      }
-      
-    });
-    hoverActions.appendChild(moreButton);
-
-    photo.appendChild(hoverActions);
-    photo.addEventListener("click", () => onCardClick(item));
-    card.appendChild(photo);
-
-    /* 資訊區 */
-    const info = createEl("div", "postcard-info");
-
-    const titleRow = createEl("div", "postcard-title-row");
-
-   const titleText = isMobileView()
-  ? formatCoords(item.locationText)
-  : `No.${titleNumber}`;
-
-const title = createEl("div", "postcard-title", titleText);
-
     const likeButton = createEl(
       "button",
-      `postcard-want ${liked ? "active" : ""}`,
+      `float-btn like-btn postcard-want ${liked ? "active" : ""}`,
       `${liked ? "❤️" : "♡"} ${formatLikeCount(item.likeCount)}`
     );
     likeButton.type = "button";
@@ -184,8 +157,58 @@ const title = createEl("div", "postcard-title", titleText);
       event.stopPropagation();
       onLikeClick(item.id);
     });
-    titleRow.appendChild(likeButton);
+    hoverActions.appendChild(likeButton);
 
+    const moreButton = createEl("button", "float-btn more-btn", "⋯");
+    moreButton.type = "button";
+    moreButton.title = "更多操作";
+    hoverActions.appendChild(moreButton);
+
+    const moreMenu = createEl("div", "postcard-more-menu");
+
+    const shareMenuButton = createEl("button", "postcard-menu-action", "分享");
+    shareMenuButton.type = "button";
+    shareMenuButton.addEventListener("click", event => {
+      event.stopPropagation();
+      onShareClick(item.id);
+      moreMenu.classList.remove("show");
+    });
+    moreMenu.appendChild(shareMenuButton);
+
+    if (canDelete) {
+      const deleteMenuButton = createEl("button", "postcard-menu-action danger", "刪除");
+      deleteMenuButton.type = "button";
+      deleteMenuButton.addEventListener("click", event => {
+        event.stopPropagation();
+        onDeleteClick(item.id);
+        moreMenu.classList.remove("show");
+      });
+      moreMenu.appendChild(deleteMenuButton);
+    }
+
+    moreButton.addEventListener("click", event => {
+      event.stopPropagation();
+      document.querySelectorAll(".postcard-more-menu.show").forEach(menu => {
+        if (menu !== moreMenu) menu.classList.remove("show");
+      });
+      moreMenu.classList.toggle("show");
+    });
+
+    hoverActions.appendChild(moreMenu);
+
+    photo.appendChild(hoverActions);
+    photo.addEventListener("click", () => onCardClick(item));
+    card.appendChild(photo);
+
+    const info = createEl("div", "postcard-info");
+
+    const titleRow = createEl("div", "postcard-title-row");
+    const titleText = isMobileView()
+      ? formatCoords(item.locationText)
+      : `No.${titleNumber}`;
+
+    const title = createEl("div", "postcard-title", titleText);
+    titleRow.appendChild(title);
     info.appendChild(titleRow);
 
     const coords = createEl("div", "postcard-coords", item.locationText || "");
@@ -205,11 +228,9 @@ const title = createEl("div", "postcard-title", titleText);
       tagEl.title = `篩選：${tag}`;
       tagEl.addEventListener("click", event => {
         event.stopPropagation();
-
         const tagButton = document.querySelector(`.tag-filter[data-tag="${tag}"]`);
         if (tagButton) tagButton.click();
       });
-
       taxonomy.appendChild(tagEl);
     }
 
@@ -225,24 +246,6 @@ const title = createEl("div", "postcard-title", titleText);
     });
     actions.appendChild(copyButton);
 
-    const shareButton = createEl("button", "v30-text-action", "分享");
-    shareButton.type = "button";
-    shareButton.addEventListener("click", event => {
-      event.stopPropagation();
-      onShareClick(item.id);
-    });
-    actions.appendChild(shareButton);
-
-    if (canDelete) {
-      const deleteButton = createEl("button", "v30-text-action danger", "刪除");
-      deleteButton.type = "button";
-      deleteButton.addEventListener("click", event => {
-        event.stopPropagation();
-        onDeleteClick(item.id);
-      });
-      actions.appendChild(deleteButton);
-    }
-
     info.appendChild(actions);
     card.appendChild(info);
 
@@ -250,7 +253,11 @@ const title = createEl("div", "postcard-title", titleText);
   });
 }
 
-
+document.addEventListener("click", event => {
+  if (!event.target.closest(".more-btn") && !event.target.closest(".postcard-more-menu")) {
+    document.querySelectorAll(".postcard-more-menu.show").forEach(menu => menu.classList.remove("show"));
+  }
+});
 
 function renderMapList({ mapList, onSelect, filters }) {
   const list = getFilteredPostcards(filters);

@@ -394,7 +394,19 @@ document.addEventListener("DOMContentLoaded", function () {
 
     if (!scrollBtn) return;
 
-    scrollBtn.setAttribute("aria-label", "回到頂部");
+   scrollBtn.setAttribute("aria-label", "回到頂部");
+
+/* 👇 加這段 */
+scrollBtn.innerHTML = `
+  <svg viewBox="0 0 24 24">
+    <path d="M5 15.5L12 8.5L19 15.5"
+      fill="none"
+      stroke="currentColor"
+      stroke-width="3.8"
+      stroke-linecap="round"
+      stroke-linejoin="round"/>
+  </svg>
+`;
     scrollBtn.classList.add("scroll-top-fab");
 
     scrollBtn.addEventListener("click", event => {

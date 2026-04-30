@@ -1,5 +1,5 @@
 const ADMIN_USER_IDS = [
-  "你的Firebase UID"
+  "am42ZiJikLNEt8RSsWipgBDj4h32"
 ];
 
 function isAdminUser() {

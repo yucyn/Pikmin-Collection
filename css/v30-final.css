@@ -674,3 +674,22 @@
     bottom: 0;
   }
 }
+/* 你原本的東西 */
+....
+
+/* ===== Mobile App UI ===== */
+@media (max-width: 768px) {
+
+  body {
+    flex-direction: column;
+  }
+
+  .main {
+    padding: 16px !important;
+  }
+
+  .main-header {
+    margin-bottom: 12px !important;
+  }
+
+}

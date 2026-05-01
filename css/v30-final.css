@@ -725,3 +725,23 @@ button.tag-filter:not(.pikmin-pill) {
 input:not(.pikmin-search-input) {
   display: none !important;
 }
+/* 🔥 隱藏預覽模式橫幅 */
+#previewModeBanner {
+  display: none !important;
+}
+
+/* 🔥 刪掉所有舊 toolbar */
+.toolbar:not(.pikmin-toolbar) {
+  display: none !important;
+}
+
+/* 🔥 舊按鈕（方形）全部隱藏 */
+button.view-button:not(.pikmin-pill),
+button.tag-filter:not(.pikmin-pill) {
+  display: none !important;
+}
+
+/* 🔥 舊搜尋框（避免出現兩個） */
+input:not(.pikmin-search-input) {
+  display: none !important;
+}

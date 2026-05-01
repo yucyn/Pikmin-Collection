@@ -744,3 +744,12 @@
 #scrollTopBtn:active {
   transform: scale(0.92) !important;
 }
+/* 手機版隱藏預覽模式主標題 */
+@media (max-width: 768px) {
+  .preview-mode-title,
+  .preview-title,
+  .main h2,
+  .main-header h2 {
+    display: none !important;
+  }
+}

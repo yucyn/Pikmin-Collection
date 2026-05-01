@@ -801,3 +801,33 @@
     display: none !important;
   }
 }
+/* ✅ 桌機版：恢復回頂部按鈕，不顯示手機上傳＋ */
+@media (min-width: 769px) {
+  #mobileUploadFab {
+    display: none !important;
+  }
+
+  #v28CreateFab {
+    display: flex !important;
+    position: fixed !important;
+    right: 20px !important;
+    bottom: 20px !important;
+
+    width: 58px !important;
+    height: 58px !important;
+    border-radius: 50% !important;
+
+    background: #8ccc6b !important;
+    color: #fff !important;
+    font-size: 0 !important;
+    z-index: 6000 !important;
+  }
+
+  #v28CreateFab::before {
+    content: "⌃";
+    font-size: 34px;
+    font-weight: 900;
+    line-height: 1;
+    color: #fff;
+  }
+}

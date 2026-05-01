@@ -530,119 +530,73 @@
     height:5.5px !important;
   }
 }
+/* =========================================================
+   V30 Clean UI Overrides — no HTML / JS structure changes
+   Purpose:
+   1) keep existing grid/card/modal styles
+   2) keep only the current Pikmin toolbar visible
+   3) desktop upload tabs restored
+   4) mobile upload uses only the central upload box
+   5) prevent broad selectors from hiding unrelated controls
+   ========================================================= */
 
-/* ===== Scroll Top FAB Final ===== */
-#v28CreateFab.scroll-top-fab,
-#scrollTopBtn,
-.v28-create-fab.scroll-top-fab{
-  position:fixed !important;
-  right:20px !important;
-  bottom:20px !important;
-
-  width:58px !important;
-  height:58px !important;
-  min-width:58px !important;
-  min-height:58px !important;
-
-  border:none !important;
-  border-radius:50% !important;
-  padding:0 !important;
-
-  display:flex !important;
-  align-items:center !important;
-  justify-content:center !important;
-
-  background:linear-gradient(135deg,#7fbf6a,#9cd67f) !important;
-  color:#fff !important;
-
-  box-shadow:0 10px 24px rgba(120,180,100,.35) !important;
-  cursor:pointer !important;
-  z-index:9999 !important;
-
-  font-size:0 !important;
-  line-height:1 !important;
-  appearance:none !important;
-  -webkit-appearance:none !important;
-
-  transition:transform .22s ease, box-shadow .22s ease, opacity .22s ease !important;
+/* Hide preview banner only; do not affect app functions */
+#previewModeBanner {
+  display: none !important;
 }
 
-#v28CreateFab.scroll-top-fab svg,
-#scrollTopBtn svg,
-.v28-create-fab.scroll-top-fab svg{
-  width:26px !important;
-  height:26px !important;
-  display:block !important;
-  color:#fff !important;
-  background:transparent !important;
-  box-shadow:none !important;
-  pointer-events:none !important;
+/* Hide the temporary top test panel without touching the real toolbar */
+.main > .control-panel,
+.v28-scope > .control-panel,
+.main > .top-bar,
+.v28-scope > .top-bar {
+  display: none !important;
 }
 
-#v28CreateFab.scroll-top-fab:hover,
-#scrollTopBtn:hover{
-  transform:translateY(-3px) !important;
-  box-shadow:0 14px 30px rgba(120,180,100,.42) !important;
+/* Hide only legacy toolbars; keep the active Pikmin toolbar */
+.toolbar:not(.pikmin-toolbar) {
+  display: none !important;
 }
 
-#v28CreateFab.scroll-top-fab:active,
-#scrollTopBtn:active{
-  transform:scale(.92) !important;
+.pikmin-toolbar,
+.toolbar.pikmin-toolbar {
+  display: flex !important;
 }
 
-#v28CreateMenu{
-  display:none !important;
-}
+/* Important: do NOT use broad button:not(.pikmin-pill) or input:not(...) selectors. */
 
-
-/* ===== Mobile App Upload Sheet Final ===== */
-@media (max-width: 768px) {
-
-  /* 隱藏 + 按鈕選單 */
-  #v28CreateFab,
-  #v28CreateMenu {
-    display: none !important;
-  }
-
-  /* ❌ 關閉拖曳 / 貼上 */
-  #modeDragBtn,
-  #dragPanel,
-  #modePasteBtn,
-  #pastePanel {
-    display: none !important;
-  }
-
-  /* ❌ 隱藏上方 tabs（只留中間上傳） */
+/* Desktop / tablet upload UI: show all three tabs */
+@media (min-width: 769px) {
   .upload-tabs {
-    display: none !important;
+    display: grid !important;
+    visibility: visible !important;
+    opacity: 1 !important;
   }
 
-  /* ❌ 隱藏「選擇圖片」按鈕 */
-  #modeFileBtn {
-    display: none !important;
+  #modeFileBtn,
+  #modeDragBtn,
+  #modePasteBtn {
+    display: inline-flex !important;
+    visibility: visible !important;
+    opacity: 1 !important;
   }
 
+  #mobileUploadFab {
+    display: none !important;
+    visibility: hidden !important;
+    opacity: 0 !important;
+    pointer-events: none !important;
+  }
 }
 
-  .mobile-upload-fab,
-  #mobileUploadFab {
-    position: fixed !important;
-    right: 22px !important;
-    bottom: 86px !important;
-    width: 64px !important;
-    height: 64px !important;
-    border-radius: 999px !important;
-    border: none !important;
-    display: grid !important;
-    place-items: center !important;
-    background: linear-gradient(135deg, #78c96b, #9bd66b) !important;
-    color: white !important;
-    font-size: 34px !important;
-    font-weight: 800 !important;
-    line-height: 1 !important;
-    z-index: 6000 !important;
-    box-shadow: 0 14px 32px rgba(47, 116, 56, 0.35) !important;
-    cursor: pointer !important;
+/* Mobile upload sheet: only keep the central upload box */
+@media (max-width: 768px) {
+  body {
+    flex-direction: column !important;
+  }
+
+  .main {
+    padding: 16px !important;
   }
 
   .sidebar {
@@ -665,18 +619,6 @@
     bottom: 0 !important;
   }
 
-  body {
-    flex-direction: column !important;
-  }
-
-  .main {
-    padding: 16px !important;
-  }
-
-  .main-header {
-    margin-bottom: 12px !important;
-  }
-
   .brand {
     gap: 8px !important;
     margin-bottom: 10px !important;
@@ -691,16 +633,24 @@
     line-height: 1.35 !important;
   }
 
-@media (max-width: 768px) {
-  .upload-tabs {
-    gap: 6px !important;
-    margin-bottom: 8px !important;
+  /* Hide tab buttons on mobile */
+  .upload-tabs,
+  #modeFileBtn,
+  #modeDragBtn,
+  #modePasteBtn,
+  #dragPanel,
+  #pastePanel {
+    display: none !important;
   }
-}
-  
-  .tab-button {
-    padding: 6px 4px !important;
-    font-size: 12px !important;
+
+  /* Keep the central click-to-upload box */
+  #filePanel {
+    display: block !important;
+  }
+
+  #selectFileBtn {
+    display: flex !important;
+    cursor: pointer !important;
   }
 
   .upload-box {
@@ -727,60 +677,14 @@
     padding: 10px !important;
     font-size: 14px !important;
   }
-}
 
-@media (min-width: 769px) {
-  #mobileUploadFab {
+  #v28CreateFab,
+  #v28CreateMenu {
     display: none !important;
   }
 }
-/* 🔥 強制刪掉所有舊 toolbar（方形按鈕那排） */
-.toolbar:not(.pikmin-toolbar) {
-  display: none !important;
-}
 
-/* 🔥 舊按鈕樣式（方形）全部隱藏 */
-button.view-button:not(.pikmin-pill),
-button.tag-filter:not(.pikmin-pill) {
-  display: none !important;
-}
-
-
-/* 🔥 隱藏預覽模式橫幅 */
-#previewModeBanner {
-  display: none !important;
-}
-
-/* 🔥 刪掉所有舊 toolbar */
-.toolbar:not(.pikmin-toolbar) {
-  display: none !important;
-}
-
-/* 🔥 舊按鈕（方形）全部隱藏 */
-button.view-button:not(.pikmin-pill),
-button.tag-filter:not(.pikmin-pill) {
-  display: none !important;
-}
-
-/* 🔥 左上角殘留舊按鈕（最後一刀） */
-.main-header button:not(.pikmin-pill) {
-  display: none !important;
-}
-/* 🔥 最終清掉上方舊版 test UI */
-.main > .control-panel,
-.v28-scope > .control-panel,
-.main > .top-bar,
-.v28-scope > .top-bar {
-  display: none !important;
-}
-
-/* 只保留新版 Pikmin toolbar */
-.pikmin-toolbar,
-.toolbar.pikmin-toolbar {
-  display: flex !important;
-}
-/* ===== 右下角兩個 FAB：大小顏色完全一致 ===== */
-
+/* Matching floating action buttons */
 #mobileUploadFab,
 #v28CreateFab,
 #scrollTopBtn,
@@ -789,66 +693,52 @@ button.tag-filter:not(.pikmin-pill) {
   height: 58px !important;
   min-width: 58px !important;
   min-height: 58px !important;
-
   right: 18px !important;
-
   border: none !important;
   border-radius: 50% !important;
-
   display: flex !important;
   align-items: center !important;
   justify-content: center !important;
-
   background: #8ccc6b !important;
   color: #ffffff !important;
-
   box-shadow: 0 10px 24px rgba(80, 140, 80, 0.32) !important;
-
   font-weight: 900 !important;
   line-height: 1 !important;
   z-index: 6000 !important;
 }
 
-/* ＋ 按鈕位置 */
 #mobileUploadFab {
+  position: fixed !important;
   bottom: 92px !important;
   font-size: 36px !important;
 }
 
-/* 回頂部按鈕位置 */
 #v28CreateFab,
 #scrollTopBtn,
 .v28-create-fab.scroll-top-fab {
+  position: fixed !important;
   bottom: 24px !important;
   font-size: 0 !important;
 }
 
-/* 回頂部 SVG 圖示 */
 #v28CreateFab svg,
 #scrollTopBtn svg,
 .v28-create-fab.scroll-top-fab svg {
   width: 28px !important;
   height: 28px !important;
   color: #ffffff !important;
+  display: block !important;
+  pointer-events: none !important;
 }
 
-/* 桌機不要顯示上傳 + */
-@media (min-width: 769px) {
-  #mobileUploadFab {
-    display: none !important;
-  }
+#v28CreateFab:hover,
+#mobileUploadFab:hover,
+#scrollTopBtn:hover {
+  transform: translateY(-3px) scale(1.05) !important;
 }
-/* 🔥 桌機強制恢復 upload tabs */
-@media (min-width: 769px) {
 
-  .upload-tabs {
-    display: grid !important;
-  }
-
-  #modeFileBtn,
-  #modeDragBtn,
-  #modePasteBtn {
-    display: inline-flex !important;
-  }
-
+#v28CreateFab:active,
+#mobileUploadFab:active,
+#scrollTopBtn:active {
+  transform: scale(0.92) !important;
 }

@@ -445,7 +445,7 @@
   cursor:pointer;
 }
 
-@media (max-width: 768px) {
+
 /* Mobile */
 @media(max-width:600px){
   .v28-scope #grid .postcard-card,
@@ -455,7 +455,7 @@
     box-shadow:none !important;
     border:none !important;
   }
-}
+
 
   .postcard-coords:active {
     opacity: 0.6;

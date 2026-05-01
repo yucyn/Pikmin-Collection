@@ -710,7 +710,18 @@
     display: none !important;
   }
 }
-/* 強制隱藏舊 UI 區塊 */
-.main-header > div:first-child {
+/* 🔥 強制刪掉所有舊 toolbar（方形按鈕那排） */
+.toolbar:not(.pikmin-toolbar) {
+  display: none !important;
+}
+
+/* 🔥 舊按鈕樣式（方形）全部隱藏 */
+button.view-button:not(.pikmin-pill),
+button.tag-filter:not(.pikmin-pill) {
+  display: none !important;
+}
+
+/* 🔥 如果還殘留搜尋框（舊版） */
+input:not(.pikmin-search-input) {
   display: none !important;
 }

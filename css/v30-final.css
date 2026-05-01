@@ -597,40 +597,32 @@
 
 /* ===== Mobile App Upload Sheet Final ===== */
 @media (max-width: 768px) {
+
+  /* 隱藏 + 按鈕選單 */
   #v28CreateFab,
   #v28CreateMenu {
     display: none !important;
-}
-    
-    /* ❌ 手機版關閉拖曳功能 */
-  #modeDragBtn,
-  #dragPanel {
-    display: none !important;
-   }
-/* 手機版只保留選擇圖片 */
-#modeDragBtn,
-#dragPanel,
-#modePasteBtn,
-#pastePanel {
-  display: none !important;
-}
-
-/* 手機版按鈕只剩一個，撐滿 */
-.upload-tabs {
-  grid-template-columns: 1fr !important;
-}
-  /* 🔥 手機版只留中間上傳區 */
-
-/* ❌ 隱藏上面「選擇圖片」按鈕 */
-#modeFileBtn {
-  display: none !important;
-}
-
-/* ❌ 如果還有 tabs 整排 */
-.upload-tabs {
-  display: none !important;
-} 
   }
+
+  /* ❌ 關閉拖曳 / 貼上 */
+  #modeDragBtn,
+  #dragPanel,
+  #modePasteBtn,
+  #pastePanel {
+    display: none !important;
+  }
+
+  /* ❌ 隱藏上方 tabs（只留中間上傳） */
+  .upload-tabs {
+    display: none !important;
+  }
+
+  /* ❌ 隱藏「選擇圖片」按鈕 */
+  #modeFileBtn {
+    display: none !important;
+  }
+
+}
 
   .mobile-upload-fab,
   #mobileUploadFab {

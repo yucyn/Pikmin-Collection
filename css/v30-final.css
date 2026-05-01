@@ -745,3 +745,8 @@
   transform: scale(0.92) !important;
 }
 
+@media (max-width: 768px) {
+  .postcard-info .postcard-coords:nth-child(1) {
+    display: none !important;
+  }
+}

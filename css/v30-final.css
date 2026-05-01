@@ -741,11 +741,20 @@ button.tag-filter:not(.pikmin-pill) {
   display: none !important;
 }
 
-/* 🔥 舊搜尋框（避免出現兩個） */
-input:not(.pikmin-search-input) {
-  display: none !important;
-}
 /* 🔥 左上角殘留舊按鈕（最後一刀） */
 .main-header button:not(.pikmin-pill) {
   display: none !important;
+}
+/* 🔥 最終清掉上方舊版 test UI */
+.main > .control-panel,
+.v28-scope > .control-panel,
+.main > .top-bar,
+.v28-scope > .top-bar {
+  display: none !important;
+}
+
+/* 只保留新版 Pikmin toolbar */
+.pikmin-toolbar,
+.toolbar.pikmin-toolbar {
+  display: flex !important;
 }

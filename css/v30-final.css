@@ -738,48 +738,51 @@
   }
 }
 /* =========================
-   MOBILE FINAL (唯一版本)
+   MOBILE FINAL — 唯一手機卡片樣式
    ========================= */
 @media (max-width: 768px) {
 
-  /* 卡片 → 無背景（乾淨版） */
-  #grid .postcard-card {
+  .v28-scope #grid .postcard-card,
+  #grid .postcard-card,
+  .v28-scope #grid.grid .postcard-card {
     background: transparent !important;
     box-shadow: none !important;
     border: none !important;
     padding: 0 !important;
+    border-radius: 0 !important;
   }
 
-  /* 圖片 */
+  .v28-scope #grid .postcard-photo,
   #grid .postcard-photo {
     border-radius: 18px !important;
+    overflow: hidden !important;
   }
 
-  /* 資訊區 */
+  .v28-scope #grid .postcard-info,
   #grid .postcard-info {
     background: transparent !important;
+    box-shadow: none !important;
+    border: none !important;
     padding: 8px 2px 0 !important;
     margin: 0 !important;
   }
 
-  /* 🔥 主標（大 + 好點） */
+  .v28-scope .postcard-title,
   .postcard-title {
     font-size: 16px !important;
     line-height: 1.45 !important;
     letter-spacing: 0.5px !important;
-
     white-space: normal !important;
     overflow: visible !important;
     text-overflow: unset !important;
-
     padding: 8px 6px !important;
     margin: 6px -6px !important;
-
     cursor: pointer !important;
   }
 
-  /* 🔥 座標（只留一行） */
+  .v28-scope .postcard-coords,
   .postcard-coords {
+    display: block !important;
     font-size: 14px !important;
     font-weight: 800 !important;
     margin-top: 6px !important;
@@ -789,15 +792,14 @@
     display: none !important;
   }
 
-  /* 國家 */
+  .v28-scope .postcard-country,
   .postcard-country {
     font-size: 15px !important;
     font-weight: 800 !important;
   }
 
-  /* 標籤 */
+  .v28-scope .postcard-tag,
   .postcard-tag {
     font-size: 12px !important;
   }
-
 }

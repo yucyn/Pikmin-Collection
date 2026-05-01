@@ -855,3 +855,41 @@
     color: #fff;
   }
 }
+/* 手機版：獨立回頂部按鈕 */
+@media (max-width: 768px) {
+  #mobileScrollTopFab {
+    position: fixed !important;
+    right: 20px !important;
+    bottom: 24px !important;
+
+    width: 58px !important;
+    height: 58px !important;
+    border: none !important;
+    border-radius: 50% !important;
+
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+
+    background: #8ccc6b !important;
+    color: #fff !important;
+
+    font-size: 34px !important;
+    font-weight: 900 !important;
+    line-height: 1 !important;
+
+    box-shadow: 0 10px 24px rgba(80, 140, 80, 0.32) !important;
+    z-index: 7000 !important;
+  }
+
+  #mobileUploadFab {
+    bottom: 100px !important;
+  }
+}
+
+/* 桌機隱藏手機專用回頂部 */
+@media (min-width: 769px) {
+  #mobileScrollTopFab {
+    display: none !important;
+  }
+}

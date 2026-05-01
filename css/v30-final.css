@@ -467,9 +467,11 @@
   }
 
   .v28-scope .postcard-coords,
-  .postcard-coords{
-    display:none !important;
-  }
+ .postcard-coords{
+  display:block !important;
+  font-size:12px !important;
+  margin-top:4px !important;
+}
 
   .v28-scope .postcard-title,
   .postcard-title{

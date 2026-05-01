@@ -445,15 +445,26 @@
   cursor:pointer;
 }
 
-/* Mobile */
-@media(max-width:600px){
-  .v28-scope #grid .postcard-card,
-  #grid .postcard-card{
-    padding:0 !important;
-    background:transparent !important;
-    box-shadow:none !important;
-    border:none !important;
+@media (max-width: 768px) {
+
+  /* 🔥 座標（手機版放大 + 好點） */
+  .postcard-coords {
+    font-size: 14px !important;      /* 放大 */
+    font-weight: 700 !important;
+    letter-spacing: 0.4px !important;
+
+    padding: 6px 4px !important;     /* 擴大點擊區 */
+    margin: 4px -4px !important;
+
+    cursor: pointer !important;
   }
+
+  .postcard-coords:active {
+    opacity: 0.6;
+    transform: scale(0.96);
+  }
+
+}
 
   .v28-scope #grid .postcard-photo,
   #grid .postcard-photo{

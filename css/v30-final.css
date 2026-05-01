@@ -873,17 +873,6 @@
   #mobileUploadFab {
     bottom: 100px !important;
   }
-}
-
-/* 桌機：隱藏手機專用回頂部 */
-@media (min-width: 769px) {
-  #mobileScrollTopFab {
-    display: none !important;
-    visibility: hidden !important;
-    opacity: 0 !important;
-    pointer-events: none !important;
-  }
-}
 /* ✅ 固定桌機回頂部 icon 尺寸，不隨視窗縮放 */
 #v28CreateFab {
   width: 58px !important;
@@ -896,6 +885,19 @@
   font-size: 0 !important;
   line-height: 1 !important;
 }
+   
+}
+
+/* 桌機：隱藏手機專用回頂部 */
+@media (min-width: 769px) {
+  #mobileScrollTopFab {
+    display: none !important;
+    visibility: hidden !important;
+    opacity: 0 !important;
+    pointer-events: none !important;
+  }
+}
+
 
 /* 如果回頂部是 SVG */
 #v28CreateFab svg {
@@ -913,3 +915,4 @@
   font-size: 28px !important;
   line-height: 1 !important;
 }
+

@@ -721,10 +721,7 @@ button.tag-filter:not(.pikmin-pill) {
   display: none !important;
 }
 
-/* 🔥 如果還殘留搜尋框（舊版） */
-input:not(.pikmin-search-input) {
-  display: none !important;
-}
+
 /* 🔥 隱藏預覽模式橫幅 */
 #previewModeBanner {
   display: none !important;

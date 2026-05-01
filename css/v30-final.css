@@ -906,11 +906,15 @@
   }
 }
 
-/* 上傳模式按鈕置中 */
-.mode-btn,
-.upload-mode button {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  text-align: center;
+/* 上傳三顆按鈕文字置中 */
+.upload-tabs .tab-button {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+
+  text-align: center !important;
+  line-height: 1 !important;
+
+  padding-left: 0 !important;
+  padding-right: 0 !important;
 }

@@ -758,3 +758,62 @@ button.tag-filter:not(.pikmin-pill) {
 .toolbar.pikmin-toolbar {
   display: flex !important;
 }
+/* ===== 右下角兩個 FAB：大小顏色完全一致 ===== */
+
+#mobileUploadFab,
+#v28CreateFab,
+#scrollTopBtn,
+.v28-create-fab.scroll-top-fab {
+  width: 58px !important;
+  height: 58px !important;
+  min-width: 58px !important;
+  min-height: 58px !important;
+
+  right: 18px !important;
+
+  border: none !important;
+  border-radius: 50% !important;
+
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+
+  background: #8ccc6b !important;
+  color: #ffffff !important;
+
+  box-shadow: 0 10px 24px rgba(80, 140, 80, 0.32) !important;
+
+  font-weight: 900 !important;
+  line-height: 1 !important;
+  z-index: 6000 !important;
+}
+
+/* ＋ 按鈕位置 */
+#mobileUploadFab {
+  bottom: 92px !important;
+  font-size: 36px !important;
+}
+
+/* 回頂部按鈕位置 */
+#v28CreateFab,
+#scrollTopBtn,
+.v28-create-fab.scroll-top-fab {
+  bottom: 24px !important;
+  font-size: 0 !important;
+}
+
+/* 回頂部 SVG 圖示 */
+#v28CreateFab svg,
+#scrollTopBtn svg,
+.v28-create-fab.scroll-top-fab svg {
+  width: 28px !important;
+  height: 28px !important;
+  color: #ffffff !important;
+}
+
+/* 桌機不要顯示上傳 + */
+@media (min-width: 769px) {
+  #mobileUploadFab {
+    display: none !important;
+  }
+}

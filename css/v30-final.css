@@ -447,17 +447,11 @@
 
 @media (max-width: 768px) {
 
-  /* 🔥 座標（手機版放大 + 好點） */
-  .postcard-coords {
-    font-size: 14px !important;      /* 放大 */
-    font-weight: 700 !important;
-    letter-spacing: 0.4px !important;
-
-    padding: 6px 4px !important;     /* 擴大點擊區 */
-    margin: 4px -4px !important;
-
-    cursor: pointer !important;
+  @media(max-width:600px){
+  .postcard-coords{
+    font-size:12px !important;
   }
+}
 
   .postcard-coords:active {
     opacity: 0.6;

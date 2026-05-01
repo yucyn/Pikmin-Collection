@@ -799,11 +799,16 @@
 
   
 }
-/* ✅ 桌機版：恢復回頂部按鈕，不顯示手機上傳＋ */
 @media (min-width: 769px) {
-  #mobileUploadFab {
+  #mobileScrollTopFab {
     display: none !important;
   }
+
+  #v28CreateFab {
+    bottom: 24px !important;
+  }
+}
+
 
   #v28CreateFab {
     display: flex !important;

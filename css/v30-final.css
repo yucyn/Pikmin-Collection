@@ -792,3 +792,51 @@
   }
 
 }
+/* ✅ 手機版恢復乾淨卡片 UI */
+@media (max-width: 768px) {
+
+  #grid,
+  #grid.grid,
+  .v28-scope #grid {
+    gap: 24px 18px !important;
+  }
+
+  #grid .postcard-card,
+  .v28-scope #grid .postcard-card {
+    background: transparent !important;
+    box-shadow: none !important;
+    border: none !important;
+    padding: 0 !important;
+    border-radius: 0 !important;
+  }
+
+  #grid .postcard-photo,
+  .v28-scope #grid .postcard-photo {
+    border-radius: 18px !important;
+    overflow: hidden !important;
+  }
+
+  #grid .postcard-info,
+  .v28-scope #grid .postcard-info {
+    background: transparent !important;
+    box-shadow: none !important;
+    border: none !important;
+    padding: 8px 2px 0 !important;
+    margin: 0 !important;
+  }
+
+  .postcard-coords {
+    font-size: 14px !important;
+    font-weight: 800 !important;
+    margin-top: 6px !important;
+  }
+
+  .postcard-country {
+    font-size: 16px !important;
+    font-weight: 800 !important;
+  }
+
+  .postcard-tag {
+    font-size: 12px !important;
+  }
+}

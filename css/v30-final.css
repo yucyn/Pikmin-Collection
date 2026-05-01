@@ -797,9 +797,8 @@
   }
 
   #v28CreateFab,
-  #v28CreateMenu {
     display: none !important;
-  }
+  
 }
 /* ✅ 桌機版：恢復回頂部按鈕，不顯示手機上傳＋ */
 @media (min-width: 769px) {

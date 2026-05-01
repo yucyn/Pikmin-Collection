@@ -676,3 +676,15 @@ document.addEventListener("click", async (e) => {
     console.error("copy failed", err);
   }
 });
+// 手機獨立回頂部
+document.addEventListener("DOMContentLoaded", () => {
+  const btn = document.getElementById("mobileScrollTopFab");
+  if (!btn) return;
+
+  btn.addEventListener("click", () => {
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth"
+    });
+  });
+});

@@ -619,7 +619,17 @@
 .upload-tabs {
   grid-template-columns: 1fr !important;
 }
-  
+  /* 🔥 手機版只留中間上傳區 */
+
+/* ❌ 隱藏上面「選擇圖片」按鈕 */
+#modeFileBtn {
+  display: none !important;
+}
+
+/* ❌ 如果還有 tabs 整排 */
+.upload-tabs {
+  display: none !important;
+} 
   }
 
   .mobile-upload-fab,

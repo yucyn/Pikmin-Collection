@@ -826,13 +826,7 @@
     z-index: 6000 !important;
   }
 
-  #v28CreateFab::before {
-    content: "⌃";
-    font-size: 34px;
-    font-weight: 900;
-    line-height: 1;
-    color: #fff;
-  }
+  
 }
 
 

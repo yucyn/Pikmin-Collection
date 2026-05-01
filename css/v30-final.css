@@ -761,3 +761,25 @@
 .postcard-coords:active {
   opacity: 0.6;
 }
+@media (max-width: 768px) {
+
+  /* 🔥 主標優化（大 + 好點） */
+  .postcard-title {
+    font-size: 15px !important;      /* 放大 */
+    line-height: 1.5 !important;
+    letter-spacing: 0.6px !important; /* 拉開字距 */
+
+    padding: 8px 6px !important;     /* 擴大點擊區 */
+    margin: 6px -6px !important;
+
+    cursor: pointer !important;
+    user-select: text !important;
+  }
+
+  /* 點擊效果 */
+  .postcard-title:active {
+    opacity: 0.6;
+    transform: scale(0.96);
+  }
+
+}

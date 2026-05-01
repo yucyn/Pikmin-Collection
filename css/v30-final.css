@@ -600,6 +600,11 @@
   #v28CreateFab,
   #v28CreateMenu {
     display: none !important;
+    /* ❌ 手機版關閉拖曳功能 */
+  #modeDragBtn,
+  #dragPanel {
+    display: none !important;
+  }
   }
 
   .mobile-upload-fab,

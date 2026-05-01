@@ -841,12 +841,7 @@
     font-size: 0 !important;
   }
 
-  #v28CreateFab::before {
-    content: "⌃";
-    font-size: 34px;
-    font-weight: 900;
-    color: #fff;
-  }
+  
 }
 /* 手機版：獨立回頂部按鈕 */
 @media (max-width: 768px) {

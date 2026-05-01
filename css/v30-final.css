@@ -446,10 +446,14 @@
 }
 
 @media (max-width: 768px) {
-
-  @media(max-width:600px){
-  .postcard-coords{
-    font-size:12px !important;
+/* Mobile */
+@media(max-width:600px){
+  .v28-scope #grid .postcard-card,
+  #grid .postcard-card{
+    padding:0 !important;
+    background:transparent !important;
+    box-shadow:none !important;
+    border:none !important;
   }
 }
 

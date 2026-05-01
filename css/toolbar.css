@@ -4,3 +4,38 @@
   flex-direction: column;
   gap: 10px;
 }
+/* ===== Upload Tabs Final Restore ===== */
+
+/* 桌機：恢復三個上傳按鈕 */
+@media (min-width: 769px) {
+  .upload-tabs {
+    display: grid !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+  }
+
+  #modeFileBtn,
+  #modeDragBtn,
+  #modePasteBtn {
+    display: inline-flex !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+  }
+}
+
+/* 手機：只留中間點擊上傳 */
+@media (max-width: 768px) {
+  .upload-tabs,
+  #modeFileBtn,
+  #modeDragBtn,
+  #modePasteBtn,
+  #dragPanel,
+  #pastePanel {
+    display: none !important;
+  }
+
+  #filePanel,
+  #selectFileBtn {
+    display: flex !important;
+  }
+}

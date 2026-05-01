@@ -886,9 +886,12 @@
   }
 }
 
-/* 桌機隱藏手機專用回頂部 */
+/* 桌機：隱藏手機專用回頂部 */
 @media (min-width: 769px) {
   #mobileScrollTopFab {
     display: none !important;
+    visibility: hidden !important;
+    opacity: 0 !important;
+    pointer-events: none !important;
   }
 }

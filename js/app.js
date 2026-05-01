@@ -570,3 +570,35 @@ function toggleHero() {
   if (!hero) return;
   hero.classList.toggle('collapsed');
 }
+// 🔥 點擊座標 → 複製
+document.addEventListener("click", async (e) => {
+  const el = e.target.closest(".postcard-coords");
+  if (!el) return;
+
+  const text = el.innerText.trim();
+  if (!text) return;
+
+  try {
+    await navigator.clipboard.writeText(text);
+
+    // Toast 提示
+    const toast = document.createElement("div");
+    toast.innerText = "已複製座標";
+    toast.style.position = "fixed";
+    toast.style.bottom = "110px";
+    toast.style.left = "50%";
+    toast.style.transform = "translateX(-50%)";
+    toast.style.background = "rgba(0,0,0,0.75)";
+    toast.style.color = "#fff";
+    toast.style.padding = "10px 16px";
+    toast.style.borderRadius = "999px";
+    toast.style.fontSize = "13px";
+    toast.style.zIndex = "9999";
+
+    document.body.appendChild(toast);
+    setTimeout(() => toast.remove(), 1200);
+
+  } catch (err) {
+    console.error("copy failed", err);
+  }
+});

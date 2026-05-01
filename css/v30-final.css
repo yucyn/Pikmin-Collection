@@ -446,15 +446,6 @@
 }
 
 
-/* Mobile */
-@media(max-width:600px){
-  .v28-scope #grid .postcard-card,
-  #grid .postcard-card{
-    padding:0 !important;
-    background:transparent !important;
-    box-shadow:none !important;
-    border:none !important;
-  }
 
 
   .postcard-coords:active {
@@ -600,100 +591,6 @@
   }
 }
 
-/* Mobile upload sheet: only keep the central upload box */
-@media (max-width: 768px) {
-  body {
-    flex-direction: column !important;
-  }
-
-  .main {
-    padding: 16px !important;
-  }
-
-  .sidebar {
-    position: fixed !important;
-    left: 0 !important;
-    right: 0 !important;
-    bottom: -100% !important;
-    width: 100% !important;
-    height: 78vh !important;
-    padding: 12px !important;
-    background: #fffdf2 !important;
-    border-radius: 24px 24px 0 0 !important;
-    z-index: 5000 !important;
-    overflow-y: auto !important;
-    transition: bottom 0.35s ease !important;
-    box-shadow: 0 -18px 40px rgba(31, 48, 28, 0.18) !important;
-  }
-
-  .sidebar.open {
-    bottom: 0 !important;
-  }
-
-  .brand {
-    gap: 8px !important;
-    margin-bottom: 10px !important;
-  }
-
-  .brand h1 {
-    font-size: 18px !important;
-  }
-
-  .brand p {
-    font-size: 12px !important;
-    line-height: 1.35 !important;
-  }
-
-  /* Hide tab buttons on mobile */
-  .upload-tabs,
-  #modeFileBtn,
-  #modeDragBtn,
-  #modePasteBtn,
-  #dragPanel,
-  #pastePanel {
-    display: none !important;
-  }
-
-  /* Keep the central click-to-upload box */
-  #filePanel {
-    display: block !important;
-  }
-
-  #selectFileBtn {
-    display: flex !important;
-    cursor: pointer !important;
-  }
-
-  .upload-box {
-    min-height: 80px !important;
-    padding: 8px !important;
-    font-size: 13px !important;
-  }
-
-  .upload-box strong {
-    font-size: 14px !important;
-  }
-
-  .upload-box small {
-    font-size: 11px !important;
-  }
-
-  .input {
-    padding: 9px !important;
-    font-size: 13px !important;
-    margin: 6px 0 !important;
-  }
-
-  .primary-button {
-    padding: 10px !important;
-    font-size: 14px !important;
-  }
-
-  #v28CreateFab,
-  #v28CreateMenu {
-    display: none !important;
-  }
-}
 
 /* Matching floating action buttons */
 #mobileUploadFab,
@@ -839,4 +736,68 @@
   .postcard-tag {
     font-size: 12px !important;
   }
+}
+/* =========================
+   MOBILE FINAL (唯一版本)
+   ========================= */
+@media (max-width: 768px) {
+
+  /* 卡片 → 無背景（乾淨版） */
+  #grid .postcard-card {
+    background: transparent !important;
+    box-shadow: none !important;
+    border: none !important;
+    padding: 0 !important;
+  }
+
+  /* 圖片 */
+  #grid .postcard-photo {
+    border-radius: 18px !important;
+  }
+
+  /* 資訊區 */
+  #grid .postcard-info {
+    background: transparent !important;
+    padding: 8px 2px 0 !important;
+    margin: 0 !important;
+  }
+
+  /* 🔥 主標（大 + 好點） */
+  .postcard-title {
+    font-size: 16px !important;
+    line-height: 1.45 !important;
+    letter-spacing: 0.5px !important;
+
+    white-space: normal !important;
+    overflow: visible !important;
+    text-overflow: unset !important;
+
+    padding: 8px 6px !important;
+    margin: 6px -6px !important;
+
+    cursor: pointer !important;
+  }
+
+  /* 🔥 座標（只留一行） */
+  .postcard-coords {
+    font-size: 14px !important;
+    font-weight: 800 !important;
+    margin-top: 6px !important;
+  }
+
+  .postcard-coords:not(:last-of-type) {
+    display: none !important;
+  }
+
+  /* 國家 */
+  .postcard-country {
+    font-size: 15px !important;
+    font-weight: 800 !important;
+  }
+
+  /* 標籤 */
+  .postcard-tag {
+    font-size: 12px !important;
+  }
+
 }

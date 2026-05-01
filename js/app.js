@@ -642,3 +642,37 @@ document.addEventListener("click", async (e) => {
     }, 120);
   });
 })();
+// 🔥 手機版：點主標複製
+document.addEventListener("click", async (e) => {
+  const el = e.target.closest(".postcard-title");
+  if (!el) return;
+
+  if (window.innerWidth > 768) return;
+
+  const text = el.innerText.trim();
+  if (!text) return;
+
+  try {
+    await navigator.clipboard.writeText(text);
+
+    // toast
+    const toast = document.createElement("div");
+    toast.innerText = "已複製主標";
+    toast.style.position = "fixed";
+    toast.style.bottom = "110px";
+    toast.style.left = "50%";
+    toast.style.transform = "translateX(-50%)";
+    toast.style.background = "rgba(0,0,0,0.75)";
+    toast.style.color = "#fff";
+    toast.style.padding = "10px 16px";
+    toast.style.borderRadius = "999px";
+    toast.style.fontSize = "13px";
+    toast.style.zIndex = "9999";
+
+    document.body.appendChild(toast);
+    setTimeout(() => toast.remove(), 1200);
+
+  } catch (err) {
+    console.error("copy failed", err);
+  }
+});

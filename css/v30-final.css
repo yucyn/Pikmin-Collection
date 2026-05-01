@@ -836,3 +836,17 @@ button.tag-filter:not(.pikmin-pill) {
     display: none !important;
   }
 }
+/* 🔥 桌機強制恢復 upload tabs */
+@media (min-width: 769px) {
+
+  .upload-tabs {
+    display: grid !important;
+  }
+
+  #modeFileBtn,
+  #modeDragBtn,
+  #modePasteBtn {
+    display: inline-flex !important;
+  }
+
+}

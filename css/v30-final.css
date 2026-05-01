@@ -607,6 +607,19 @@
   #dragPanel {
     display: none !important;
    }
+/* 手機版只保留選擇圖片 */
+#modeDragBtn,
+#dragPanel,
+#modePasteBtn,
+#pastePanel {
+  display: none !important;
+}
+
+/* 手機版按鈕只剩一個，撐滿 */
+.upload-tabs {
+  grid-template-columns: 1fr !important;
+}
+  
   }
 
   .mobile-upload-fab,

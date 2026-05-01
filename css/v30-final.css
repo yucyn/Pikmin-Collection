@@ -799,16 +799,12 @@
 
   
 }
-@media (min-width: 769px) {
+
+
+ @media (min-width: 769px) {
   #mobileScrollTopFab {
     display: none !important;
   }
-
-  #v28CreateFab {
-    bottom: 24px !important;
-  }
-}
-
 
   #v28CreateFab {
     display: flex !important;
@@ -825,9 +821,8 @@
     font-size: 0 !important;
     z-index: 6000 !important;
   }
+} 
 
-  
-}
 
 
 /* ✅ 手機：上面是＋，下面是回頂部 */

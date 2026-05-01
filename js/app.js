@@ -602,3 +602,31 @@ document.addEventListener("click", async (e) => {
     console.error("copy failed", err);
   }
 });
+// 🔥 解決手機 / 桌機切換延遲（不動原結構）
+(function () {
+  let ticking = false;
+
+  const mq = window.matchMedia("(max-width: 768px)");
+
+  function handleChange() {
+    if (ticking) return;
+    ticking = true;
+
+    requestAnimationFrame(() => {
+      if (typeof refreshViews === "function") {
+        refreshViews();
+      }
+      ticking = false;
+    });
+  }
+
+  // 監聽 breakpoint 切換（最關鍵）
+  if (mq.addEventListener) {
+    mq.addEventListener("change", handleChange);
+  } else {
+    mq.addListener(handleChange); // Safari fallback
+  }
+
+  // 補一層 resize（保險）
+  window.addEventListener("resize", handleChange);
+})();

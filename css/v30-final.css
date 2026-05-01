@@ -884,3 +884,32 @@
     pointer-events: none !important;
   }
 }
+/* ✅ 固定桌機回頂部 icon 尺寸，不隨視窗縮放 */
+#v28CreateFab {
+  width: 58px !important;
+  height: 58px !important;
+  min-width: 58px !important;
+  min-height: 58px !important;
+  max-width: 58px !important;
+  max-height: 58px !important;
+
+  font-size: 0 !important;
+  line-height: 1 !important;
+}
+
+/* 如果回頂部是 SVG */
+#v28CreateFab svg {
+  width: 28px !important;
+  height: 28px !important;
+  min-width: 28px !important;
+  min-height: 28px !important;
+  max-width: 28px !important;
+  max-height: 28px !important;
+  flex: 0 0 28px !important;
+}
+
+/* 如果還有文字箭頭，避免它變大 */
+#v28CreateFab::before {
+  font-size: 28px !important;
+  line-height: 1 !important;
+}

@@ -744,9 +744,12 @@
 #scrollTopBtn:active {
   transform: scale(0.92) !important;
 }
-
 @media (max-width: 768px) {
-  .postcard-info .postcard-coords:nth-child(1) {
+
+  /* 🔥 手機只保留最後一組座標 */
+  .postcard-coords:not(:last-of-type) {
     display: none !important;
   }
+
 }
+

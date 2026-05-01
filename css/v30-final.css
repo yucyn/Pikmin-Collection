@@ -823,96 +823,87 @@
   }
 } 
 
+/* ===== FAB FINAL：桌機 / 手機分開，不互相打架 ===== */
 
-
-/* ✅ 手機：上面是＋，下面是回頂部 */
-@media (max-width: 768px) {
-  #mobileUploadFab {
-    display: flex !important;
-    right: 20px !important;
-    bottom: 100px !important;
-    font-size: 36px !important;
-  }
-
-  #v28CreateFab {
-    display: flex !important;
-    right: 20px !important;
-    bottom: 24px !important;
-    font-size: 0 !important;
-  }
-
-  
-}
-/* 手機版：獨立回頂部按鈕 */
-@media (max-width: 768px) {
-  #mobileScrollTopFab {
-    position: fixed !important;
-    right: 20px !important;
-    bottom: 24px !important;
-
-    width: 58px !important;
-    height: 58px !important;
-    border: none !important;
-    border-radius: 50% !important;
-
-    display: flex !important;
-    align-items: center !important;
-    justify-content: center !important;
-
-    background: #8ccc6b !important;
-    color: #fff !important;
-
-    font-size: 34px !important;
-    font-weight: 900 !important;
-    line-height: 1 !important;
-
-    box-shadow: 0 10px 24px rgba(80, 140, 80, 0.32) !important;
-    z-index: 7000 !important;
-  }
-
-  #mobileUploadFab {
-    bottom: 100px !important;
-  }
-/* ✅ 固定桌機回頂部 icon 尺寸，不隨視窗縮放 */
-#v28CreateFab {
-  width: 58px !important;
-  height: 58px !important;
-  min-width: 58px !important;
-  min-height: 58px !important;
-  max-width: 58px !important;
-  max-height: 58px !important;
-
-  font-size: 0 !important;
-  line-height: 1 !important;
-}
-   
-}
-
-/* 桌機：隱藏手機專用回頂部 */
+/* 桌機：只顯示回頂部 */
 @media (min-width: 769px) {
+  #mobileUploadFab,
   #mobileScrollTopFab {
     display: none !important;
     visibility: hidden !important;
     opacity: 0 !important;
     pointer-events: none !important;
   }
+
+  #v28CreateFab {
+    display: flex !important;
+    position: fixed !important;
+    right: 20px !important;
+    bottom: 20px !important;
+
+    width: 58px !important;
+    height: 58px !important;
+    min-width: 58px !important;
+    min-height: 58px !important;
+    max-width: 58px !important;
+    max-height: 58px !important;
+
+    font-size: 0 !important;
+    line-height: 1 !important;
+  }
+
+  #v28CreateFab svg {
+    width: 28px !important;
+    height: 28px !important;
+    min-width: 28px !important;
+    min-height: 28px !important;
+    max-width: 28px !important;
+    max-height: 28px !important;
+    flex: 0 0 28px !important;
+  }
+
+  #v28CreateFab::before {
+    content: none !important;
+  }
 }
 
+/* 手機：顯示 + 上傳與回頂部 */
+@media (max-width: 768px) {
+  #mobileUploadFab {
+    display: flex !important;
+    position: fixed !important;
+    right: 20px !important;
+    bottom: 100px !important;
 
-/* 如果回頂部是 SVG */
-#v28CreateFab svg {
-  width: 28px !important;
-  height: 28px !important;
-  min-width: 28px !important;
-  min-height: 28px !important;
-  max-width: 28px !important;
-  max-height: 28px !important;
-  flex: 0 0 28px !important;
+    width: 58px !important;
+    height: 58px !important;
+    font-size: 36px !important;
+  }
+
+  #v28CreateFab {
+    display: flex !important;
+    position: fixed !important;
+    right: 20px !important;
+    bottom: 24px !important;
+
+    width: 58px !important;
+    height: 58px !important;
+    font-size: 0 !important;
+    line-height: 1 !important;
+  }
+
+  #v28CreateFab svg {
+    width: 28px !important;
+    height: 28px !important;
+  }
+
+  #v28CreateFab::before {
+    content: none !important;
+  }
+
+  #mobileScrollTopFab {
+    display: none !important;
+  }
 }
 
-/* 如果還有文字箭頭，避免它變大 */
-#v28CreateFab::before {
-  font-size: 28px !important;
-  line-height: 1 !important;
-}
 

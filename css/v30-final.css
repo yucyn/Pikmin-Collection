@@ -753,3 +753,11 @@
 
 }
 
+/* 座標可點擊感 */
+.postcard-coords {
+  cursor: pointer;
+}
+
+.postcard-coords:active {
+  opacity: 0.6;
+}

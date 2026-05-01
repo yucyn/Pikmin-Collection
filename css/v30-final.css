@@ -906,12 +906,10 @@
   }
 }
 
-.mode-btn,
-.upload-mode button {
+/* 按鈕文字完全置中 */
+button {
   display: flex;
-  align-items: center;
-  justify-content: center;
+  align-items: center;     /* 垂直置中 */
+  justify-content: center; /* 水平置中 */
   text-align: center;
-
-  line-height: 1;
 }

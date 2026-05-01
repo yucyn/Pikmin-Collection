@@ -906,18 +906,15 @@
   }
 }
 
-/* 上傳三顆按鈕文字置中 */
-.upload-tabs .tab-button {
-  display: flex !important;
+/* 🔥 強制把按鈕內容完全置中（不管內部結構） */
+.upload-tabs .tab-button,
+button {
+  display: inline-flex !important;
   align-items: center !important;
   justify-content: center !important;
 
   text-align: center !important;
   line-height: 1 !important;
 
-  padding-left: 0 !important;
-  padding-right: 0 !important;
-}
-.upload-tabs .tab-button {
-  height: 48px !important;
+  padding: 0 16px !important; /* 左右統一 */
 }

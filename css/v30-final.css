@@ -745,3 +745,7 @@ button.tag-filter:not(.pikmin-pill) {
 input:not(.pikmin-search-input) {
   display: none !important;
 }
+/* 🔥 左上角殘留舊按鈕（最後一刀） */
+.main-header button:not(.pikmin-pill) {
+  display: none !important;
+}

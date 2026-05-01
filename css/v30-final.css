@@ -710,13 +710,7 @@
     display: none !important;
   }
 }
-/* ❌ 刪掉舊 toolbar（方形按鈕那排） */
-.toolbar:not(.pikmin-toolbar) {
-  display: none !important;
-}
-
-/* ❌ 如果還殘留舊按鈕 */
-button.view-button:not(.pikmin-pill),
-button.tag-filter:not(.pikmin-pill) {
+/* 強制隱藏舊 UI 區塊 */
+.main-header > div:first-child {
   display: none !important;
 }

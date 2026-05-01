@@ -918,3 +918,6 @@
   padding-left: 0 !important;
   padding-right: 0 !important;
 }
+.upload-tabs .tab-button {
+  height: 48px !important;
+}

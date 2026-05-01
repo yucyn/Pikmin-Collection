@@ -602,31 +602,43 @@ document.addEventListener("click", async (e) => {
     console.error("copy failed", err);
   }
 });
-// 🔥 解決手機 / 桌機切換延遲（不動原結構）
+// 🔥 縮放視窗後，自動刷新卡片顯示狀態（不重整頁面）
 (function () {
-  let ticking = false;
+  let resizeTimer = null;
+  let lastWidth = window.innerWidth;
 
-  const mq = window.matchMedia("(max-width: 768px)");
+  function softRefreshCards() {
+    const searchInput = document.getElementById("searchInput");
+    const categoryFilter = document.getElementById("categoryFilter");
 
-  function handleChange() {
-    if (ticking) return;
-    ticking = true;
+    // 觸發原本 app.js 綁好的更新事件
+    if (searchInput) {
+      searchInput.dispatchEvent(new Event("input", { bubbles: true }));
+    }
 
-    requestAnimationFrame(() => {
-      if (typeof refreshViews === "function") {
-        refreshViews();
-      }
-      ticking = false;
-    });
+    if (categoryFilter) {
+      categoryFilter.dispatchEvent(new Event("change", { bubbles: true }));
+    }
+
+    // 保險：讓 grid 重新計算排版
+    const grid = document.getElementById("grid");
+    if (grid) {
+      grid.style.display = "none";
+      grid.offsetHeight;
+      grid.style.display = "";
+    }
   }
 
-  // 監聽 breakpoint 切換（最關鍵）
-  if (mq.addEventListener) {
-    mq.addEventListener("change", handleChange);
-  } else {
-    mq.addListener(handleChange); // Safari fallback
-  }
+  window.addEventListener("resize", () => {
+    clearTimeout(resizeTimer);
 
-  // 補一層 resize（保險）
-  window.addEventListener("resize", handleChange);
+    resizeTimer = setTimeout(() => {
+      const newWidth = window.innerWidth;
+
+      if (Math.abs(newWidth - lastWidth) < 20) return;
+
+      lastWidth = newWidth;
+      softRefreshCards();
+    }, 120);
+  });
 })();

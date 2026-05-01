@@ -830,3 +830,47 @@
     color: #fff;
   }
 }
+/* ✅ 桌機：只顯示回頂部 */
+@media (min-width: 769px) {
+  #mobileUploadFab {
+    display: none !important;
+  }
+
+  #v28CreateFab {
+    display: flex !important;
+    right: 20px !important;
+    bottom: 20px !important;
+    font-size: 0 !important;
+  }
+
+  #v28CreateFab::before {
+    content: "⌃";
+    font-size: 34px;
+    font-weight: 900;
+    color: #fff;
+  }
+}
+
+/* ✅ 手機：上面是＋，下面是回頂部 */
+@media (max-width: 768px) {
+  #mobileUploadFab {
+    display: flex !important;
+    right: 20px !important;
+    bottom: 100px !important;
+    font-size: 36px !important;
+  }
+
+  #v28CreateFab {
+    display: flex !important;
+    right: 20px !important;
+    bottom: 24px !important;
+    font-size: 0 !important;
+  }
+
+  #v28CreateFab::before {
+    content: "⌃";
+    font-size: 34px;
+    font-weight: 900;
+    color: #fff;
+  }
+}

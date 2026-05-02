@@ -68,41 +68,20 @@
 /* 三種 tag 顏色 */
 .v28-scope .tag-花,
 .tag-filter[data-tag="花"].active{
-  background:rgba(255, 232, 239, 0.15) !important;
+  background:#ffe8ef !important;
   color:#b35a72 !important;
-  backdrop-filter: blur(5px) !important;
-  -webkit-backdrop-filter: blur(5px) !important;
 }
 
 .v28-scope .tag-蘑菇,
 .tag-filter[data-tag="蘑菇"].active{
-  background:rgba(241, 231, 220, 0.15) !important;
+  background:#f1e7dc !important;
   color:#8a6042 !important;
-  backdrop-filter: blur(5px) !important;
-  -webkit-backdrop-filter: blur(5px) !important;
 }
 
 .v28-scope .tag-隱藏,
 .tag-filter[data-tag="隱藏"].active{
-  background:rgba(236, 238, 242, 0.15) !important;
+  background:#eceef2 !important;
   color:#66707c !important;
-  backdrop-filter: blur(5px) !important;
-  -webkit-backdrop-filter: blur(5px) !important;
-}
-
-.v28-scope .tag-活動,
-.tag-filter[data-tag="活動"].active{
-  background:rgba(255, 244, 214, 0.15) !important;
-  color:#b38f36 !important;
-  backdrop-filter: blur(5px) !important;
-  -webkit-backdrop-filter: blur(5px) !important;
-}
-
-.v28-scope .tag-活動::before,
-.tag-活動::before{
-  content:"🎫";
-  font-size:10px;
-  margin-right:2px;
 }
 
 /* 隱藏 tag 的卡片可以稍微淡一點，可不想要就刪掉這段 */

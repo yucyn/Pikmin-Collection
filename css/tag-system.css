@@ -1,0 +1,121 @@
+/* ✅ Tag 系統 + V30 資料卡片補強 */
+
+/* Tag 篩選列 */
+.tag-filter-row{
+  display:flex;
+  gap:8px;
+  margin-top:10px;
+  flex-wrap:wrap;
+}
+
+.tag-filter{
+  border:0;
+  border-radius:999px;
+  padding:7px 13px;
+  background:#f1f2ea;
+  color:#4f584b;
+  font-weight:750;
+  cursor:pointer;
+  transition:.16s ease;
+}
+
+.tag-filter:hover{
+  background:#e7eadf;
+}
+
+.tag-filter.active{
+  background:#6aa85e;
+  color:white;
+}
+
+/* 卡片分類列 */
+.v28-scope .postcard-taxonomy{
+  display:flex;
+  align-items:center;
+  gap:6px;
+  flex-wrap:wrap;
+  margin-top:5px;
+}
+
+.v28-scope .postcard-country{
+  display:inline-flex !important;
+  padding:0 !important;
+  margin:0 !important;
+  background:transparent !important;
+  color:#666f60 !important;
+  font-size:13px !important;
+  font-weight:650 !important;
+}
+
+/* 卡片 tag */
+.v28-scope .postcard-tag{
+  border:0;
+  display:inline-flex;
+  align-items:center;
+  border-radius:999px;
+  padding:2px 8px;
+  background:#eeeeea;
+  color:#60675c;
+  font-size:12px;
+  font-weight:700;
+  cursor:pointer;
+}
+
+.v28-scope .postcard-tag:hover{
+  filter:brightness(.96);
+}
+
+/* 三種 tag 顏色 */
+.v28-scope .tag-花,
+.tag-filter[data-tag="花"].active{
+  background:rgba(255, 232, 239, 0.15) !important;
+  color:#b35a72 !important;
+  backdrop-filter: blur(5px) !important;
+  -webkit-backdrop-filter: blur(5px) !important;
+}
+
+.v28-scope .tag-蘑菇,
+.tag-filter[data-tag="蘑菇"].active{
+  background:rgba(241, 231, 220, 0.15) !important;
+  color:#8a6042 !important;
+  backdrop-filter: blur(5px) !important;
+  -webkit-backdrop-filter: blur(5px) !important;
+}
+
+.v28-scope .tag-隱藏,
+.tag-filter[data-tag="隱藏"].active{
+  background:rgba(236, 238, 242, 0.15) !important;
+  color:#66707c !important;
+  backdrop-filter: blur(5px) !important;
+  -webkit-backdrop-filter: blur(5px) !important;
+}
+
+.v28-scope .tag-活動,
+.tag-filter[data-tag="活動"].active{
+  background:rgba(255, 244, 214, 0.15) !important;
+  color:#b38f36 !important;
+  backdrop-filter: blur(5px) !important;
+  -webkit-backdrop-filter: blur(5px) !important;
+}
+
+.v28-scope .tag-絕版,
+.tag-filter[data-tag="絕版"].active,
+.mobile-tag-item[data-tag="絕版"].active {
+  background:rgba(240, 230, 255, 0.15) !important;
+  color:#7c5ab3 !important;
+  backdrop-filter: blur(5px) !important;
+  -webkit-backdrop-filter: blur(5px) !important;
+}
+
+
+.v28-scope .tag-活動::before,
+.tag-活動::before{
+  content:"🎫";
+  font-size:10px;
+  margin-right:2px;
+}
+
+/* 隱藏 tag 的卡片可以稍微淡一點，可不想要就刪掉這段 */
+.v28-scope .postcard-tag.tag-隱藏{
+  opacity:.88;
+}

@@ -32,6 +32,8 @@ function isOwnedByCurrentUser(item) {
 }
 
 function normalizePostcard(id, data) {
+  const imageFocusX = Number(data.imageFocusX);
+  const imageFocusY = Number(data.imageFocusY);
   return {
     id,
     image: data.image || "",
@@ -43,6 +45,8 @@ function normalizePostcard(id, data) {
     locationText: data.locationText || "",
     lat: Number(data.lat),
     lng: Number(data.lng),
+    imageFocusX: Number.isFinite(imageFocusX) ? Math.min(100, Math.max(0, imageFocusX)) : 50,
+    imageFocusY: Number.isFinite(imageFocusY) ? Math.min(100, Math.max(0, imageFocusY)) : 50,
     createdAt: data.createdAt || new Date().toISOString(),
     updatedAt: data.updatedAt || ""
   };
@@ -112,6 +116,8 @@ async function addPostcard(postcard) {
     category: postcard.category || "全球",
     likedBy: Array.isArray(postcard.likedBy) ? postcard.likedBy : [],
     likeCount: Number(postcard.likeCount || 0),
+    imageFocusX: Number.isFinite(Number(postcard.imageFocusX)) ? Number(postcard.imageFocusX) : 50,
+    imageFocusY: Number.isFinite(Number(postcard.imageFocusY)) ? Number(postcard.imageFocusY) : 50,
     createdAt: postcard.createdAt || new Date().toISOString()
   });
 }
@@ -135,30 +141,53 @@ async function togglePostcardLike(id) {
 
   const collectionName = window.PIKMIN_FIREBASE_COLLECTION || "pikmin_postcards";
   const userId = getCurrentUserId();
-  const item = getPostcardById(id);
+  const docRef = db.collection(collectionName).doc(id);
 
-  if (!item) return;
+  try {
+    await db.runTransaction(async transaction => {
+      const snapshot = await transaction.get(docRef);
+      if (!snapshot.exists) return;
 
-  const likedBy = Array.isArray(item.likedBy) ? item.likedBy : [];
-  const hasLiked = likedBy.includes(userId);
+      const data = snapshot.data() || {};
+      const likedBy = Array.isArray(data.likedBy) ? data.likedBy : [];
+      const hasLiked = likedBy.includes(userId);
 
-  const nextLikedBy = hasLiked
-    ? likedBy.filter(x => x !== userId)
-    : [...likedBy, userId];
+      const nextLikedBy = hasLiked
+        ? likedBy.filter(x => x !== userId)
+        : [...likedBy, userId];
 
-  await db.collection(collectionName).doc(id).update({
-    likedBy: nextLikedBy,
-    likeCount: nextLikedBy.length
-  });
+      transaction.update(docRef, {
+        likedBy: nextLikedBy,
+        likeCount: nextLikedBy.length
+      });
+    });
+  } catch (error) {
+    // fallback：若 transaction 在當前環境失敗，回退到直接 update
+    console.warn("toggle like transaction failed, fallback to update:", error);
+
+    const item = getPostcardById(id);
+    if (!item) return;
+
+    const likedBy = Array.isArray(item.likedBy) ? item.likedBy : [];
+    const hasLiked = likedBy.includes(userId);
+    const nextLikedBy = hasLiked
+      ? likedBy.filter(x => x !== userId)
+      : [...likedBy, userId];
+
+    await docRef.update({
+      likedBy: nextLikedBy,
+      likeCount: nextLikedBy.length
+    });
+  }
 }
 async function updatePostcard(id, updates) {
-  if (!assertWriteReady()) return;
+  if (!assertWriteReady()) return false;
 
   const item = getPostcardById(id);
 
   if (!isOwnedByCurrentUser(item)) {
     alert("你只能編輯自己建立的明信片");
-    return;
+    return false;
   }
 
   const collectionName = window.PIKMIN_FIREBASE_COLLECTION || "pikmin_postcards";
@@ -167,4 +196,5 @@ async function updatePostcard(id, updates) {
     ...updates,
     updatedAt: new Date().toISOString()
   });
+  return true;
 }

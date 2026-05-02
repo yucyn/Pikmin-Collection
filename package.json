@@ -1,6 +1,6 @@
 {
-  "name": "pikmin-collection-v31-stable",
-  "version": "31.0.0",
+  "name": "pikmin-collection-v35-8-deploy-path-fix",
+  "version": "35.8.0",
   "private": true,
   "scripts": {
     "dev": "node server.js",

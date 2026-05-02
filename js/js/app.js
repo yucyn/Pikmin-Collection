@@ -47,6 +47,14 @@ document.addEventListener("DOMContentLoaded", function () {
   const modalShareCardBtn = document.getElementById("modalShareCardBtn");
 
   let isPreviewMode = false; // V31.6：取消預覽模式
+
+  // V35.9：清掉舊版分享留下的 ?mode=preview，避免上線環境錯誤請求。
+  if (window.location.search.includes("mode=preview")) {
+    const cleanUrl = new URL(window.location.href);
+    cleanUrl.searchParams.delete("mode");
+    window.history.replaceState({}, "", cleanUrl);
+  }
+
   let currentModalCardId = null;
   let currentTagFilter = "";
 
@@ -81,22 +89,14 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 
   function togglePreviewMode() {
-    isPreviewMode = !isPreviewMode;
-    bindTagFilterButtons();
-  initScrollTopFab();
-  applyPreviewMode();
+    // V35.9：上線版停用 ?mode=preview，避免 Vercel / GitHub Pages 因預覽查詢字串導致 404。
+    isPreviewMode = false;
+    applyPreviewMode();
 
     const url = new URL(window.location.href);
-    if (isPreviewMode) {
-      url.searchParams.set("mode", "preview");
-      navigator.clipboard?.writeText(url.toString()).catch(() => {});
-      alert("已切換為預覽模式。網址已嘗試複製，可分享給別人閱覽。");
-    } else {
-      url.searchParams.delete("mode");
-      url.searchParams.delete("card");
-    }
-
+    url.searchParams.delete("mode");
     window.history.replaceState({}, "", url);
+
     refreshViews();
   }
 
@@ -350,6 +350,11 @@ document.addEventListener("DOMContentLoaded", function () {
     const categoryField = document.getElementById("editCategoryInput");
     const tagField = document.getElementById("editTagInput");
 
+    if (!modal || !form || !locationField || !categoryField || !tagField) {
+      console.warn("Edit modal DOM is incomplete; edit action skipped.");
+      return;
+    }
+
     locationField.value = item.locationText || "";
     categoryField.value = item.category || "全球";
     tagField.value = item.tag || "";
@@ -382,9 +387,13 @@ document.addEventListener("DOMContentLoaded", function () {
   function bindTagFilterButtons() {
     const buttons = document.querySelectorAll(".tag-filter");
     buttons.forEach(button => {
+      if (button.dataset.tagFilterBound === "true") return;
+      button.dataset.tagFilterBound = "true";
+
       button.addEventListener("click", () => {
-        buttons.forEach(btn => btn.classList.remove("active"));
-        button.classList.add("active");
+        const latestButtons = document.querySelectorAll(".tag-filter");
+        latestButtons.forEach(btn => btn.classList.remove("active", "is-active"));
+        button.classList.add("active", "is-active");
         currentTagFilter = button.dataset.tag || "";
         refreshViews();
       });
@@ -544,10 +553,39 @@ document.addEventListener("DOMContentLoaded", function () {
   setUploadMode("file");
   setView("collection");
 
-  initializeFirebaseStorage(function () {
-    refreshViews();
-    openSharedCardFromUrl();
-  });
+  // V35.12 STABLE：不要再讓首頁等待 Firebase。
+  // 先渲染空狀態，Firebase 回來後再更新資料，避免 Vercel 畫面一直空白/轉圈。
+  let appHasRenderedOnce = false;
+
+  function stableRender(source = "manual") {
+    try {
+      refreshViews();
+      if (!appHasRenderedOnce) {
+        openSharedCardFromUrl();
+        appHasRenderedOnce = true;
+      }
+      document.body.classList.add("app-ready");
+      document.body.classList.remove("app-loading");
+      console.log(`[Pikmin] render ok: ${source}`, getPostcards().length);
+    } catch (error) {
+      console.error(`[Pikmin] render failed: ${source}`, error);
+    }
+  }
+
+  // 立刻顯示畫面，不等待 Firebase。
+  stableRender("initial");
+
+  if (typeof initializeFirebaseStorage === "function") {
+    initializeFirebaseStorage(function () {
+      stableRender("firebase-change");
+    });
+  } else {
+    console.warn("[Pikmin] initializeFirebaseStorage not found; using local empty state.");
+  }
+
+  // 保底：如果 Firebase/CDN/授權卡住，也會再次強制渲染。
+  setTimeout(() => stableRender("fallback-800ms"), 800);
+  setTimeout(() => stableRender("fallback-2500ms"), 2500);
 });
 
 // ===== Dedicated Mobile Upload Button（唯一控制）=====

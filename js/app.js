@@ -553,10 +553,31 @@ document.addEventListener("DOMContentLoaded", function () {
   setUploadMode("file");
   setView("collection");
 
-  initializeFirebaseStorage(function () {
+  // V35.10：Firebase 保底初始化。
+  // 不再讓畫面等待 Firebase / Auth；即使雲端讀取失敗，也先正常渲染空資料或本機備援資料。
+  let hasInitialRender = false;
+
+  function safeInitialRender() {
+    if (hasInitialRender) return;
+    hasInitialRender = true;
     refreshViews();
     openSharedCardFromUrl();
-  });
+  }
+
+  try {
+    initializeFirebaseStorage(function () {
+      safeInitialRender();
+      refreshViews();
+      openSharedCardFromUrl();
+    });
+  } catch (error) {
+    console.error("Firebase 初始化失敗，已改用本機備援顯示：", error);
+    safeInitialRender();
+  }
+
+  // 保底：避免 Firebase onSnapshot / Auth 卡住時，首頁一直空白。
+  setTimeout(safeInitialRender, 800);
+  setTimeout(refreshViews, 1600);
 });
 
 // ===== Dedicated Mobile Upload Button（唯一控制）=====

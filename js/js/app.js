@@ -1,3 +1,16 @@
+function debouncePikmin(fn, wait) {
+  let timer = null;
+  return function debounced() {
+    const args = arguments;
+    const self = this;
+    clearTimeout(timer);
+    timer = setTimeout(function () {
+      timer = null;
+      fn.apply(self, args);
+    }, wait);
+  };
+}
+
 document.addEventListener("DOMContentLoaded", function () {
   const modeFileBtn = document.getElementById("modeFileBtn");
   const modeDragBtn = document.getElementById("modeDragBtn");
@@ -620,9 +633,16 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
   function refreshViews() {
+    const renderPassGen = typeof beginPikminUiRenderPass === "function" ? beginPikminUiRenderPass() : 0;
     const selectedCategory = categoryFilter.value;
     renderCategoryFilter(categoryFilter, selectedCategory);
 
+    if (currentModalCardId) {
+      const item = getPostcardById(currentModalCardId);
+      if (item) openCardModal(item);
+    }
+
+    const filters = getFilters();
     renderPostcards({
       grid,
       emptyState,
@@ -632,15 +652,11 @@ document.addEventListener("DOMContentLoaded", function () {
       onDeleteClick: handleDeleteClick,
       onShareClick: handleShareClick,
       onEditClick: handleEditClick,
-      filters: getFilters()
+      filters,
+      renderPassGen
     });
 
-    renderMapList({ mapList, onSelect: selectMapItem, filters: getFilters() });
-
-    if (currentModalCardId) {
-      const item = getPostcardById(currentModalCardId);
-      if (item) openCardModal(item);
-    }
+    renderMapList({ mapList, onSelect: selectMapItem, filters, renderPassGen });
   }
 
   setupImageUpload({
@@ -664,7 +680,8 @@ document.addEventListener("DOMContentLoaded", function () {
   mapViewBtn.addEventListener("click", () => setView("map"));
   if (previewModeBtn) previewModeBtn.addEventListener("click", togglePreviewMode);
 
-  searchInput.addEventListener("input", refreshViews);
+  const debouncedRefreshViews = debouncePikmin(refreshViews, 220);
+  searchInput.addEventListener("input", debouncedRefreshViews);
   categoryFilter.addEventListener("change", refreshViews);
   locationInput.addEventListener("change", autoFillCountryFromLocation);
   locationInput.addEventListener("blur", autoFillCountryFromLocation);

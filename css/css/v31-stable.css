@@ -11,13 +11,9 @@
   --pikmin-green-dark: #5f7f45;
   --pikmin-green-soft: #dfe6d6;
   --pikmin-text: #273020;
-  --font-main: 'Quicksand', 'Taipei Sans TC', 'Noto Sans TC', sans-serif;
 }
 
-* { 
-  box-sizing: border-box;
-  font-family: var(--font-main) !important;
-}
+* { box-sizing: border-box; }
 html, body { max-width: 100%; overflow-x: hidden; }
 
 /* 只保留正式 Pikmin toolbar，避免舊測試 toolbar 干擾 */
@@ -60,10 +56,7 @@ html, body { max-width: 100%; overflow-x: hidden; }
   border-radius: 999px !important;
   border: 0 !important;
   outline: none !important;
-  background: rgba(255, 255, 255, 0.15) !important;
-  backdrop-filter: blur(8px) !important;
-  -webkit-backdrop-filter: blur(8px) !important;
-  border: 1px solid rgba(0, 0, 0, 0.05) !important;
+  background: #f8f8f5 !important;
   color: #30362d !important;
   font-size: 15px !important;
   line-height: 44px !important;
@@ -152,10 +145,10 @@ html, body { max-width: 100%; overflow-x: hidden; }
 #v28CreateFab,
 #scrollTopBtn,
 .v28-create-fab.scroll-top-fab {
-  width: 35px !important;
-  height: 35px !important;
-  min-width: 35px !important;
-  min-height: 35px !important;
+  width: 58px !important;
+  height: 58px !important;
+  min-width: 58px !important;
+  min-height: 58px !important;
   border: 0 !important;
   border-radius: 50% !important;
   align-items: center !important;
@@ -170,25 +163,25 @@ html, body { max-width: 100%; overflow-x: hidden; }
 
 #mobileUploadFab {
   position: fixed !important;
-  right: 14px !important;
-  bottom: 64px !important;
-  font-size: 22px !important;
+  right: 18px !important;
+  bottom: 92px !important;
+  font-size: 34px !important;
 }
 
 #v28CreateFab,
 #scrollTopBtn,
 .v28-create-fab.scroll-top-fab {
   position: fixed !important;
-  right: 14px !important;
-  bottom: 20px !important;
+  right: 18px !important;
+  bottom: 24px !important;
   font-size: 0 !important;
 }
 
 #v28CreateFab svg,
 #scrollTopBtn svg,
 .v28-create-fab.scroll-top-fab svg {
-  width: 20px !important;
-  height: 20px !important;
+  width: 28px !important;
+  height: 28px !important;
   display: block !important;
 }
 
@@ -241,9 +234,7 @@ html, body { max-width: 100%; overflow-x: hidden; }
     width: 100% !important;
     height: 78vh !important;
     padding: 12px !important;
-    background: rgba(255, 253, 242, 0.15) !important;
-    backdrop-filter: blur(20px) !important;
-    -webkit-backdrop-filter: blur(20px) !important;
+    background: #fffdf2 !important;
     border-radius: 24px 24px 0 0 !important;
     z-index: 5000 !important;
     overflow-y: auto !important;
@@ -555,7 +546,6 @@ button[disabled] {
   padding: 0 20px !important;
   font-size: 18px !important;
   border-radius: 16px !important;
-  font-weight: 500 !important; /* 調細字體至 500 */
 }
 
 /* 上方工具列按鈕：同色系，但尺寸較小，避免擠壓 */
@@ -676,10 +666,10 @@ button[disabled] {
 #v28CreateFab,
 #scrollTopBtn,
 .v28-create-fab.scroll-top-fab {
-  width: 35px !important;
-  height: 35px !important;
-  min-width: 35px !important;
-  min-height: 35px !important;
+  width: 58px !important;
+  height: 58px !important;
+  min-width: 58px !important;
+  min-height: 58px !important;
   border-radius: 50% !important;
   border: 0 !important;
   background: linear-gradient(180deg, var(--pikmin-btn-green-1), var(--pikmin-btn-green-2)) !important;
@@ -694,9 +684,9 @@ button[disabled] {
 
 #mobileUploadFab {
   position: fixed !important;
-  right: 14px !important;
-  bottom: 64px !important;
-  font-size: 22px !important;
+  right: 18px !important;
+  bottom: 92px !important;
+  font-size: 36px !important;
   line-height: 1 !important;
 }
 
@@ -705,8 +695,8 @@ button[disabled] {
 #scrollTopBtn,
 .v28-create-fab.scroll-top-fab {
   position: fixed !important;
-  right: 14px !important;
-  bottom: 20px !important;
+  right: 18px !important;
+  bottom: 24px !important;
   font-size: 0 !important;
 }
 
@@ -714,8 +704,8 @@ button[disabled] {
 #v28CreateFab svg,
 #scrollTopBtn svg,
 .v28-create-fab.scroll-top-fab svg {
-  width: 20px !important;
-  height: 20px !important;
+  width: 29px !important;
+  height: 29px !important;
   display: block !important;
 }
 
@@ -987,10 +977,6 @@ button.upload-url-button,
   flex-direction: column !important;
   overflow-y: auto !important;
   padding-bottom: 24px !important;
-  background: rgba(255, 253, 242, 0.05) !important;
-  backdrop-filter: blur(20px) !important;
-  -webkit-backdrop-filter: blur(20px) !important;
-  border-right: 1px solid rgba(0, 0, 0, 0.01) !important;
 }
 
 /* 圖片預覽區：取消裁切，讓圖片完整顯示 */
@@ -1086,10 +1072,8 @@ button.upload-url-button,
 .preview-box {
   padding: 12px !important;
   border: 1px solid rgba(126, 188, 93, 0.18) !important;
-  background: rgba(255, 253, 242, 0.05);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
-  box-shadow: 8px 0 30px rgba(0, 0, 0, 0.02) !important;
+  background: rgba(255, 255, 255, 0.78) !important;
+  box-shadow: 0 10px 24px rgba(72, 58, 24, 0.08) !important;
   overflow: visible !important;
 }
 
@@ -1261,7 +1245,11 @@ button.upload-url-button,
   font-weight: 900 !important;
 }
 
-/* 已移至檔案末端統一管理 */
+#addCardBtn:disabled {
+  opacity: 0.62 !important;
+  cursor: not-allowed !important;
+  transform: none !important;
+}
 
 .message.error {
   color: #c2410c !important;
@@ -1410,28 +1398,6 @@ body.map-mode .map-frame-wrap {
 
   body.map-mode #mapList.map-list {
     max-height: 42vh !important;
-  }
-
-  /* 手機地圖模式：放大清單卡片點擊熱區，避免縮圖太小難點 */
-  body.map-mode #mapList .map-list-item {
-    grid-template-columns: 86px 1fr !important;
-    min-height: 102px !important;
-    gap: 14px !important;
-    padding: 12px 14px !important;
-  }
-
-  body.map-mode #mapList .map-list-item img {
-    width: 86px !important;
-    height: 86px !important;
-    border-radius: 14px !important;
-  }
-
-  body.map-mode #mapList .map-list-item strong {
-    font-size: 16px !important;
-  }
-
-  body.map-mode #mapList .map-list-item span {
-    font-size: 13.5px !important;
   }
 }
 
@@ -1695,192 +1661,618 @@ body.map-mode,
 
 
 /* =========================================================
-   V35.8 頂部工具列六顆 pill（收藏冊 / 地圖 / 國家 / 花 / 蘑菇 / 隱藏）
-   1) 一併壓過 V31.5 全站 button 漸層、陰影、hover 位移（含 view-button）
-   2) 選取狀態只看 .active：bindTagFilterButtons 只切換 active，不會清 is-active，
-      若用 :not(.is-active) 會讓「國家」永遠套不到灰色
-   - 未選：灰色扁平；已選：綠色膠囊；:hover / :active 同樣扁平、不位移
+   V34.3 模式按鈕修正
+   - 收藏冊模式：全部分類按鈕維持綠色膠囊
+   - 地圖模式：才使用扁平 filter
 ========================================================= */
-.main.v28-scope .pikmin-toolbar .pikmin-toolbar-actions > button.pikmin-pill:not(.active) {
-  background: rgba(255, 255, 255, 0.1) !important;
-  backdrop-filter: blur(8px) !important;
-  -webkit-backdrop-filter: blur(8px) !important;
-  color: #5a6156 !important;
-  border: none !important;
-  border-radius: 999px !important;
-  box-shadow: none !important;
-  transform: none !important;
-  filter: none !important;
-  transition: none !important;
-}
 
-.main.v28-scope .pikmin-toolbar .pikmin-toolbar-actions > button.pikmin-pill.active {
-  background: rgba(116, 184, 90, 0.4) !important;
-  backdrop-filter: blur(8px) !important;
-  -webkit-backdrop-filter: blur(8px) !important;
+/* 收藏冊模式：上方分類按鈕統一回綠色膠囊 */
+body:not(.map-mode) .filter-btn,
+body:not(.map-mode) .map-filter .filter-btn,
+body:not(.map-mode) .top-actions button,
+body:not(.map-mode) .top-actions .filter-btn,
+body:not(.map-mode) .category-btn,
+body:not(.map-mode) .tag-filter-btn {
+  background: linear-gradient(135deg, #9BCB6C, #7FBF5B) !important;
   color: #ffffff !important;
   border: none !important;
   border-radius: 999px !important;
-  box-shadow: 0 4px 12px rgba(116, 184, 90, 0.1) !important;
-  transform: none !important;
-  filter: none !important;
-  transition: none !important;
+  box-shadow: 0 6px 16px rgba(127, 191, 91, 0.22) !important;
+  font-weight: 800 !important;
 }
 
-.main.v28-scope .pikmin-toolbar .pikmin-toolbar-actions > button.pikmin-pill:not(.active):hover {
-  background: #d8ddd4 !important;
+/* 收藏冊模式：未選取也不要白底 */
+body:not(.map-mode) .filter-btn:not(.active),
+body:not(.map-mode) .map-filter .filter-btn:not(.active),
+body:not(.map-mode) .category-btn:not(.active),
+body:not(.map-mode) .tag-filter-btn:not(.active) {
+  background: linear-gradient(135deg, #9BCB6C, #7FBF5B) !important;
+  color: #ffffff !important;
+  border: none !important;
+}
+
+/* 收藏冊模式：hover 維持輕微互動 */
+body:not(.map-mode) .filter-btn:hover,
+body:not(.map-mode) .map-filter .filter-btn:hover,
+body:not(.map-mode) .category-btn:hover,
+body:not(.map-mode) .tag-filter-btn:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 8px 20px rgba(127, 191, 91, 0.26) !important;
+}
+
+/* 地圖模式：才套用扁平 filter */
+body.map-mode .filter-btn,
+body.map-mode .map-filter .filter-btn {
+  background: #f7f8f4 !important;
+  color: #24352c !important;
+  border: 1px solid rgba(32, 48, 38, 0.14) !important;
+  box-shadow: none !important;
+  border-radius: 999px !important;
+  font-weight: 800 !important;
+}
+
+/* 地圖模式：選取狀態才綠色 */
+body.map-mode .filter-btn.active,
+body.map-mode .map-filter .filter-btn.active {
+  background: #7FBF5B !important;
+  color: #ffffff !important;
+  border-color: #7FBF5B !important;
+  box-shadow: none !important;
+}
+
+
+/* =========================================================
+   V34.4 花 / 蘑菇 / 隱藏：兩種模式都使用扁平綠色膠囊
+   目的：
+   - 收藏冊模式：花 / 蘑菇 / 隱藏 = 綠色膠囊 + 扁平
+   - 地圖模式：花 / 蘑菇 / 隱藏 = 綠色膠囊 + 扁平
+   - 無陰影、無漸層、無立體感
+========================================================= */
+
+/* 通用：只鎖定花 / 蘑菇 / 隱藏 */
+.filter-btn[data-type="flower"],
+.filter-btn[data-type="mushroom"],
+.filter-btn[data-type="hidden"],
+button[data-type="flower"],
+button[data-type="mushroom"],
+button[data-type="hidden"],
+.category-btn[data-type="flower"],
+.category-btn[data-type="mushroom"],
+.category-btn[data-type="hidden"],
+.tag-filter-btn[data-type="flower"],
+.tag-filter-btn[data-type="mushroom"],
+.tag-filter-btn[data-type="hidden"] {
+  background: #8BC86A !important;
+  color: #ffffff !important;
+  border: 1px solid #8BC86A !important;
+  border-radius: 999px !important;
+  box-shadow: none !important;
   background-image: none !important;
-  color: #4a5246 !important;
-  border-color: #c5cbc0 !important;
+  font-weight: 800 !important;
+  transform: none !important;
+}
+
+/* 未選取時也保持綠色扁平 */
+.filter-btn[data-type="flower"]:not(.active),
+.filter-btn[data-type="mushroom"]:not(.active),
+.filter-btn[data-type="hidden"]:not(.active),
+button[data-type="flower"]:not(.active),
+button[data-type="mushroom"]:not(.active),
+button[data-type="hidden"]:not(.active),
+.category-btn[data-type="flower"]:not(.active),
+.category-btn[data-type="mushroom"]:not(.active),
+.category-btn[data-type="hidden"]:not(.active),
+.tag-filter-btn[data-type="flower"]:not(.active),
+.tag-filter-btn[data-type="mushroom"]:not(.active),
+.tag-filter-btn[data-type="hidden"]:not(.active) {
+  background: #8BC86A !important;
+  color: #ffffff !important;
+  border-color: #8BC86A !important;
+  box-shadow: none !important;
+}
+
+/* 選取時用深一點綠色，仍然扁平 */
+.filter-btn[data-type="flower"].active,
+.filter-btn[data-type="mushroom"].active,
+.filter-btn[data-type="hidden"].active,
+button[data-type="flower"].active,
+button[data-type="mushroom"].active,
+button[data-type="hidden"].active,
+.category-btn[data-type="flower"].active,
+.category-btn[data-type="mushroom"].active,
+.category-btn[data-type="hidden"].active,
+.tag-filter-btn[data-type="flower"].active,
+.tag-filter-btn[data-type="mushroom"].active,
+.tag-filter-btn[data-type="hidden"].active {
+  background: #74B85A !important;
+  color: #ffffff !important;
+  border-color: #74B85A !important;
+  box-shadow: none !important;
+}
+
+/* hover：只改一點深度，不浮起、不陰影 */
+.filter-btn[data-type="flower"]:hover,
+.filter-btn[data-type="mushroom"]:hover,
+.filter-btn[data-type="hidden"]:hover,
+button[data-type="flower"]:hover,
+button[data-type="mushroom"]:hover,
+button[data-type="hidden"]:hover,
+.category-btn[data-type="flower"]:hover,
+.category-btn[data-type="mushroom"]:hover,
+.category-btn[data-type="hidden"]:hover,
+.tag-filter-btn[data-type="flower"]:hover,
+.tag-filter-btn[data-type="mushroom"]:hover,
+.tag-filter-btn[data-type="hidden"]:hover {
+  background: #7FBE60 !important;
+  border-color: #7FBE60 !important;
   box-shadow: none !important;
   transform: none !important;
-  filter: none !important;
-  transition: none !important;
 }
 
-.main.v28-scope .pikmin-toolbar .pikmin-toolbar-actions > button.pikmin-pill.active:hover {
-  background: #6aac52 !important;
+/* 如果原本地圖模式有白底扁平樣式，這裡強制覆蓋 */
+body.map-mode .filter-btn[data-type="flower"],
+body.map-mode .filter-btn[data-type="mushroom"],
+body.map-mode .filter-btn[data-type="hidden"],
+body.map-mode button[data-type="flower"],
+body.map-mode button[data-type="mushroom"],
+body.map-mode button[data-type="hidden"] {
+  background: #8BC86A !important;
+  color: #ffffff !important;
+  border-color: #8BC86A !important;
+  box-shadow: none !important;
+}
+
+
+/* =========================================================
+   V35：兩種模式共用
+   花 / 蘑菇 / 隱藏 = 綠色膠囊 + 扁平化
+   - 收藏冊模式適用
+   - 地圖模式適用
+   - 不需要 data-type，搭配 JS 自動加 .flat-green-filter
+========================================================= */
+
+.flat-green-filter,
+button.flat-green-filter,
+.btn-pikmin.flat-green-filter,
+.filter-btn.flat-green-filter,
+.category-btn.flat-green-filter,
+.tag-filter-btn.flat-green-filter,
+.top-actions button.flat-green-filter,
+.map-filter button.flat-green-filter {
+  background: #8BC86A !important;
   background-image: none !important;
   color: #ffffff !important;
-  border-color: #6aac52 !important;
-  box-shadow: none !important;
-  transform: none !important;
-  filter: none !important;
-  transition: none !important;
-}
-
-.main.v28-scope .pikmin-toolbar .pikmin-toolbar-actions > button.pikmin-pill:active {
-  box-shadow: none !important;
-  transform: none !important;
-  filter: none !important;
-  transition: none !important;
-}
-
-/* =========================================================
-   V35.9 手機地圖模式：清單至少顯示 3 張卡片，再用內部滾動
-   - 不改結構，只覆蓋窄螢幕高度分配
-========================================================= */
-@media (max-width: 768px) {
-  body.map-mode #mapView.map-view {
-    display: grid !important;
-    grid-template-columns: 1fr !important;
-    grid-template-rows: auto minmax(320px, 1fr) !important;
-    gap: 12px !important;
-    height: auto !important;
-    min-height: 0 !important;
-    overflow: visible !important;
-  }
-
-  body.map-mode #mapList.map-list {
-    height: clamp(320px, 45vh, 420px) !important;
-    min-height: 320px !important;
-    max-height: 420px !important;
-    overflow-y: auto !important;
-    overflow-x: hidden !important;
-    -webkit-overflow-scrolling: touch !important;
-  }
-}
-
-/* =========================================================
-   V36 卡片座標：固定單行，長座標自動縮字
-========================================================= */
-.v28-scope .postcard-coords,
-.postcard-coords {
-  display: block !important;
-  min-width: 52% !important;
-  max-width: 100% !important;
-  overflow: hidden !important;
-  text-overflow: ellipsis !important;
-  white-space: nowrap !important;
-  line-height: 1.35 !important;
-  font-size: 15px !important;
-  font-weight: 700 !important;
-}
-
-.v28-scope .postcard-coords.coords-long,
-.postcard-coords.coords-long {
-  font-size: 14px !important;
-}
-
-.v28-scope .postcard-coords.coords-very-long,
-.postcard-coords.coords-very-long {
-  font-size: 13px !important;
-  letter-spacing: 0 !important;
-}
-
-.v28-scope .postcard-taxonomy,
-.postcard-taxonomy {
-  margin-top: 9px !important;
-}
-
-/* =========================================================
-   V35.9 FINAL BUTTON OVERRIDE (Forced Priority)
-   ========================================================= */
-#addCardBtn.primary-button,
-#clearImageBtn,
-#previewBox.upload-inline-preview #clearImageBtn,
-.upload-inline-preview.preview-box #clearImageBtn {
-  background-image: none !important;
-  color: #fff !important;
   border: none !important;
   border-radius: 999px !important;
   box-shadow: none !important;
-  font-weight: 600 !important;
-  letter-spacing: 0.5px !important;
-  margin-top: 50px !important;
-  font-size: 18px !important; /* 統一調回稍微明顯一點的大小 */
-  min-height: 58px !important;
-  display: flex !important;
-  align-items: center !important;
-  justify-content: center !important;
-  transition: opacity 0.2s ease !important;
-  width: 100% !important;
+  text-shadow: none !important;
+  transform: none !important;
+  filter: none !important;
 }
 
-#addCardBtn.primary-button {
-  background: #74b85a !important;
+/* hover：只微變色，不浮起、不陰影 */
+.flat-green-filter:hover,
+button.flat-green-filter:hover,
+.btn-pikmin.flat-green-filter:hover,
+.filter-btn.flat-green-filter:hover,
+.category-btn.flat-green-filter:hover,
+.tag-filter-btn.flat-green-filter:hover,
+.top-actions button.flat-green-filter:hover,
+.map-filter button.flat-green-filter:hover {
+  background: #7FBE60 !important;
   background-image: none !important;
+  box-shadow: none !important;
+  transform: none !important;
+  filter: none !important;
 }
 
-#clearImageBtn,
-#previewBox.upload-inline-preview #clearImageBtn,
-.upload-inline-preview.preview-box #clearImageBtn {
-  background: #94a3b8 !important; 
-  margin-top: 12px !important;    
+/* active：深一點綠色，仍然扁平 */
+.flat-green-filter.active,
+button.flat-green-filter.active,
+.btn-pikmin.flat-green-filter.active,
+.filter-btn.flat-green-filter.active,
+.category-btn.flat-green-filter.active,
+.tag-filter-btn.flat-green-filter.active,
+.top-actions button.flat-green-filter.active,
+.map-filter button.flat-green-filter.active {
+  background: #74B85A !important;
+  background-image: none !important;
+  color: #ffffff !important;
+  border: none !important;
+  box-shadow: none !important;
+  transform: none !important;
+  filter: none !important;
 }
 
-#addCardBtn.primary-button:hover,
-#clearImageBtn:hover {
-  opacity: 0.85 !important;
+
+/* =========================================================
+   V35.1 FINAL：收藏冊 / 地圖模式
+   花 / 蘑菇 / 隱藏：綠色膠囊「扁平化」
+   重點：
+   - 保留膠囊形狀
+   - 移除立體感：無陰影、無漸層、無浮起
+   - 不管有沒有 data-type，都會生效
+========================================================= */
+
+/* 由 JS 加上的 class：最精準 */
+.flat-green-filter,
+button.flat-green-filter,
+.btn-pikmin.flat-green-filter,
+.filter-btn.flat-green-filter,
+.category-btn.flat-green-filter,
+.tag-filter-btn.flat-green-filter,
+.top-actions button.flat-green-filter,
+.map-filter button.flat-green-filter {
+  background: #8BC86A !important;
+  background-image: none !important;
+  color: #ffffff !important;
+  border: none !important;
+  border-radius: 999px !important;
+  box-shadow: none !important;
+  text-shadow: none !important;
+  transform: none !important;
+  filter: none !important;
+}
+
+/* 收藏冊上方最後三顆：花 / 蘑菇 / 隱藏，直接強制覆蓋 */
+body:not(.map-mode) .top-actions button:nth-last-child(3),
+body:not(.map-mode) .top-actions button:nth-last-child(2),
+body:not(.map-mode) .top-actions button:nth-last-child(1),
+body:not(.map-mode) .map-filter button:nth-last-child(3),
+body:not(.map-mode) .map-filter button:nth-last-child(2),
+body:not(.map-mode) .map-filter button:nth-last-child(1) {
+  background: #8BC86A !important;
+  background-image: none !important;
+  color: #ffffff !important;
+  border: none !important;
+  border-radius: 999px !important;
+  box-shadow: none !important;
+  text-shadow: none !important;
+  transform: none !important;
+  filter: none !important;
+}
+
+/* 地圖模式也同步 */
+body.map-mode .top-actions button:nth-last-child(3),
+body.map-mode .top-actions button:nth-last-child(2),
+body.map-mode .top-actions button:nth-last-child(1),
+body.map-mode .map-filter button:nth-last-child(3),
+body.map-mode .map-filter button:nth-last-child(2),
+body.map-mode .map-filter button:nth-last-child(1) {
+  background: #8BC86A !important;
+  background-image: none !important;
+  color: #ffffff !important;
+  border: none !important;
+  border-radius: 999px !important;
+  box-shadow: none !important;
+  text-shadow: none !important;
+  transform: none !important;
+  filter: none !important;
+}
+
+/* hover：只變色，不浮起 */
+.flat-green-filter:hover,
+button.flat-green-filter:hover,
+.btn-pikmin.flat-green-filter:hover,
+.filter-btn.flat-green-filter:hover,
+.category-btn.flat-green-filter:hover,
+.tag-filter-btn.flat-green-filter:hover,
+body:not(.map-mode) .top-actions button:nth-last-child(-n+3):hover,
+body:not(.map-mode) .map-filter button:nth-last-child(-n+3):hover,
+body.map-mode .top-actions button:nth-last-child(-n+3):hover,
+body.map-mode .map-filter button:nth-last-child(-n+3):hover {
+  background: #7FBE60 !important;
+  background-image: none !important;
+  box-shadow: none !important;
+  transform: none !important;
+  filter: none !important;
+}
+
+/* active：深一點，仍然扁平 */
+.flat-green-filter.active,
+button.flat-green-filter.active,
+.btn-pikmin.flat-green-filter.active,
+.filter-btn.flat-green-filter.active,
+.category-btn.flat-green-filter.active,
+.tag-filter-btn.flat-green-filter.active,
+body:not(.map-mode) .top-actions button:nth-last-child(-n+3).active,
+body:not(.map-mode) .map-filter button:nth-last-child(-n+3).active,
+body.map-mode .top-actions button:nth-last-child(-n+3).active,
+body.map-mode .map-filter button:nth-last-child(-n+3).active {
+  background: #74B85A !important;
+  background-image: none !important;
+  color: #ffffff !important;
+  border: none !important;
+  box-shadow: none !important;
+  transform: none !important;
+  filter: none !important;
+}
+
+
+/* =========================================================
+   V35.3 LOAD FIX：收藏冊 / 地圖模式
+   花 / 蘑菇 / 隱藏：綠色膠囊扁平化
+   - 不使用可能造成白畫面的強制 inline JS
+   - 使用 class + CSS 變數覆蓋
+========================================================= */
+
+.flat-green-filter,
+button.flat-green-filter,
+a.flat-green-filter,
+[role="button"].flat-green-filter,
+.btn-pikmin.flat-green-filter,
+.filter-btn.flat-green-filter,
+.category-btn.flat-green-filter,
+.tag-filter-btn.flat-green-filter,
+.top-actions .flat-green-filter,
+.map-filter .flat-green-filter {
+  background: #8BC86A !important;
+  background-image: none !important;
+  color: #ffffff !important;
+  border: none !important;
+  border-radius: 999px !important;
+  box-shadow: none !important;
+  text-shadow: none !important;
+  transform: none !important;
+  filter: none !important;
+}
+
+.flat-green-filter:hover,
+button.flat-green-filter:hover,
+a.flat-green-filter:hover,
+[role="button"].flat-green-filter:hover,
+.btn-pikmin.flat-green-filter:hover,
+.filter-btn.flat-green-filter:hover,
+.category-btn.flat-green-filter:hover,
+.tag-filter-btn.flat-green-filter:hover {
+  background: #7FBE60 !important;
+  background-image: none !important;
+  box-shadow: none !important;
   transform: none !important;
 }
 
-#addCardBtn:disabled,
-#clearImageBtn:disabled {
-  opacity: 0.62 !important;
-  cursor: not-allowed !important;
+.flat-green-filter.active,
+.flat-green-filter.is-active,
+.flat-green-filter[aria-pressed="true"] {
+  background: #74B85A !important;
+  background-image: none !important;
+  box-shadow: none !important;
+  transform: none !important;
 }
 
-/* 常用國家快速按鈕樣式 */
-.quick-country-btn {
-  background: rgba(255, 255, 255, 0.15) !important;
-  backdrop-filter: blur(8px) !important;
-  -webkit-backdrop-filter: blur(8px) !important;
-  border: 1px solid rgba(0, 0, 0, 0.04) !important;
+/* 保底：如果上方是 top-actions 或 map-filter 的最後三顆 */
+.top-actions > *:nth-last-child(-n+3),
+.map-filter > *:nth-last-child(-n+3) {
+  background: #8BC86A !important;
+  background-image: none !important;
+  color: #ffffff !important;
+  border: none !important;
   border-radius: 999px !important;
-  padding: 6px 14px !important;
-  font-size: 13px !important;
-  color: #5a6156 !important;
-  cursor: pointer !important;
-  transition: all 0.2s ease !important;
-  font-family: var(--font-main) !important;
+  box-shadow: none !important;
+  text-shadow: none !important;
+  transform: none !important;
+  filter: none !important;
 }
 
-.quick-country-btn:hover {
-  background: rgba(22, 204, 145, 0.2) !important;
-  border-color: rgba(22, 204, 145, 0.3) !important;
+
+/* =========================================================
+   V35.4 收藏冊模式：花 / 蘑菇 / 隱藏
+   未點選 = 灰色扁平膠囊
+   點選後 = 綠色膠囊
+========================================================= */
+
+/* 未點選：灰色扁平 */
+body:not(.map-mode) .collection-sub-filter,
+body:not(.map-mode) button.collection-sub-filter,
+body:not(.map-mode) .btn-pikmin.collection-sub-filter,
+body:not(.map-mode) .filter-btn.collection-sub-filter,
+body:not(.map-mode) .category-btn.collection-sub-filter,
+body:not(.map-mode) .tag-filter-btn.collection-sub-filter {
+  background: #F4F6F1 !important;
+  background-image: none !important;
+  color: #24352C !important;
+  border: 1px solid rgba(36, 53, 44, 0.14) !important;
+  border-radius: 999px !important;
+  box-shadow: none !important;
+  text-shadow: none !important;
+  transform: none !important;
+  filter: none !important;
 }
 
-.quick-country-btn:active {
-  transform: scale(0.95) !important;
+/* hover：仍然灰色，不浮起 */
+body:not(.map-mode) .collection-sub-filter:hover,
+body:not(.map-mode) button.collection-sub-filter:hover,
+body:not(.map-mode) .btn-pikmin.collection-sub-filter:hover,
+body:not(.map-mode) .filter-btn.collection-sub-filter:hover,
+body:not(.map-mode) .category-btn.collection-sub-filter:hover,
+body:not(.map-mode) .tag-filter-btn.collection-sub-filter:hover {
+  background: #EAF0E4 !important;
+  background-image: none !important;
+  color: #24352C !important;
+  box-shadow: none !important;
+  transform: none !important;
+}
+
+/* 點選後：綠色膠囊 */
+body:not(.map-mode) .collection-sub-filter.active,
+body:not(.map-mode) .collection-sub-filter.is-active,
+body:not(.map-mode) .collection-sub-filter.selected,
+body:not(.map-mode) .collection-sub-filter[aria-pressed="true"],
+body:not(.map-mode) button.collection-sub-filter.active,
+body:not(.map-mode) button.collection-sub-filter.is-active,
+body:not(.map-mode) button.collection-sub-filter.selected,
+body:not(.map-mode) button.collection-sub-filter[aria-pressed="true"] {
+  background: #8BC86A !important;
+  background-image: none !important;
+  color: #ffffff !important;
+  border: 1px solid #8BC86A !important;
+  border-radius: 999px !important;
+  box-shadow: none !important;
+  text-shadow: none !important;
+  transform: none !important;
+  filter: none !important;
+}
+
+/* 點選後 hover：深一點綠色 */
+body:not(.map-mode) .collection-sub-filter.active:hover,
+body:not(.map-mode) .collection-sub-filter.is-active:hover,
+body:not(.map-mode) .collection-sub-filter.selected:hover,
+body:not(.map-mode) .collection-sub-filter[aria-pressed="true"]:hover {
+  background: #7FBE60 !important;
+  border-color: #7FBE60 !important;
+  color: #ffffff !important;
+}
+
+/* 保底：收藏冊模式上方最後三顆如果沒有被 JS 加到 class，也先灰色扁平 */
+body:not(.map-mode) .top-actions > *:nth-last-child(-n+3):not(.active):not(.is-active):not(.selected):not([aria-pressed="true"]),
+body:not(.map-mode) .map-filter > *:nth-last-child(-n+3):not(.active):not(.is-active):not(.selected):not([aria-pressed="true"]) {
+  background: #F4F6F1 !important;
+  background-image: none !important;
+  color: #24352C !important;
+  border: 1px solid rgba(36, 53, 44, 0.14) !important;
+  box-shadow: none !important;
+  transform: none !important;
+}
+
+/* 保底：最後三顆點選狀態綠色 */
+body:not(.map-mode) .top-actions > *:nth-last-child(-n+3).active,
+body:not(.map-mode) .top-actions > *:nth-last-child(-n+3).is-active,
+body:not(.map-mode) .top-actions > *:nth-last-child(-n+3).selected,
+body:not(.map-mode) .top-actions > *:nth-last-child(-n+3)[aria-pressed="true"],
+body:not(.map-mode) .map-filter > *:nth-last-child(-n+3).active,
+body:not(.map-mode) .map-filter > *:nth-last-child(-n+3).is-active,
+body:not(.map-mode) .map-filter > *:nth-last-child(-n+3).selected,
+body:not(.map-mode) .map-filter > *:nth-last-child(-n+3)[aria-pressed="true"] {
+  background: #8BC86A !important;
+  background-image: none !important;
+  color: #ffffff !important;
+  border: 1px solid #8BC86A !important;
+  box-shadow: none !important;
+  transform: none !important;
+}
+
+
+/* =========================================================
+   V35.5 FINAL：收藏冊模式 花 / 蘑菇 / 隱藏 狀態修正
+   未點選：灰色扁平
+   點選後：綠色扁平
+   注意：使用 .sub-filter-selected 控制，不再吃舊 active 狀態
+========================================================= */
+
+/* 預設未點選：灰色扁平 */
+body:not(.map-mode) .collection-sub-filter-v355 {
+  background: #F4F6F1 !important;
+  background-image: none !important;
+  color: #24352C !important;
+  border: 1px solid rgba(36, 53, 44, 0.14) !important;
+  border-radius: 999px !important;
+  box-shadow: none !important;
+  text-shadow: none !important;
+  transform: none !important;
+  filter: none !important;
+}
+
+/* hover：灰色微深，不浮起 */
+body:not(.map-mode) .collection-sub-filter-v355:hover {
+  background: #EAF0E4 !important;
+  background-image: none !important;
+  color: #24352C !important;
+  border-color: rgba(36, 53, 44, 0.18) !important;
+  box-shadow: none !important;
+  transform: none !important;
+}
+
+/* 點選後：綠色扁平 */
+body:not(.map-mode) .collection-sub-filter-v355.sub-filter-selected {
+  background: #8BC86A !important;
+  background-image: none !important;
+  color: #ffffff !important;
+  border: 1px solid #8BC86A !important;
+  border-radius: 999px !important;
+  box-shadow: none !important;
+  text-shadow: none !important;
+  transform: none !important;
+  filter: none !important;
+}
+
+/* 點選後 hover */
+body:not(.map-mode) .collection-sub-filter-v355.sub-filter-selected:hover {
+  background: #7FBE60 !important;
+  border-color: #7FBE60 !important;
+  color: #ffffff !important;
+}
+
+/* 保底：如果 JS 還沒執行，收藏冊最後三顆先灰色 */
+body:not(.map-mode) .top-actions > *:nth-last-child(-n+3),
+body:not(.map-mode) .map-filter > *:nth-last-child(-n+3) {
+  background: #F4F6F1 !important;
+  background-image: none !important;
+  color: #24352C !important;
+  border: 1px solid rgba(36, 53, 44, 0.14) !important;
+  border-radius: 999px !important;
+  box-shadow: none !important;
+  text-shadow: none !important;
+  transform: none !important;
+  filter: none !important;
+}
+
+
+/* =========================================================
+   V35.6 FINAL FIX：收藏冊模式標籤按鈕
+   需求：
+   - 花 / 蘑菇 / 隱藏：未點選 = 灰色扁平膠囊
+   - 花 / 蘑菇 / 隱藏：點選後 = 綠色扁平膠囊
+   - 國家不受影響
+   - 地圖模式不受影響
+========================================================= */
+
+/* 未點選：灰色 */
+body:not(.map-mode) .tag-filter[data-tag="花"]:not(.active),
+body:not(.map-mode) .tag-filter[data-tag="蘑菇"]:not(.active),
+body:not(.map-mode) .tag-filter[data-tag="隱藏"]:not(.active) {
+  background: #F4F6F1 !important;
+  background-image: none !important;
+  color: #24352C !important;
+  border: 1px solid rgba(36, 53, 44, 0.14) !important;
+  border-radius: 999px !important;
+  box-shadow: none !important;
+  text-shadow: none !important;
+  transform: none !important;
+  filter: none !important;
+}
+
+/* 點選後：綠色 */
+body:not(.map-mode) .tag-filter[data-tag="花"].active,
+body:not(.map-mode) .tag-filter[data-tag="蘑菇"].active,
+body:not(.map-mode) .tag-filter[data-tag="隱藏"].active {
+  background: #8BC86A !important;
+  background-image: none !important;
+  color: #ffffff !important;
+  border: 1px solid #8BC86A !important;
+  border-radius: 999px !important;
+  box-shadow: none !important;
+  text-shadow: none !important;
+  transform: none !important;
+  filter: none !important;
+}
+
+/* hover：未選灰色微深，已選綠色微深 */
+body:not(.map-mode) .tag-filter[data-tag="花"]:not(.active):hover,
+body:not(.map-mode) .tag-filter[data-tag="蘑菇"]:not(.active):hover,
+body:not(.map-mode) .tag-filter[data-tag="隱藏"]:not(.active):hover {
+  background: #EAF0E4 !important;
+  background-image: none !important;
+  color: #24352C !important;
+  box-shadow: none !important;
+  transform: none !important;
+}
+
+body:not(.map-mode) .tag-filter[data-tag="花"].active:hover,
+body:not(.map-mode) .tag-filter[data-tag="蘑菇"].active:hover,
+body:not(.map-mode) .tag-filter[data-tag="隱藏"].active:hover {
+  background: #7FBE60 !important;
+  background-image: none !important;
+  color: #ffffff !important;
+  box-shadow: none !important;
+  transform: none !important;
 }

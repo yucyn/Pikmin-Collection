@@ -7,7 +7,8 @@
 #grid.grid{
   display:grid !important;
   grid-template-columns:repeat(4,minmax(0,1fr)) !important;
-  gap:24px !important;
+  row-gap:24px !important;
+  column-gap:6px !important;
   column-count:unset !important;
 }
 
@@ -34,8 +35,8 @@
 #grid .postcard-card{
   display:block !important;
   background:#fff !important;
-  border-radius:20px !important;
-  padding:12px !important;
+  border-radius:14px !important;
+  padding:4px !important;
   box-shadow:0 8px 22px rgba(0,0,0,.08) !important;
   border:1px solid rgba(0,0,0,.04) !important;
   margin:0 !important;
@@ -53,11 +54,21 @@
 #grid .postcard-photo{
   position:relative !important;
   width:100% !important;
-  aspect-ratio:3/4 !important;
-  border-radius:16px !important;
+  aspect-ratio:1/1 !important;
+  border-radius:12px !important;
   overflow:hidden !important;
   background:#f3f4ef !important;
   cursor:pointer !important;
+}
+
+.v28-scope #grid .postcard-photo.reposition-enabled,
+#grid .postcard-photo.reposition-enabled{
+  cursor:grab !important;
+}
+
+.v28-scope #grid .postcard-photo.reposition-enabled.is-dragging,
+#grid .postcard-photo.reposition-enabled.is-dragging{
+  cursor:grabbing !important;
 }
 
 .v28-scope #grid .postcard-photo img,
@@ -67,7 +78,7 @@
   object-fit:cover !important;
   object-position:center center !important;
   display:block !important;
-  border-radius:16px !important;
+  border-radius:12px !important;
 }
 
 .v28-scope #grid .postcard-photo img.landscape,
@@ -107,15 +118,27 @@
   border:0 !important;
   border-radius:999px !important;
   padding:6px 9px !important;
-  background:rgba(255,255,255,.88) !important;
-  box-shadow:0 6px 16px rgba(0,0,0,.10) !important;
-  backdrop-filter:blur(8px);
+  background:rgba(255,255,255,0.05) !important; /* 幾乎完全透明 */
+  box-shadow:none !important; /* 移除陰影，看起來更輕透 */
+  backdrop-filter:blur(8px) !important;
+  -webkit-backdrop-filter:blur(8px) !important;
   transform:none !important;
-  color:#263322 !important;
+  color:#ffffff !important;
   font-size:12px !important;
   font-weight:800 !important;
   cursor:pointer !important;
   line-height:1 !important;
+  transition:none !important;
+}
+
+.v28-scope .postcard-photo .float-btn:hover,
+.postcard-photo .float-btn:hover,
+.v28-scope .postcard-photo .float-btn:active,
+.postcard-photo .float-btn:active {
+  transform:none !important;
+  scale:1 !important;
+  box-shadow:0 6px 16px rgba(0,0,0,.10) !important;
+  filter:none !important;
 }
 
 .v28-scope .postcard-photo .map-btn,
@@ -161,8 +184,10 @@
   width:120px;
   padding:7px;
   border-radius:14px;
-  background:rgba(255,255,255,.96);
+  background:rgba(255,255,255,.7); /* 30% 透明 */
   box-shadow:0 10px 24px rgba(0,0,0,.14);
+  backdrop-filter:blur(10px);
+  -webkit-backdrop-filter:blur(10px);
   z-index:20;
 }
 
@@ -173,24 +198,26 @@
 
 .v28-scope .postcard-menu-action,
 .postcard-menu-action{
-  width:100%;
-  border:0;
-  background:transparent;
-  border-radius:10px;
-  padding:8px;
-  text-align:left;
-  cursor:pointer;
-  font-weight:750;
+  width:100% !important;
+  border:0 !important;
+  background:transparent !important; /* 扁平化，不要全域綠色背景 */
+  border-radius:10px !important;
+  padding:8px !important;
+  text-align:left !important;
+  cursor:pointer !important;
+  font-weight:750 !important;
+  color: #333333 !important; /* 一般文字顏色 */
+  box-shadow: none !important; /* 移除全域按鈕陰影 */
 }
 
 .v28-scope .postcard-menu-action:hover,
 .postcard-menu-action:hover{
-  background:#f0f2e9;
+  background:#f0f2e9 !important;
 }
 
 .v28-scope .postcard-menu-action.danger,
 .postcard-menu-action.danger{
-  color:#a85858;
+  color:#a85858 !important;
 }
 
 /* Info */
@@ -234,9 +261,11 @@
 .postcard-taxonomy{
   display:flex;
   align-items:center;
+  justify-content:space-between; /* 讓國家靠左，標籤靠右 */
   gap:6px;
   flex-wrap:wrap;
   margin-top:5px;
+  width:100%;
 }
 
 .v28-scope .postcard-country,
@@ -258,13 +287,16 @@
   gap:6px !important;
   padding:3px 10px !important;
   border-radius:999px !important;
-  background:rgba(255,255,255,0.85) !important;
-  border:1px solid rgba(60,70,50,0.12) !important;
+  background:rgba(255,255,255,0.4) !important;
+  backdrop-filter: blur(5px) !important;
+  -webkit-backdrop-filter: blur(5px) !important;
+  border:none !important;
   box-shadow:0 2px 6px rgba(0,0,0,0.04) !important;
   font-size:12px !important;
   font-weight:700 !important;
   color:#2f2f2f !important;
   cursor:pointer;
+  margin-right: 3px !important;
 }
 
 .v28-scope .tag-花::before,
@@ -387,11 +419,21 @@
   position:relative;
   z-index:2;
   width:min(420px,92vw);
-  margin:12vh auto 0;
+  margin:6vh auto 0;
+  max-height:88vh;
+  overflow-y:auto;
+  -ms-overflow-style:none;
+  scrollbar-width:none;
   background:#fffef8;
   border-radius:24px;
   padding:24px 28px 26px;
   box-shadow:0 28px 80px rgba(0,0,0,.2);
+}
+
+.edit-modal-panel::-webkit-scrollbar{
+  width:0;
+  height:0;
+  display:none;
 }
 
 .edit-modal-panel h2{
@@ -443,6 +485,60 @@
   font-size:16px;
   font-weight:900;
   cursor:pointer;
+  position:relative;
+  z-index:5;
+  pointer-events:auto !important;
+}
+
+.edit-image-focus-preview{
+  width:100%;
+  aspect-ratio:1/1;
+  margin-top:8px;
+  border:1px solid rgba(0,0,0,.12);
+  border-radius:14px;
+  overflow:hidden;
+  background:#f4f5ef;
+  cursor:grab;
+  touch-action:none;
+}
+
+.edit-image-focus-preview.is-dragging{
+  cursor:grabbing;
+}
+
+.edit-image-focus-preview img{
+  width:100%;
+  height:100%;
+  object-fit:cover;
+  object-position:50% 50%;
+  display:block;
+  user-select:none;
+  -webkit-user-drag:none;
+  pointer-events:none;
+}
+
+.edit-image-focus-actions{
+  margin-top:8px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:10px;
+}
+
+.edit-image-focus-actions small{
+  color:#5e6858;
+  font-size:12px;
+  font-weight:650;
+}
+
+.edit-image-focus-reset{
+  border:0;
+  border-radius:999px;
+  padding:7px 12px;
+  background:#edf0e8;
+  color:#2c3a27;
+  font-weight:800;
+  cursor:pointer;
 }
 
 /* Mobile */
@@ -490,27 +586,7 @@
   }
 }
 
-/* 強制覆蓋 Modal 裡的 Open Google Map 按鈕 */
-#cardModal #modalMapLink,
-#modalMapLink.btn-primary,
-#modalMapLink {
-  display: block !important;
-  width: 100% !important;
-  text-align: center !important;
-  text-decoration: none !important;
-
-  border: none !important;
-  border-radius: 18px !important;
-  padding: 14px !important;
-
-  background: linear-gradient(135deg, #7fbf6a, #9cd67f) !important;
-  color: #ffffff !important;
-
-  font-size: 16px !important;
-  font-weight: 900 !important;
-
-  box-shadow: 0 6px 18px rgba(120, 180, 100, 0.3) !important;
-}
+/* (已移除強制覆蓋 Modal 裡的 Open Google Map 按鈕舊樣式，改由 v28-modal.css 控制) */
 /* 手機版：修正蘑菇 icon 與文字重疊 */
 @media (max-width:600px){
   .v28-scope .tag-蘑菇,
@@ -691,11 +767,11 @@
 #v28CreateFab,
 #scrollTopBtn,
 .v28-create-fab.scroll-top-fab {
-  width: 58px !important;
-  height: 58px !important;
-  min-width: 58px !important;
-  min-height: 58px !important;
-  right: 18px !important;
+  width: 35px !important;
+  height: 35px !important;
+  min-width: 35px !important;
+  min-height: 35px !important;
+  right: 14px !important;
   border: none !important;
   border-radius: 50% !important;
   display: flex !important;
@@ -711,8 +787,8 @@
 
 #mobileUploadFab {
   position: fixed !important;
-  bottom: 92px !important;
-  font-size: 36px !important;
+  bottom: 64px !important; 
+  font-size: 22px !important;
 }
 
 #v28CreateFab,
@@ -726,8 +802,8 @@
 #v28CreateFab svg,
 #scrollTopBtn svg,
 .v28-create-fab.scroll-top-fab svg {
-  width: 28px !important;
-  height: 28px !important;
+  width: 20px !important;
+  height: 20px !important;
   color: #ffffff !important;
   display: block !important;
   pointer-events: none !important;

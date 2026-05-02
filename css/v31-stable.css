@@ -1,0 +1,63 @@
+/* =========================================================
+   Pikmin Collection V31 Stable Layer
+   目的：緊急修復渲染不見的問題，還原穩定狀態
+   ========================================================= */
+
+:root {
+  --pikmin-bg: #f6f6f2;
+  --pikmin-green: #6b8a75;
+  --pikmin-green-light: #8ba88e;
+  --pikmin-text: #4a4a4a;
+  --pikmin-card-bg: #ffffff;
+}
+
+#grid {
+  display: grid !important;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 20px;
+  padding: 20px 0;
+  opacity: 1 !important;
+  visibility: visible !important;
+}
+
+.postcard-photo {
+  background: #f0f0eb !important;
+  aspect-ratio: 4 / 3;
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+#emptyState.hidden {
+  display: none !important;
+}
+
+/* 修復分享按鈕樣式 */
+#modalShareCardBtn.modal-share-icon {
+  position: absolute !important;
+  right: 15px !important;
+  bottom: 15px !important;
+  background: transparent !important;
+  border: none !important;
+  padding: 8px !important;
+  cursor: pointer !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  z-index: 100 !important;
+  transition: transform 0.2s ease, opacity 0.2s ease !important;
+  opacity: 0.5 !important;
+}
+
+#modalShareCardBtn.modal-share-icon svg {
+  width: 24px !important;
+  height: 24px !important;
+  stroke: #6b8a75 !important;
+  fill: none !important;
+}
+
+#modalShareCardBtn.modal-share-icon:hover {
+  transform: scale(1.18) !important;
+  opacity: 1 !important;
+  background: rgba(107, 138, 117, 0.1) !important;
+  border-radius: 50% !important;
+}

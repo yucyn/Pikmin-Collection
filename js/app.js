@@ -553,31 +553,32 @@ document.addEventListener("DOMContentLoaded", function () {
   setUploadMode("file");
   setView("collection");
 
-  // V35.10：Firebase 保底初始化。
-  // 不再讓畫面等待 Firebase / Auth；即使雲端讀取失敗，也先正常渲染空資料或本機備援資料。
-  let hasInitialRender = false;
+  // V35.11：先畫面保底渲染，不等待 Firebase，避免上線後一直轉圈 / 空白。
+  let didInitialRender = false;
 
   function safeInitialRender() {
-    if (hasInitialRender) return;
-    hasInitialRender = true;
+    if (didInitialRender) return;
+    didInitialRender = true;
     refreshViews();
     openSharedCardFromUrl();
   }
 
+  // 先用目前快取 / 本機資料渲染一次
+  safeInitialRender();
+
+  // 再嘗試連 Firebase；成功後會由 onChange 再刷新資料
   try {
     initializeFirebaseStorage(function () {
-      safeInitialRender();
       refreshViews();
       openSharedCardFromUrl();
     });
   } catch (error) {
-    console.error("Firebase 初始化失敗，已改用本機備援顯示：", error);
+    console.error("Firebase 初始化失敗，已改用本機備援：", error);
     safeInitialRender();
   }
 
-  // 保底：避免 Firebase onSnapshot / Auth 卡住時，首頁一直空白。
+  // 保底：即使 Firebase SDK / Auth / Firestore 卡住，也不要讓畫面停在載入狀態
   setTimeout(safeInitialRender, 800);
-  setTimeout(refreshViews, 1600);
 });
 
 // ===== Dedicated Mobile Upload Button（唯一控制）=====

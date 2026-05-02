@@ -2,12 +2,8 @@ const ADMIN_USER_IDS = [
   "am42ZiJikLNEt8RSsWipgBDj4h32"
 ];
 
-function isAdminUser() {
-  return ADMIN_USER_IDS.includes(getCurrentUserId());
-}
-
 const USER_ID_KEY = "pikmin_current_user_id";
-const LOCAL_POSTCARDS_KEY = "pikmin_postcards_local_backup_v3510";
+const LOCAL_POSTCARDS_KEY = "pikmin_postcards_local_backup";
 
 let postcardsCache = [];
 let db = null;
@@ -15,25 +11,23 @@ let auth = null;
 let currentUserId = localStorage.getItem(USER_ID_KEY) || "";
 let isFirebaseReady = false;
 let isAuthReady = false;
-let isUsingLocalFallback = false;
-let storageOnChange = null;
+let unsubscribePostcards = null;
 
-function notifyStorageChange() {
-  if (typeof storageOnChange === "function") {
-    try { storageOnChange(); } catch (error) { console.error("onChange 執行失敗：", error); }
-  }
+function createLocalUserId() {
+  const id = "local_" + Math.random().toString(36).slice(2) + Date.now().toString(36);
+  localStorage.setItem(USER_ID_KEY, id);
+  return id;
 }
 
-function ensureLocalUserId() {
+function getCurrentUserId() {
   if (!currentUserId) {
-    currentUserId = localStorage.getItem(USER_ID_KEY) || `local_${Date.now()}_${Math.random().toString(36).slice(2)}`;
-    localStorage.setItem(USER_ID_KEY, currentUserId);
+    currentUserId = localStorage.getItem(USER_ID_KEY) || createLocalUserId();
   }
   return currentUserId;
 }
 
-function getCurrentUserId() {
-  return ensureLocalUserId();
+function isAdminUser() {
+  return ADMIN_USER_IDS.includes(getCurrentUserId());
 }
 
 function getPostcards() {
@@ -65,18 +59,14 @@ function normalizePostcard(id, data = {}) {
   };
 }
 
-function sortPostcards() {
-  postcardsCache.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
-}
-
-function loadLocalBackup() {
+function loadLocalPostcards() {
   try {
     const raw = localStorage.getItem(LOCAL_POSTCARDS_KEY);
     const list = raw ? JSON.parse(raw) : [];
     postcardsCache = Array.isArray(list)
-      ? list.map(item => normalizePostcard(item.id || `local_${Date.now()}_${Math.random().toString(36).slice(2)}`, item))
+      ? list.map(item => normalizePostcard(item.id || ("local_" + Date.now()), item))
       : [];
-    sortPostcards();
+    postcardsCache.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
   } catch (error) {
     console.warn("本機備援資料讀取失敗，已重置：", error);
     postcardsCache = [];
@@ -84,7 +74,7 @@ function loadLocalBackup() {
   }
 }
 
-function saveLocalBackup() {
+function saveLocalPostcards() {
   try {
     localStorage.setItem(LOCAL_POSTCARDS_KEY, JSON.stringify(postcardsCache));
   } catch (error) {
@@ -92,31 +82,28 @@ function saveLocalBackup() {
   }
 }
 
-function switchToLocalFallback(reason) {
-  isUsingLocalFallback = true;
-  console.warn("已切換本機備援模式：", reason);
-  loadLocalBackup();
-  notifyStorageChange();
+function notifyChange(onChange) {
+  if (typeof onChange === "function") {
+    try { onChange(); } catch (error) { console.error(error); }
+  }
 }
 
 function initializeFirebaseStorage(onChange) {
-  storageOnChange = onChange;
-  ensureLocalUserId();
-
-  // 先用本機備援資料渲染一次，避免首頁空白或無限等待。
-  loadLocalBackup();
-  notifyStorageChange();
+  // V35.11：永遠先啟用本機備援，避免 Firebase 卡住時畫面空白。
+  getCurrentUserId();
+  loadLocalPostcards();
+  notifyChange(onChange);
 
   const config = window.PIKMIN_FIREBASE_CONFIG;
   const collectionName = window.PIKMIN_FIREBASE_COLLECTION || "pikmin_postcards";
 
   if (!config || String(config.apiKey || "").includes("PASTE_")) {
-    switchToLocalFallback("Firebase 設定尚未完成");
+    console.warn("Firebase 設定尚未完成，已使用本機備援。");
     return;
   }
 
   if (typeof firebase === "undefined") {
-    switchToLocalFallback("頁面沒有載入 Firebase SDK");
+    console.warn("Firebase SDK 未載入，已使用本機備援。");
     return;
   }
 
@@ -131,22 +118,25 @@ function initializeFirebaseStorage(onChange) {
 
     let snapshotArrived = false;
 
-    db.collection(collectionName).onSnapshot(snapshot => {
+    unsubscribePostcards = db.collection(collectionName).onSnapshot(snapshot => {
       snapshotArrived = true;
-      isUsingLocalFallback = false;
       postcardsCache = snapshot.docs.map(doc => normalizePostcard(doc.id, doc.data()));
-      sortPostcards();
-      saveLocalBackup();
-      notifyStorageChange();
+      postcardsCache.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+      saveLocalPostcards();
+      notifyChange(onChange);
     }, error => {
-      console.error("Firestore 讀取失敗，改用本機備援：", error);
-      switchToLocalFallback(error);
+      console.error("Firestore 讀取失敗，已使用本機備援：", error);
+      isFirebaseReady = false;
+      loadLocalPostcards();
+      notifyChange(onChange);
     });
 
-    // 如果 Firestore 太久沒有回來，先不要讓畫面空白。
+    // 如果 Firestore 長時間沒回來，也先用本機資料渲染，不卡頁面。
     setTimeout(() => {
-      if (!snapshotArrived && postcardsCache.length === 0) {
-        notifyStorageChange();
+      if (!snapshotArrived) {
+        console.warn("Firestore 尚未回應，先使用本機備援資料。");
+        loadLocalPostcards();
+        notifyChange(onChange);
       }
     }, 1200);
 
@@ -155,48 +145,34 @@ function initializeFirebaseStorage(onChange) {
         currentUserId = result.user.uid;
         isAuthReady = true;
         localStorage.setItem(USER_ID_KEY, currentUserId);
-        notifyStorageChange();
+        notifyChange(onChange);
       })
       .catch(error => {
-        console.error("匿名登入失敗，新增/編輯會改用本機備援：", error);
+        console.error("匿名登入失敗，已改用本機使用者 ID：", error);
         isAuthReady = false;
-        ensureLocalUserId();
-        notifyStorageChange();
+        getCurrentUserId();
+        notifyChange(onChange);
       });
+
   } catch (error) {
-    console.error("Firebase 初始化失敗，改用本機備援：", error);
-    switchToLocalFallback(error);
+    console.error("Firebase 初始化失敗，已使用本機備援：", error);
+    isFirebaseReady = false;
+    isAuthReady = false;
+    loadLocalPostcards();
+    notifyChange(onChange);
   }
 }
 
-function canWriteFirebase() {
-  return isFirebaseReady && db && isAuthReady && getCurrentUserId() && !isUsingLocalFallback;
-}
-
-function upsertLocalPostcard(postcard) {
-  const id = postcard.id || `local_${Date.now()}_${Math.random().toString(36).slice(2)}`;
-  const normalized = normalizePostcard(id, {
-    ...postcard,
-    id,
-    ownerId: postcard.ownerId || getCurrentUserId(),
-    createdAt: postcard.createdAt || new Date().toISOString()
-  });
-  postcardsCache = [normalized, ...postcardsCache.filter(item => String(item.id) !== String(id))];
-  sortPostcards();
-  saveLocalBackup();
-  notifyStorageChange();
-  return normalized;
+function assertWriteReady() {
+  // V35.11：Firebase 未就緒時不阻擋，改走本機備援。
+  getCurrentUserId();
+  return true;
 }
 
 async function addPostcard(postcard) {
-  const collectionName = window.PIKMIN_FIREBASE_COLLECTION || "pikmin_postcards";
+  assertWriteReady();
 
-  if (!canWriteFirebase()) {
-    upsertLocalPostcard(postcard);
-    return;
-  }
-
-  await db.collection(collectionName).add({
+  const localItem = normalizePostcard("local_" + Date.now(), {
     ...postcard,
     ownerId: getCurrentUserId(),
     category: postcard.category || "全球",
@@ -204,9 +180,31 @@ async function addPostcard(postcard) {
     likeCount: Number(postcard.likeCount || 0),
     createdAt: postcard.createdAt || new Date().toISOString()
   });
+
+  if (isFirebaseReady && db && isAuthReady) {
+    try {
+      const collectionName = window.PIKMIN_FIREBASE_COLLECTION || "pikmin_postcards";
+      await db.collection(collectionName).add({
+        ...postcard,
+        ownerId: getCurrentUserId(),
+        category: postcard.category || "全球",
+        likedBy: Array.isArray(postcard.likedBy) ? postcard.likedBy : [],
+        likeCount: Number(postcard.likeCount || 0),
+        createdAt: postcard.createdAt || new Date().toISOString()
+      });
+      return;
+    } catch (error) {
+      console.error("Firebase 新增失敗，已改存本機：", error);
+    }
+  }
+
+  postcardsCache.unshift(localItem);
+  saveLocalPostcards();
 }
 
 async function deletePostcard(id) {
+  assertWriteReady();
+
   const item = getPostcardById(id);
 
   if (!isOwnedByCurrentUser(item)) {
@@ -214,19 +212,23 @@ async function deletePostcard(id) {
     return;
   }
 
-  const collectionName = window.PIKMIN_FIREBASE_COLLECTION || "pikmin_postcards";
-
-  if (!canWriteFirebase() || String(id).startsWith("local_")) {
-    postcardsCache = postcardsCache.filter(item => String(item.id) !== String(id));
-    saveLocalBackup();
-    notifyStorageChange();
-    return;
+  if (isFirebaseReady && db && isAuthReady && !String(id).startsWith("local_")) {
+    try {
+      const collectionName = window.PIKMIN_FIREBASE_COLLECTION || "pikmin_postcards";
+      await db.collection(collectionName).doc(id).delete();
+      return;
+    } catch (error) {
+      console.error("Firebase 刪除失敗，已改刪本機快取：", error);
+    }
   }
 
-  await db.collection(collectionName).doc(id).delete();
+  postcardsCache = postcardsCache.filter(item => String(item.id) !== String(id));
+  saveLocalPostcards();
 }
 
 async function togglePostcardLike(id) {
+  assertWriteReady();
+
   const collectionName = window.PIKMIN_FIREBASE_COLLECTION || "pikmin_postcards";
   const userId = getCurrentUserId();
   const item = getPostcardById(id);
@@ -240,21 +242,26 @@ async function togglePostcardLike(id) {
     ? likedBy.filter(x => x !== userId)
     : [...likedBy, userId];
 
-  if (!canWriteFirebase() || String(id).startsWith("local_")) {
-    item.likedBy = nextLikedBy;
-    item.likeCount = nextLikedBy.length;
-    saveLocalBackup();
-    notifyStorageChange();
-    return;
+  if (isFirebaseReady && db && isAuthReady && !String(id).startsWith("local_")) {
+    try {
+      await db.collection(collectionName).doc(id).update({
+        likedBy: nextLikedBy,
+        likeCount: nextLikedBy.length
+      });
+      return;
+    } catch (error) {
+      console.error("Firebase 收藏更新失敗，已改存本機：", error);
+    }
   }
 
-  await db.collection(collectionName).doc(id).update({
-    likedBy: nextLikedBy,
-    likeCount: nextLikedBy.length
-  });
+  item.likedBy = nextLikedBy;
+  item.likeCount = nextLikedBy.length;
+  saveLocalPostcards();
 }
 
 async function updatePostcard(id, updates) {
+  assertWriteReady();
+
   const item = getPostcardById(id);
 
   if (!isOwnedByCurrentUser(item)) {
@@ -262,18 +269,21 @@ async function updatePostcard(id, updates) {
     return;
   }
 
-  const collectionName = window.PIKMIN_FIREBASE_COLLECTION || "pikmin_postcards";
   const nextUpdates = {
     ...updates,
     updatedAt: new Date().toISOString()
   };
 
-  if (!canWriteFirebase() || String(id).startsWith("local_")) {
-    Object.assign(item, nextUpdates);
-    saveLocalBackup();
-    notifyStorageChange();
-    return;
+  if (isFirebaseReady && db && isAuthReady && !String(id).startsWith("local_")) {
+    try {
+      const collectionName = window.PIKMIN_FIREBASE_COLLECTION || "pikmin_postcards";
+      await db.collection(collectionName).doc(id).update(nextUpdates);
+      return;
+    } catch (error) {
+      console.error("Firebase 編輯失敗，已改存本機：", error);
+    }
   }
 
-  await db.collection(collectionName).doc(id).update(nextUpdates);
+  Object.assign(item, nextUpdates);
+  saveLocalPostcards();
 }

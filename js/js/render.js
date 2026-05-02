@@ -85,6 +85,12 @@ function getGoogleMapUrlFromItem(item) {
   return `https://www.google.com/maps?q=${encodeURIComponent(coords)}`;
 }
 
+function clampPercent(value) {
+  const n = Number(value);
+  if (!Number.isFinite(n)) return 50;
+  return Math.min(100, Math.max(0, n));
+}
+
 function renderPostcards({
   grid,
   emptyState,
@@ -102,7 +108,6 @@ function renderPostcards({
   emptyState.classList.toggle("hidden", list.length > 0);
 
   list.forEach(item => {
-    const titleNumber = String(item.originalIndex + 1).padStart(3, "0");
     const category = item.category || "全球";
     const liked = isLikedByCurrentUser(item);
     const canDelete = isOwnedByCurrentUser(item);
@@ -122,6 +127,9 @@ function renderPostcards({
     };
     image.src = item.image;
     image.alt = "Pikmin postcard image";
+    let focusX = clampPercent(item.imageFocusX);
+    let focusY = clampPercent(item.imageFocusY);
+    image.style.setProperty("object-position", `${focusX}% ${focusY}%`, "important");
     photo.appendChild(image);
 
     const hoverActions = createEl("div", "postcard-hover-actions");
@@ -192,15 +200,13 @@ function renderPostcards({
 
     const info = createEl("div", "postcard-info");
 
-    const titleRow = createEl("div", "postcard-title-row");
-    const titleText = isMobileView()
-      ? formatCoords(item.locationText)
-      : `No.${titleNumber}`;
-    const title = createEl("div", "postcard-title", titleText);
-    titleRow.appendChild(title);
-    info.appendChild(titleRow);
-
     const coords = createEl("div", "postcard-coords", item.locationText || "");
+    const coordText = String(item.locationText || "").trim();
+    if (coordText.length >= 24) {
+      coords.classList.add("coords-very-long");
+    } else if (coordText.length >= 20) {
+      coords.classList.add("coords-long");
+    }
     coords.title = "點擊複製座標";
     coords.addEventListener("click", event => {
       event.stopPropagation();
@@ -227,6 +233,11 @@ function renderPostcards({
 
     
     card.appendChild(info);
+    
+    // 當滑鼠離開卡片時，自動關閉已開啟的更多選單
+    card.addEventListener("mouseleave", () => {
+      moreMenu.classList.remove("show");
+    });
 
     grid.appendChild(card);
   });

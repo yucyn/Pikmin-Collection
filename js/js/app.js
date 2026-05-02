@@ -45,29 +45,18 @@ document.addEventListener("DOMContentLoaded", function () {
   const modalCardLocation = document.getElementById("modalCardLocation");
   const modalMapLink = document.getElementById("modalMapLink");
   const modalShareCardBtn = document.getElementById("modalShareCardBtn");
+  const modalPrevBtn = document.getElementById("modalPrevBtn");
+  const modalNextBtn = document.getElementById("modalNextBtn");
 
   let isPreviewMode = false; // V31.6：取消預覽模式
-
-  // V35.9：清掉舊版分享留下的 ?mode=preview，避免上線環境錯誤請求。
-  if (window.location.search.includes("mode=preview")) {
-    const cleanUrl = new URL(window.location.href);
-    cleanUrl.searchParams.delete("mode");
-    window.history.replaceState({}, "", cleanUrl);
-  }
-
   let currentModalCardId = null;
   let currentTagFilter = "";
 
   function getFilters() {
-    return {
-      query: searchInput ? searchInput.value : "",
-      category: categoryFilter ? categoryFilter.value : "",
-      tag: currentTagFilter
-    };
+    return { query: searchInput.value, category: categoryFilter.value, tag: currentTagFilter };
   }
 
   function setMessage(text, isError = false) {
-    if (!uploadMessage) return;
     uploadMessage.textContent = text || "";
     uploadMessage.classList.toggle("error", isError);
   }
@@ -79,24 +68,32 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 
   function applyPreviewMode() {
-    isPreviewMode = false;
-    document.body.classList.remove("preview-mode");
-    if (previewModeBanner) previewModeBanner.classList.add("hidden");
+    // 依照 isPreviewMode 當前狀態套用樣式，不強制覆蓋值
+    document.body.classList.toggle("preview-mode", isPreviewMode);
+    if (previewModeBanner) previewModeBanner.classList.toggle("hidden", !isPreviewMode);
     if (previewModeBtn) {
-      previewModeBtn.classList.remove("active");
-      previewModeBtn.style.display = "none";
+      previewModeBtn.classList.toggle("active", isPreviewMode);
+      previewModeBtn.style.display = "none"; // 保留原本隱藏設定
     }
   }
 
   function togglePreviewMode() {
-    // V35.9：上線版停用 ?mode=preview，避免 Vercel / GitHub Pages 因預覽查詢字串導致 404。
-    isPreviewMode = false;
+    isPreviewMode = !isPreviewMode;
+    // 不在此重複呼叫 bindTagFilterButtons / initScrollTopFab
+    // 那兩個只需在 DOMContentLoaded 初始化一次即可
     applyPreviewMode();
 
     const url = new URL(window.location.href);
-    url.searchParams.delete("mode");
-    window.history.replaceState({}, "", url);
+    if (isPreviewMode) {
+      url.searchParams.set("mode", "preview");
+      navigator.clipboard?.writeText(url.toString()).catch(() => {});
+      alert("已切換為預覽模式。網址已嘗試複製，可分享給別人閱覽。");
+    } else {
+      url.searchParams.delete("mode");
+      url.searchParams.delete("card");
+    }
 
+    window.history.replaceState({}, "", url);
     refreshViews();
   }
 
@@ -113,7 +110,7 @@ document.addEventListener("DOMContentLoaded", function () {
     });
 
     if (mode === "paste") {
-      if (pasteZone) pasteZone.focus();
+      pasteZone.focus();
       setMessage("貼上模式已啟用。");
     } else if (mode === "drag") {
       setMessage("拖曳模式已啟用。");
@@ -126,27 +123,27 @@ document.addEventListener("DOMContentLoaded", function () {
     if (view !== "collection" && view !== "map") view = "collection";
     const isCollection = view === "collection";
     const isMap = view === "map";
-    if (collectionView) collectionView.classList.toggle("hidden", !isCollection);
-    if (mapView) mapView.classList.toggle("hidden", !isMap);
+    collectionView.classList.toggle("hidden", !isCollection);
+    mapView.classList.toggle("hidden", !isMap);
     document.body.classList.toggle("map-mode", isMap);
-    if (collectionViewBtn) collectionViewBtn.classList.toggle("active", isCollection);
-    if (mapViewBtn) mapViewBtn.classList.toggle("active", isMap);
+    collectionViewBtn.classList.toggle("active", isCollection);
+    mapViewBtn.classList.toggle("active", isMap);
     if (isMap) {
       refreshViews();
-      const list = typeof getFilteredPostcards === "function" ? getFilteredPostcards(getFilters()) : [];
+      const list = getFilteredPostcards(getFilters());
       if (list.length > 0) {
         selectMapItem(list[0]);
       } else {
-        if (mapFrame) mapFrame.src = "";
-        if (mapEmpty) mapEmpty.classList.remove("hidden");
+        mapFrame.src = "";
+        mapEmpty.classList.remove("hidden");
       }
     }
   }
 
   function showPreview(imageData) {
     setCurrentImageData(imageData);
-    if (previewImage) previewImage.src = imageData;
-    if (previewBox) previewBox.classList.remove("hidden");
+    previewImage.src = imageData;
+    previewBox.classList.remove("hidden");
     dropZone?.classList.add("has-image");
     setUploadLoading(false);
     setMessage("✅ 圖片已載入，可以輸入座標並新增明信片");
@@ -154,19 +151,19 @@ document.addEventListener("DOMContentLoaded", function () {
 
   function clearPreview() {
     clearCurrentImageData();
-    if (previewImage) previewImage.removeAttribute("src");
-    if (previewBox) previewBox.classList.add("hidden");
+    previewImage.removeAttribute("src");
+    previewBox.classList.add("hidden");
     dropZone?.classList.remove("has-image");
     setMessage("");
   }
 
   function autoFillCountryFromLocation() {
-    const location = parseLocation(locationInput ? locationInput.value : "");
+    const location = parseLocation(locationInput.value);
     if (!location) return;
 
     const detectedCountry = location.country || "全球";
 
-    if (categoryInput && (!categoryInput.value || categoryInput.value === "全球")) {
+    if (!categoryInput.value || categoryInput.value === "全球") {
       categoryInput.value = detectedCountry;
     }
 
@@ -182,21 +179,40 @@ document.addEventListener("DOMContentLoaded", function () {
     return url.toString();
   }
 
+  function updateModalNavState() {
+    const list = getFilteredPostcards(getFilters());
+    const hasMultiple = list.length > 1;
+    if (modalPrevBtn) modalPrevBtn.dataset.hidden = hasMultiple ? "false" : "true";
+    if (modalNextBtn) modalNextBtn.dataset.hidden = hasMultiple ? "false" : "true";
+  }
+
   function openCardModal(item) {
     currentModalCardId = item.id;
     const index = getPostcards().findIndex(card => card.id === item.id);
 
-    if (!cardModal) return;
-    if (modalCardImage) modalCardImage.src = item.image;
-    if (modalCardTitle) modalCardTitle.textContent = `No.${String(index + 1).padStart(3, "0")}`;
-    if (modalCardLocation) modalCardLocation.textContent = `${item.category || "全球"}｜${item.locationText}｜${isOwnedByCurrentUser(item) ? "我的明信片" : "公開明信片"}｜${isLikedByCurrentUser(item) ? "❤️" : "🤍"} ${formatLikeCount(item.likeCount)}`;
-    if (modalMapLink) modalMapLink.href = createGoogleMapUrl(item.lat, item.lng);
+    // 圖片淡入淡出切換動畫
+    const doUpdate = () => {
+      modalCardImage.src = item.image;
+      modalCardTitle.textContent = `No.${String(index + 1).padStart(3, "0")}`;
+      modalCardLocation.textContent = `${item.category || "全球"}｜${item.locationText}｜${isOwnedByCurrentUser(item) ? "我的明信片" : "公開明信片"}｜${isLikedByCurrentUser(item) ? "❤️" : "🤍"} ${formatLikeCount(item.likeCount)}`;
+      modalMapLink.href = createGoogleMapUrl(item.lat, item.lng);
+      requestAnimationFrame(() => modalCardImage.classList.remove("img-fade"));
+    };
+
+    if (!cardModal.classList.contains("hidden")) {
+      // 已開啟時切換：先淡出再更新
+      modalCardImage.classList.add("img-fade");
+      setTimeout(doUpdate, 180);
+    } else {
+      doUpdate();
+    }
 
     const url = new URL(window.location.href);
     url.searchParams.set("card", item.id);
     window.history.replaceState({}, "", url);
 
     cardModal.classList.remove("hidden");
+    updateModalNavState();
   }
 
   function closeCardModal() {
@@ -204,7 +220,17 @@ document.addEventListener("DOMContentLoaded", function () {
     const url = new URL(window.location.href);
     url.searchParams.delete("card");
     window.history.replaceState({}, "", url);
-    if (cardModal) cardModal.classList.add("hidden");
+    cardModal.classList.add("hidden");
+  }
+
+  function navigateModal(direction) {
+    if (!currentModalCardId) return;
+    const list = getFilteredPostcards(getFilters());
+    if (list.length <= 1) return;
+    const idx = list.findIndex(c => String(c.id) === String(currentModalCardId));
+    if (idx === -1) return;
+    const next = list[(idx + direction + list.length) % list.length];
+    openCardModal(next);
   }
 
   function openSharedCardFromUrl() {
@@ -215,13 +241,18 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 
   function selectMapItem(item) {
-    if (mapFrame) mapFrame.src = createGoogleMapEmbedUrl(item.lat, item.lng);
-    if (mapEmpty) mapEmpty.classList.add("hidden");
-    if (mapList) setActiveMapItem(mapList, item.id);
+    mapFrame.src = createGoogleMapEmbedUrl(item.lat, item.lng);
+    mapEmpty.classList.add("hidden");
+    setActiveMapItem(mapList, item.id);
   }
 
   async function handleLikeClick(id) {
-    await togglePostcardLike(id);
+    try {
+      await togglePostcardLike(id);
+    } catch (error) {
+      console.error("like toggle failed:", error);
+      alert("愛心操作失敗，請稍後再試");
+    }
   }
 
   function showToast(message) {
@@ -274,7 +305,16 @@ document.addEventListener("DOMContentLoaded", function () {
 
   function ensureEditModal() {
     let modal = document.getElementById("editModal");
-    if (modal) return modal;
+    const hasCompleteStructure = modal &&
+      modal.querySelector("#editForm") &&
+      modal.querySelector("#editImageFocusPreview") &&
+      modal.querySelector("#editSaveBtn");
+    if (hasCompleteStructure) return modal;
+
+    if (modal) {
+      modal.remove();
+      modal = null;
+    }
 
     modal = document.createElement("section");
     modal.id = "editModal";
@@ -309,7 +349,16 @@ document.addEventListener("DOMContentLoaded", function () {
           <option value="隱藏">隱藏</option>
         </select>
 
-        <button type="submit" class="edit-save-btn">儲存修改</button>
+        <label>圖片展示位置（拖拉調整）</label>
+        <div id="editImageFocusPreview" class="edit-image-focus-preview" aria-label="拖拉調整圖片位置">
+          <img id="editImageFocusImage" alt="編輯中的卡片圖片" />
+        </div>
+        <div class="edit-image-focus-actions">
+          <small>在預覽圖上拖曳可調整裁切位置</small>
+          <button type="button" id="resetImageFocusBtn" class="edit-image-focus-reset">回到置中</button>
+        </div>
+
+        <button type="button" id="editSaveBtn" class="edit-save-btn">儲存修改</button>
       </form>
     `;
 
@@ -331,11 +380,12 @@ document.addEventListener("DOMContentLoaded", function () {
 
   async function updatePostcardSmart(id, changes) {
     if (typeof updatePostcard === "function") {
-      await updatePostcard(id, changes);
-      return;
+      const ok = await updatePostcard(id, changes);
+      return ok !== false;
     }
 
     alert("目前缺少 updatePostcard()，請確認 js/storage.js 已加入更新函式。");
+    return false;
   }
 
   function handleEditClick(item) {
@@ -349,37 +399,164 @@ document.addEventListener("DOMContentLoaded", function () {
     const locationField = document.getElementById("editLocationInput");
     const categoryField = document.getElementById("editCategoryInput");
     const tagField = document.getElementById("editTagInput");
+    const focusPreview = document.getElementById("editImageFocusPreview");
+    const focusImage = document.getElementById("editImageFocusImage");
+    const resetFocusBtn = document.getElementById("resetImageFocusBtn");
+    const saveBtn = document.getElementById("editSaveBtn") || form.querySelector(".edit-save-btn");
 
-    if (!modal || !form || !locationField || !categoryField || !tagField) {
-      console.warn("Edit modal DOM is incomplete; edit action skipped.");
-      return;
+    function clampFocus(value) {
+      const num = Number(value);
+      if (!Number.isFinite(num)) return 50;
+      return Math.min(100, Math.max(0, num));
     }
+
+    let focusX = clampFocus(item.imageFocusX);
+    let focusY = clampFocus(item.imageFocusY);
+    focusImage.src = item.image || "";
+    focusImage.style.objectPosition = `${focusX}% ${focusY}%`;
+
+    let isDraggingFocus = false;
+    let dragStartX = 0;
+    let dragStartY = 0;
+    let dragStartFocusX = focusX;
+    let dragStartFocusY = focusY;
+    let pendingX = 0;
+    let pendingY = 0;
+    let rafId = null;
+
+    // 給預覽圖加上 GPU 合成提示，減少重排
+    focusImage.style.willChange = "object-position";
+    focusPreview.style.touchAction = "none"; // 阻止系統滾動，避免拖曳被搶
+    focusPreview.style.userSelect = "none";
+
+    function applyFocusUpdate() {
+      rafId = null;
+      const width  = Math.max(focusPreview.clientWidth,  1);
+      const height = Math.max(focusPreview.clientHeight, 1);
+      const dx = pendingX - dragStartX;
+      const dy = pendingY - dragStartY;
+      focusX = clampFocus(dragStartFocusX - (dx / width)  * 100);
+      focusY = clampFocus(dragStartFocusY - (dy / height) * 100);
+      focusImage.style.objectPosition = `${focusX}% ${focusY}%`;
+    }
+
+    function scheduleDragUpdate(x, y) {
+      pendingX = x;
+      pendingY = y;
+      if (!rafId) {
+        rafId = requestAnimationFrame(applyFocusUpdate);
+      }
+    }
+
+    function stopDrag() {
+      isDraggingFocus = false;
+      if (rafId) { cancelAnimationFrame(rafId); rafId = null; }
+      focusPreview.classList.remove("is-dragging");
+      focusPreview.releasePointerCapture && focusPreview._pointerId != null &&
+        focusPreview.releasePointerCapture(focusPreview._pointerId);
+      window.removeEventListener("pointermove", onPointerMove);
+      window.removeEventListener("pointerup",   onPointerUp);
+      window.removeEventListener("pointercancel", onPointerUp);
+    }
+
+    function onPointerMove(event) {
+      if (!isDraggingFocus) return;
+      scheduleDragUpdate(event.clientX, event.clientY);
+    }
+
+    function onPointerUp() {
+      stopDrag();
+    }
+
+    focusPreview.onpointerdown = event => {
+      if (event.button !== 0 && event.pointerType === "mouse") return;
+      event.preventDefault();
+      focusPreview._pointerId = event.pointerId;
+      try { focusPreview.setPointerCapture(event.pointerId); } catch (_) {}
+      isDraggingFocus = true;
+      dragStartX = event.clientX;
+      dragStartY = event.clientY;
+      dragStartFocusX = focusX;
+      dragStartFocusY = focusY;
+      focusPreview.classList.add("is-dragging");
+      window.addEventListener("pointermove",   onPointerMove);
+      window.addEventListener("pointerup",     onPointerUp);
+      window.addEventListener("pointercancel", onPointerUp);
+    };
+
+    // 清除舊的 touch / mouse handler，避免重複觸發
+    focusPreview.onmousedown  = null;
+    focusPreview.ontouchstart = null;
+
+    resetFocusBtn.onclick = () => {
+      focusX = 50;
+      focusY = 50;
+      focusImage.style.objectPosition = "50% 50%";
+    };
 
     locationField.value = item.locationText || "";
     categoryField.value = item.category || "全球";
     tagField.value = item.tag || "";
+    // 每次開啟編輯 modal 時，確保按鈕可用、鎖狀態清除
+    if (saveBtn) {
+      saveBtn.disabled = false;
+      saveBtn.removeAttribute("disabled");
+    }
 
-    form.onsubmit = async event => {
-      event.preventDefault();
+    let isSavingEdit = false;
 
+    async function submitEditChanges() {
+      if (isSavingEdit) return;
       const location = parseLocation(locationField.value);
       if (!location) {
         alert("請輸入正確座標，例如：43.587789, 142.465553");
         return;
       }
 
-      await updatePostcardSmart(item.id, {
-        locationText: location.locationText,
-        lat: location.lat,
-        lng: location.lng,
-        category: categoryField.value || location.country || "全球",
-        tag: tagField.value || ""
-      });
+      isSavingEdit = true;
+      if (saveBtn) saveBtn.disabled = true;
+      try {
+        const updated = await updatePostcardSmart(item.id, {
+          locationText: location.locationText,
+          lat: location.lat,
+          lng: location.lng,
+          category: categoryField.value || location.country || "全球",
+          tag: tagField.value || "",
+          imageFocusX: Number(focusX.toFixed(2)),
+          imageFocusY: Number(focusY.toFixed(2))
+        });
+        if (updated) {
+          closeEditModal();
+          refreshViews();
+          showToast("已更新明信片");
+        }
+      } catch (err) {
+        console.error("儲存失敗：", err);
+        alert("儲存失敗，請稍後再試");
+      } finally {
+        isSavingEdit = false;
+        if (saveBtn) saveBtn.disabled = false;
+      }
+    }
 
-      closeEditModal();
-      refreshViews();
-      showToast("已更新明信片");
+    form.onsubmit = async event => {
+      event.preventDefault();
+      await submitEditChanges();
     };
+
+    if (saveBtn) {
+      // 只用 onclick，避免 ontouchend + click 雙重觸發鎖住 isSavingEdit
+      saveBtn.onclick = async event => {
+        event.preventDefault();
+        event.stopPropagation();
+        stopDrag();
+        await submitEditChanges();
+      };
+      saveBtn.onpointerdown = null;
+      saveBtn.ontouchstart = null;
+      saveBtn.onpointerup = null;
+      saveBtn.ontouchend = null;
+    }
 
     modal.classList.remove("hidden");
   }
@@ -387,13 +564,14 @@ document.addEventListener("DOMContentLoaded", function () {
   function bindTagFilterButtons() {
     const buttons = document.querySelectorAll(".tag-filter");
     buttons.forEach(button => {
+      // 守衛：已綁定過就跳過，避免重複呼叫疊加 listener
       if (button.dataset.tagFilterBound === "true") return;
       button.dataset.tagFilterBound = "true";
-
       button.addEventListener("click", () => {
-        const latestButtons = document.querySelectorAll(".tag-filter");
-        latestButtons.forEach(btn => btn.classList.remove("active", "is-active"));
-        button.classList.add("active", "is-active");
+        buttons.forEach(btn => {
+          btn.classList.remove("active", "is-active");
+        });
+        button.classList.add("active");
         currentTagFilter = button.dataset.tag || "";
         refreshViews();
       });
@@ -422,6 +600,9 @@ document.addEventListener("DOMContentLoaded", function () {
 
     function bindScrollTopButton(btn) {
       if (!btn) return;
+      // 守衛：已綁定過就不重複添加 listener，避免多次呼叫疊加
+      if (btn.dataset.scrollTopBound === "true") return;
+      btn.dataset.scrollTopBound = "true";
       btn.setAttribute("aria-label", "回到頂部");
       btn.innerHTML = arrowSvg;
       btn.classList.add("scroll-top-fab");
@@ -439,10 +620,10 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
   function refreshViews() {
-    const selectedCategory = categoryFilter ? categoryFilter.value : "";
-    if (categoryFilter) renderCategoryFilter(categoryFilter, selectedCategory);
+    const selectedCategory = categoryFilter.value;
+    renderCategoryFilter(categoryFilter, selectedCategory);
 
-    if (grid) renderPostcards({
+    renderPostcards({
       grid,
       emptyState,
       onCardClick: openCardModal,
@@ -454,7 +635,7 @@ document.addEventListener("DOMContentLoaded", function () {
       filters: getFilters()
     });
 
-    if (mapList) renderMapList({ mapList, onSelect: selectMapItem, filters: getFilters() });
+    renderMapList({ mapList, onSelect: selectMapItem, filters: getFilters() });
 
     if (currentModalCardId) {
       const item = getPostcardById(currentModalCardId);
@@ -479,27 +660,43 @@ document.addEventListener("DOMContentLoaded", function () {
   if (modeDragBtn) modeDragBtn.addEventListener("click", () => setUploadMode("drag"));
   if (modePasteBtn) modePasteBtn.addEventListener("click", () => setUploadMode("paste"));
 
-  if (collectionViewBtn) collectionViewBtn.addEventListener("click", () => setView("collection"));
-  if (mapViewBtn) mapViewBtn.addEventListener("click", () => setView("map"));
+  collectionViewBtn.addEventListener("click", () => setView("collection"));
+  mapViewBtn.addEventListener("click", () => setView("map"));
   if (previewModeBtn) previewModeBtn.addEventListener("click", togglePreviewMode);
 
-  if (searchInput) searchInput.addEventListener("input", refreshViews);
-  if (categoryFilter) categoryFilter.addEventListener("change", refreshViews);
-  if (locationInput) locationInput.addEventListener("change", autoFillCountryFromLocation);
-  if (locationInput) locationInput.addEventListener("blur", autoFillCountryFromLocation);
+  searchInput.addEventListener("input", refreshViews);
+  categoryFilter.addEventListener("change", refreshViews);
+  locationInput.addEventListener("change", autoFillCountryFromLocation);
+  locationInput.addEventListener("blur", autoFillCountryFromLocation);
 
-  if (clearImageBtn) clearImageBtn.addEventListener("click", clearPreview);
-  if (closeCardModalBtn) closeCardModalBtn.addEventListener("click", closeCardModal);
-  if (cardModalBackdrop) cardModalBackdrop.addEventListener("click", closeCardModal);
-  if (modalShareCardBtn) modalShareCardBtn.addEventListener("click", () => {
+  clearImageBtn.addEventListener("click", clearPreview);
+  closeCardModalBtn.addEventListener("click", closeCardModal);
+  cardModalBackdrop.addEventListener("click", closeCardModal);
+  modalShareCardBtn.addEventListener("click", () => {
     if (currentModalCardId) handleShareClick(currentModalCardId);
   });
 
   document.addEventListener("keydown", event => {
-    if (event.key === "Escape") closeCardModal();
+    if (cardModal.classList.contains("hidden")) return;
+    if (event.key === "Escape") { closeCardModal(); return; }
+    if (event.key === "ArrowLeft")  { event.preventDefault(); navigateModal(-1); }
+    if (event.key === "ArrowRight") { event.preventDefault(); navigateModal(1); }
   });
 
-  if (addCardBtn) addCardBtn.addEventListener("click", async function () {
+  // 觸控左右滑動切換
+  let _swipeStartX = 0;
+  cardModal.addEventListener("touchstart", e => {
+    _swipeStartX = e.touches[0].clientX;
+  }, { passive: true });
+  cardModal.addEventListener("touchend", e => {
+    const dx = e.changedTouches[0].clientX - _swipeStartX;
+    if (Math.abs(dx) > 50) navigateModal(dx < 0 ? 1 : -1);
+  }, { passive: true });
+
+  if (modalPrevBtn) modalPrevBtn.addEventListener("click", e => { e.stopPropagation(); navigateModal(-1); });
+  if (modalNextBtn) modalNextBtn.addEventListener("click", e => { e.stopPropagation(); navigateModal(1); });
+
+  addCardBtn.addEventListener("click", async function () {
     const imageData = getCurrentImageData();
 
     if (!imageData) {
@@ -507,7 +704,7 @@ document.addEventListener("DOMContentLoaded", function () {
       return;
     }
 
-    const location = parseLocation(locationInput ? locationInput.value : "");
+    const location = parseLocation(locationInput.value);
 
     if (!location) {
       alert("請輸入正確座標，例如：43.587789, 142.465553");
@@ -515,7 +712,7 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
     const detectedCountry = location.country || "全球";
-    const category = String(categoryInput ? categoryInput.value || "" : "").trim() || detectedCountry || "全球";
+    const category = String(categoryInput.value || "").trim() || detectedCountry || "全球";
 
     addCardBtn.disabled = true;
     setMessage("明信片新增中…");
@@ -536,8 +733,8 @@ document.addEventListener("DOMContentLoaded", function () {
       refreshViews();
       clearPreview();
       setMessage("✅ 明信片已新增");
-      if (locationInput) locationInput.value = "";
-      if (categoryInput) categoryInput.value = "";
+      locationInput.value = "";
+      categoryInput.value = "";
       if (tagInput) tagInput.value = "";
     } catch (error) {
       console.error(error);
@@ -553,39 +750,10 @@ document.addEventListener("DOMContentLoaded", function () {
   setUploadMode("file");
   setView("collection");
 
-  // V35.12 STABLE：不要再讓首頁等待 Firebase。
-  // 先渲染空狀態，Firebase 回來後再更新資料，避免 Vercel 畫面一直空白/轉圈。
-  let appHasRenderedOnce = false;
-
-  function stableRender(source = "manual") {
-    try {
-      refreshViews();
-      if (!appHasRenderedOnce) {
-        openSharedCardFromUrl();
-        appHasRenderedOnce = true;
-      }
-      document.body.classList.add("app-ready");
-      document.body.classList.remove("app-loading");
-      console.log(`[Pikmin] render ok: ${source}`, getPostcards().length);
-    } catch (error) {
-      console.error(`[Pikmin] render failed: ${source}`, error);
-    }
-  }
-
-  // 立刻顯示畫面，不等待 Firebase。
-  stableRender("initial");
-
-  if (typeof initializeFirebaseStorage === "function") {
-    initializeFirebaseStorage(function () {
-      stableRender("firebase-change");
-    });
-  } else {
-    console.warn("[Pikmin] initializeFirebaseStorage not found; using local empty state.");
-  }
-
-  // 保底：如果 Firebase/CDN/授權卡住，也會再次強制渲染。
-  setTimeout(() => stableRender("fallback-800ms"), 800);
-  setTimeout(() => stableRender("fallback-2500ms"), 2500);
+  initializeFirebaseStorage(function () {
+    refreshViews();
+    openSharedCardFromUrl();
+  });
 });
 
 // ===== Dedicated Mobile Upload Button（唯一控制）=====
@@ -599,6 +767,20 @@ document.addEventListener("DOMContentLoaded", () => {
     e.preventDefault();
     e.stopPropagation();
     sidebar.classList.toggle("open");
+    mobileUploadFab.textContent = sidebar.classList.contains("open") ? "－" : "＋";
+  });
+
+  // 常用國家快速填寫
+  document.querySelectorAll(".quick-country-btn").forEach(btn => {
+    btn.addEventListener("click", () => {
+      const countryInput = document.getElementById("categoryInput");
+      if (countryInput) {
+        countryInput.value = btn.getAttribute("data-country");
+        // 觸發事件以便其他邏輯（如自動儲存）能偵測到變化
+        countryInput.dispatchEvent(new Event("change"));
+        countryInput.dispatchEvent(new Event("input"));
+      }
+    });
   });
 
   document.addEventListener("click", (e) => {
@@ -607,6 +789,7 @@ document.addEventListener("DOMContentLoaded", () => {
     if (sidebar.contains(e.target)) return;
     if (mobileUploadFab.contains(e.target)) return;
     sidebar.classList.remove("open");
+    mobileUploadFab.textContent = "＋";
   });
 });
 // ⭐ Hero 收合控制
@@ -615,38 +798,8 @@ function toggleHero() {
   if (!hero) return;
   hero.classList.toggle('collapsed');
 }
-// 🔥 點擊座標 → 複製
-document.addEventListener("click", async (e) => {
-  const el = e.target.closest(".postcard-coords");
-  if (!el) return;
-
-  const text = el.innerText.trim();
-  if (!text) return;
-
-  try {
-    await navigator.clipboard.writeText(text);
-
-    // Toast 提示
-    const toast = document.createElement("div");
-    toast.innerText = "已複製座標";
-    toast.style.position = "fixed";
-    toast.style.bottom = "110px";
-    toast.style.left = "50%";
-    toast.style.transform = "translateX(-50%)";
-    toast.style.background = "rgba(0,0,0,0.75)";
-    toast.style.color = "#fff";
-    toast.style.padding = "10px 16px";
-    toast.style.borderRadius = "999px";
-    toast.style.fontSize = "13px";
-    toast.style.zIndex = "9999";
-
-    document.body.appendChild(toast);
-    setTimeout(() => toast.remove(), 1200);
-
-  } catch (err) {
-    console.error("copy failed", err);
-  }
-});
+// 座標複製已由 render.js 的 coords addEventListener 統一處理
+// 此處全局 handler 已移除，避免觸發雙 toast
 
 
 /* =========================================================
@@ -748,423 +901,3 @@ document.addEventListener("click", async (e) => {
 })();
 
 
-/* =========================================================
-   V35：自動將「花 / 蘑菇 / 隱藏」套用扁平綠色膠囊
-   適用收藏冊模式與地圖模式
-========================================================= */
-(function forceFlatGreenButtonsBothModes() {
-  const targetTexts = new Set(["花", "蘑菇", "隱藏"]);
-
-  function normalizeText(el) {
-    return (el.textContent || "")
-      .replace(/\s+/g, "")
-      .replace(/[🌸🍄👁️👁]/g, "")
-      .trim();
-  }
-
-  function applyFlatGreenButtons() {
-    document
-      .querySelectorAll("button, .btn-pikmin, .filter-btn, .category-btn, .tag-filter-btn")
-      .forEach(el => {
-        const text = normalizeText(el);
-        if (targetTexts.has(text)) {
-          el.classList.add("flat-green-filter");
-        }
-      });
-  }
-
-  if (document.readyState === "loading") {
-    document.addEventListener("DOMContentLoaded", applyFlatGreenButtons);
-  } else {
-    applyFlatGreenButtons();
-  }
-
-  new MutationObserver(applyFlatGreenButtons).observe(document.documentElement, {
-    childList: true,
-    subtree: true,
-    characterData: true
-  });
-})();
-
-
-/* =========================================================
-   V35.1 FINAL：自動尋找文字為 花 / 蘑菇 / 隱藏 的按鈕
-   加上 .flat-green-filter，確保兩種模式都扁平化
-========================================================= */
-(function forceFlatGreenFinal() {
-  const targetTexts = new Set(["花", "蘑菇", "隱藏"]);
-
-  function normalizeText(el) {
-    return (el.textContent || "")
-      .replace(/\s+/g, "")
-      .replace(/[🌸🍄👁️👁]/g, "")
-      .trim();
-  }
-
-  function apply() {
-    document.querySelectorAll("button, .btn-pikmin, .filter-btn, .category-btn, .tag-filter-btn").forEach(el => {
-      const text = normalizeText(el);
-      if (targetTexts.has(text)) {
-        el.classList.add("flat-green-filter");
-      }
-    });
-  }
-
-  if (document.readyState === "loading") {
-    document.addEventListener("DOMContentLoaded", apply);
-  } else {
-    apply();
-  }
-
-  new MutationObserver(apply).observe(document.documentElement, {
-    childList: true,
-    subtree: true,
-    characterData: true
-  });
-})();
-
-
-/* =========================================================
-   V35.3 LOAD FIX：自動加 class，不強制 inline style
-========================================================= */
-(function () {
-  try {
-    const targetTexts = new Set(["花", "蘑菇", "隱藏"]);
-
-    function normalizeText(el) {
-      return (el.textContent || "")
-        .replace(/\s+/g, "")
-        .replace(/[🌸🍄👁️👁]/g, "")
-        .trim();
-    }
-
-    function applyFlatGreenButtons() {
-      document
-        .querySelectorAll("button, a, [role='button'], .btn-pikmin, .filter-btn, .category-btn, .tag-filter-btn, .top-actions > *, .map-filter > *")
-        .forEach((el) => {
-          const text = normalizeText(el);
-          if (targetTexts.has(text)) {
-            el.classList.add("flat-green-filter");
-          }
-        });
-    }
-
-    if (document.readyState === "loading") {
-      document.addEventListener("DOMContentLoaded", applyFlatGreenButtons);
-    } else {
-      applyFlatGreenButtons();
-    }
-
-    const observer = new MutationObserver(applyFlatGreenButtons);
-    observer.observe(document.documentElement, {
-      childList: true,
-      subtree: true,
-      characterData: true
-    });
-  } catch (err) {
-    console.warn("V35.3 flat green button patch skipped:", err);
-  }
-})();
-
-
-/* =========================================================
-   V35.4 收藏冊模式：花 / 蘑菇 / 隱藏
-   未點選灰色，點選後綠色
-========================================================= */
-(function setupCollectionSubFiltersGrayGreen() {
-  try {
-    const targetTexts = new Set(["花", "蘑菇", "隱藏"]);
-
-    function normalizeText(el) {
-      return (el.textContent || "")
-        .replace(/\s+/g, "")
-        .replace(/[🌸🍄👁️👁]/g, "")
-        .trim();
-    }
-
-    function isCollectionMode() {
-      return !document.body.classList.contains("map-mode");
-    }
-
-    function findSubFilterButtons() {
-      const selectors = [
-        "button",
-        "a",
-        "[role='button']",
-        ".btn-pikmin",
-        ".filter-btn",
-        ".category-btn",
-        ".tag-filter-btn",
-        ".top-actions > *",
-        ".map-filter > *"
-      ].join(",");
-
-      return Array.from(document.querySelectorAll(selectors)).filter(el => {
-        return targetTexts.has(normalizeText(el));
-      });
-    }
-
-    function applyClass() {
-      findSubFilterButtons().forEach(el => {
-        el.classList.add("collection-sub-filter");
-
-        // 若原本沒有任何選中狀態，不要讓舊的 flat-green-filter 影響灰色狀態
-        if (
-          !el.classList.contains("active") &&
-          !el.classList.contains("is-active") &&
-          !el.classList.contains("selected") &&
-          el.getAttribute("aria-pressed") !== "true"
-        ) {
-          el.classList.remove("flat-green-filter");
-          el.classList.remove("force-flat-green-filter");
-        }
-      });
-    }
-
-    function bindClickBehavior() {
-      findSubFilterButtons().forEach(el => {
-        if (el.dataset.collectionSubFilterBound === "true") return;
-        el.dataset.collectionSubFilterBound = "true";
-
-        el.addEventListener("click", () => {
-          setTimeout(() => {
-            applyClass();
-          }, 0);
-          setTimeout(() => {
-            applyClass();
-          }, 80);
-        }, true);
-      });
-    }
-
-    function init() {
-      applyClass();
-      bindClickBehavior();
-    }
-
-    if (document.readyState === "loading") {
-      document.addEventListener("DOMContentLoaded", init);
-    } else {
-      init();
-    }
-
-    new MutationObserver(init).observe(document.documentElement, {
-      childList: true,
-      subtree: true,
-      characterData: true,
-      attributes: true
-    });
-  } catch (err) {
-    console.warn("V35.4 collection sub filter patch skipped:", err);
-  }
-})();
-
-
-/* =========================================================
-   V35.5 FINAL：收藏冊模式 花 / 蘑菇 / 隱藏 狀態修正
-   - 不使用原本 active 判斷，避免一進頁面全部變綠
-   - 預設三顆都是灰色
-   - 點擊後切換 sub-filter-selected 才變綠
-========================================================= */
-(function setupCollectionSubFilterStateFixV355() {
-  try {
-    const targetTexts = new Set(["花", "蘑菇", "隱藏"]);
-
-    function normalizeText(el) {
-      return (el.textContent || "")
-        .replace(/\s+/g, "")
-        .replace(/[🌸🍄👁️👁]/g, "")
-        .trim();
-    }
-
-    function findButtons() {
-      const selectors = [
-        "button",
-        "a",
-        "[role='button']",
-        ".btn-pikmin",
-        ".filter-btn",
-        ".category-btn",
-        ".tag-filter-btn",
-        ".top-actions > *",
-        ".map-filter > *"
-      ].join(",");
-
-      return Array.from(document.querySelectorAll(selectors)).filter(el =>
-        targetTexts.has(normalizeText(el))
-      );
-    }
-
-    function forceInactiveStyle(el) {
-      el.style.setProperty("background", "#F4F6F1", "important");
-      el.style.setProperty("background-image", "none", "important");
-      el.style.setProperty("color", "#24352C", "important");
-      el.style.setProperty("border", "1px solid rgba(36, 53, 44, 0.14)", "important");
-      el.style.setProperty("box-shadow", "none", "important");
-      el.style.setProperty("text-shadow", "none", "important");
-      el.style.setProperty("transform", "none", "important");
-      el.style.setProperty("filter", "none", "important");
-      el.style.setProperty("border-radius", "999px", "important");
-    }
-
-    function forceActiveStyle(el) {
-      el.style.setProperty("background", "#8BC86A", "important");
-      el.style.setProperty("background-image", "none", "important");
-      el.style.setProperty("color", "#ffffff", "important");
-      el.style.setProperty("border", "1px solid #8BC86A", "important");
-      el.style.setProperty("box-shadow", "none", "important");
-      el.style.setProperty("text-shadow", "none", "important");
-      el.style.setProperty("transform", "none", "important");
-      el.style.setProperty("filter", "none", "important");
-      el.style.setProperty("border-radius", "999px", "important");
-    }
-
-    function syncVisual() {
-      // 只在收藏冊模式套用，地圖模式不干擾
-      if (document.body.classList.contains("map-mode")) return;
-
-      findButtons().forEach(el => {
-        el.classList.add("collection-sub-filter-v355");
-
-        // 清除前幾版可能加上的強制綠色 class
-        el.classList.remove("flat-green-filter");
-        el.classList.remove("force-flat-green-filter");
-
-        if (el.classList.contains("sub-filter-selected")) {
-          forceActiveStyle(el);
-        } else {
-          forceInactiveStyle(el);
-        }
-      });
-    }
-
-    function bind() {
-      findButtons().forEach(el => {
-        if (el.dataset.v355SubFilterBound === "true") return;
-        el.dataset.v355SubFilterBound = "true";
-
-        // 預設不要選中
-        el.classList.remove("sub-filter-selected");
-
-        el.addEventListener("click", () => {
-          if (document.body.classList.contains("map-mode")) return;
-
-          // 點擊切換：未點選灰色，點選後綠色
-          setTimeout(() => {
-            el.classList.toggle("sub-filter-selected");
-            syncVisual();
-          }, 0);
-        }, true);
-      });
-    }
-
-    function init() {
-      bind();
-      syncVisual();
-    }
-
-    if (document.readyState === "loading") {
-      document.addEventListener("DOMContentLoaded", init);
-    } else {
-      init();
-    }
-
-    new MutationObserver(() => {
-      init();
-    }).observe(document.documentElement, {
-      childList: true,
-      subtree: true,
-      characterData: true
-    });
-
-  } catch (err) {
-    console.warn("V35.5 sub filter state fix skipped:", err);
-  }
-})();
-
-
-/* =========================================================
-   V35.6 FINAL FIX：用實際 data-tag + active 狀態同步視覺
-   這段放在最後，會覆蓋前面舊版 JS / inline style。
-========================================================= */
-(function finalTagButtonVisualFixV356() {
-  const targetTags = new Set(["花", "蘑菇", "隱藏"]);
-
-  function setGray(el) {
-    el.style.setProperty("background", "#F4F6F1", "important");
-    el.style.setProperty("background-image", "none", "important");
-    el.style.setProperty("color", "#24352C", "important");
-    el.style.setProperty("border", "1px solid rgba(36, 53, 44, 0.14)", "important");
-    el.style.setProperty("border-radius", "999px", "important");
-    el.style.setProperty("box-shadow", "none", "important");
-    el.style.setProperty("text-shadow", "none", "important");
-    el.style.setProperty("transform", "none", "important");
-    el.style.setProperty("filter", "none", "important");
-  }
-
-  function setGreen(el) {
-    el.style.setProperty("background", "#8BC86A", "important");
-    el.style.setProperty("background-image", "none", "important");
-    el.style.setProperty("color", "#ffffff", "important");
-    el.style.setProperty("border", "1px solid #8BC86A", "important");
-    el.style.setProperty("border-radius", "999px", "important");
-    el.style.setProperty("box-shadow", "none", "important");
-    el.style.setProperty("text-shadow", "none", "important");
-    el.style.setProperty("transform", "none", "important");
-    el.style.setProperty("filter", "none", "important");
-  }
-
-  function syncTagButtons() {
-    if (document.body.classList.contains("map-mode")) return;
-
-    document.querySelectorAll(".tag-filter[data-tag]").forEach((btn) => {
-      const tag = btn.dataset.tag || "";
-      if (!targetTags.has(tag)) return;
-
-      // 清掉前面版本可能造成全綠的 class
-      btn.classList.remove("flat-green-filter");
-      btn.classList.remove("force-flat-green-filter");
-      btn.classList.remove("collection-sub-filter-v355");
-
-      if (btn.classList.contains("active")) {
-        setGreen(btn);
-      } else {
-        setGray(btn);
-      }
-    });
-  }
-
-  function init() {
-    syncTagButtons();
-
-    document.querySelectorAll(".tag-filter[data-tag]").forEach((btn) => {
-      if (btn.dataset.v356Bound === "true") return;
-      btn.dataset.v356Bound = "true";
-
-      btn.addEventListener("click", () => {
-        setTimeout(syncTagButtons, 0);
-        setTimeout(syncTagButtons, 60);
-        setTimeout(syncTagButtons, 180);
-      }, true);
-    });
-  }
-
-  if (document.readyState === "loading") {
-    document.addEventListener("DOMContentLoaded", init);
-  } else {
-    init();
-  }
-
-  new MutationObserver(() => {
-    init();
-    syncTagButtons();
-  }).observe(document.documentElement, {
-    childList: true,
-    subtree: true,
-    attributes: true,
-    attributeFilter: ["class", "style"]
-  });
-
-  // 保底：前面舊程式若持續改 style，這裡定期拉回正確狀態
-  setInterval(syncTagButtons, 300);
-})();

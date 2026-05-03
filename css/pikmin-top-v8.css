@@ -1,0 +1,153 @@
+/* =========================================================
+   Pikmin Top UI v8 Integration
+   來源：pikmin_top_ui_test_version-8.html
+   只套頂部搜尋欄 + pill 按鈕樣式，不改資料區 / JS ID
+   ========================================================= */
+
+/* 頂部控制面板：對齊 test version-8 */
+.main.v28-scope > .toolbar.pikmin-toolbar {
+  background: #f6f6f2 !important;
+  border-radius: 24px !important;
+  padding: 16px !important;
+  margin: 0 0 20px 0 !important;
+
+  display: flex !important;
+  gap: 12px !important;
+  flex-wrap: wrap !important;
+  align-items: center !important;
+
+  box-shadow: none !important;
+  border: none !important;
+  overflow: visible !important; /* 確保葉子不被遮住 */
+}
+
+/* 搜尋框區 */
+.main.v28-scope .pikmin-toolbar .pikmin-search.search-box {
+  flex: 1 1 220px !important;
+  min-width: 220px !important;
+  max-width: 480px !important;
+  position: relative !important;
+  margin: 0 !important;
+  overflow: visible !important; /* 核心修正：讓葉子冒出來 */
+}
+
+.main.v28-scope .pikmin-toolbar .pikmin-search-input.search-input {
+  width: 100% !important;
+  height: auto !important;
+  padding: 12px 18px !important;
+  border-radius: 999px !important;
+  border: none !important;
+  outline: none !important;
+  background: #f8f8f5 !important;
+  box-shadow: none !important;
+  color: #30362d !important;
+  font-size: 15px !important;
+}
+
+.main.v28-scope .pikmin-toolbar .pikmin-search-input.search-input::placeholder {
+  color: #8b8f86 !important;
+}
+
+/* 葉子動畫 */
+.main.v28-scope .pikmin-toolbar .pikmin-leaf {
+  position: absolute !important;
+  right: 18px !important;
+  top: -12px !important;
+  width: 14px !important;
+  height: 20px !important;
+  background: #74b657 !important;
+  border-radius: 80% 20% 80% 20% !important;
+  animation: pikminTopSwing 1.8s infinite ease-in-out !important;
+  pointer-events: none !important;
+  display: block !important;
+  z-index: 100 !important; /* 確保在彈窗 (z-index: 1000) 之下 */
+}
+
+@keyframes pikminTopSwing {
+  0%, 100% { transform: rotate(-10deg); }
+  50% { transform: rotate(14deg); }
+}
+
+/* 按鈕列 */
+.main.v28-scope .pikmin-toolbar .pikmin-toolbar-actions {
+  display: flex !important;
+  gap: 8px !important;
+  flex-wrap: wrap !important;
+  align-items: center !important;
+  margin: 0 !important;
+}
+
+/* pill 按鈕 */
+.main.v28-scope .pikmin-toolbar .pikmin-pill {
+  min-width: auto !important;
+  min-height: auto !important;
+  height: auto !important;
+  padding: 8px 14px !important;
+  border-radius: 999px !important;
+  border: none !important;
+  background: #dfe6d6 !important;
+  color: #273020 !important;
+  box-shadow: none !important;
+  white-space: nowrap !important;
+  font-size: 14px !important;
+  font-weight: 800 !important;
+  line-height: 1.2 !important;
+  cursor: pointer !important;
+
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  text-align: center !important;
+}
+
+.main.v28-scope .pikmin-toolbar .pikmin-pill.active,
+.main.v28-scope .pikmin-toolbar .pikmin-pill.is-active {
+  background: #7fa35a !important;
+  color: #ffffff !important;
+}
+
+.main.v28-scope .pikmin-toolbar .pikmin-preview-btn {
+  background: #5f7f45 !important;
+  color: #ffffff !important;
+  font-weight: 900 !important;
+}
+
+.main.v28-scope .pikmin-toolbar .pikmin-preview-btn.active,
+.main.v28-scope .pikmin-toolbar .pikmin-preview-btn.is-active {
+  background: #5f7f45 !important;
+  color: #ffffff !important;
+}
+
+/* 避免舊測試控制區殘留 */
+.main.v28-scope > .control-panel,
+.main.v28-scope > .top-bar {
+  display: none !important;
+}
+
+/* 手機版：搜尋欄獨占一排，按鈕自然換行 */
+@media (max-width: 768px) {
+  .main.v28-scope > .toolbar.pikmin-toolbar {
+    padding: 14px !important;
+    gap: 10px !important;
+  }
+
+  .main.v28-scope .pikmin-toolbar .pikmin-search.search-box {
+    flex: 0 1 100% !important;
+    width: 100% !important;
+    max-width: none !important;
+  }
+
+  .main.v28-scope .pikmin-toolbar .pikmin-toolbar-actions {
+    gap: 8px !important;
+  }
+
+  .main.v28-scope .pikmin-toolbar .pikmin-pill {
+    padding: 8px 13px !important;
+    font-size: 14px !important;
+  }
+}
+
+/* 強制解禁主容器溢出，避免切掉頂部裝飾 */
+.main.v28-scope {
+  overflow: visible !important;
+}

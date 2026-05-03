@@ -751,7 +751,7 @@ select option[disabled] {
 
 /* 收合狀態：把 + 拉近漢堡選單 */
 .sidebar.collapsed .sidebar-upload-trigger {
-  margin-top: 18px !important;
+  margin-top: 7px !important;
   margin-bottom: 0 !important;
   padding: 0 !important;
   display: flex !important;

@@ -739,3 +739,52 @@ select option[disabled] {
   border-radius: 16px;
 }
 
+/* =========================================================
+   Sidebar 收合狀態：修正 + 按鈕距離過遠
+========================================================= */
+
+/* 展開狀態：新增按鈕與公告欄保持舒服距離 */
+.sidebar .sidebar-upload-trigger {
+  margin-top: 22px;
+  margin-bottom: 22px;
+}
+
+/* 收合狀態：把 + 拉近漢堡選單 */
+.sidebar.collapsed .sidebar-upload-trigger {
+  margin-top: 18px !important;
+  margin-bottom: 0 !important;
+  padding: 0 !important;
+  display: flex !important;
+  justify-content: center !important;
+}
+
+/* 收合狀態：按鈕變成小圓形，不保留大按鈕寬度 */
+.sidebar.collapsed .sidebar-upload-trigger .primary-button {
+  width: 44px !important;
+  height: 44px !important;
+  min-width: 44px !important;
+  padding: 0 !important;
+  border-radius: 999px !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  font-size: 28px !important;
+  line-height: 1 !important;
+}
+
+/* 收合狀態：隱藏「新增明信片」文字，只留 + */
+.sidebar.collapsed .sidebar-upload-trigger .btn-text {
+  display: none !important;
+}
+
+/* 收合狀態：+ 置中 */
+.sidebar.collapsed .sidebar-upload-trigger .plus-icon {
+  display: block !important;
+  line-height: 1 !important;
+  transform: translateY(-1px);
+}
+
+/* 收合狀態：公告欄不要再佔位置 */
+.sidebar.collapsed .sidebar-notice {
+  display: none !important;
+}

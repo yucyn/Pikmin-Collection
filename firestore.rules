@@ -1,0 +1,24 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    
+    // 原有的 Pikmin 明信片資料規則 (範例，依現況調整)
+    match /pikmin_postcards/{id} {
+      allow read: if true;
+      allow create: if request.auth != null;
+      allow update, delete: if request.auth != null && (resource.data.ownerId == request.auth.uid || isAdmin());
+    }
+
+    // ✅ 新增：修正後的 Report 回報系統規則
+    match /reports/{reportId} {
+      allow create: if request.auth != null; // 只能登入才能回報
+      allow read, update, delete: if isAdmin(); // 只有管理員可以管理回報
+    }
+
+    // 輔助函式
+    function isAdmin() {
+      // 假設管理員 UID，請依據您的設定修改
+      return request.auth.uid == "YOUR_ADMIN_UID_HERE"; 
+    }
+  }
+}

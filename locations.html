@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Pikbook｜皮克敏明信片 GPS 座標整理｜Pikmin Bloom 明信片收藏冊</title>
+  
+  <!-- SEO Metadata -->
+  <meta name="description" content="Pikbook 是 Pikmin Bloom 皮克敏明信片收藏冊，整理玩家收藏的皮克敏明信片、GPS 座標、地點名稱、國家地區、花、蘑菇、隱藏與活動分類，方便搜尋與查找有趣的明信片地點。">
+  <meta name="author" content="Pikbook">
+  <link rel="canonical" href="https://pikbook.cc/locations.html">
+
+  <!-- Open Graph / Facebook / LINE -->
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://pikbook.cc/locations.html">
+  <meta property="og:title" content="Pikbook｜皮克敏明信片 GPS 座標整理">
+  <meta property="og:description" content="整理 Pikmin Bloom 皮克敏明信片、GPS 座標、地點名稱與分類標籤，收藏好看、有趣、有特色的明信片。">
+  <meta property="og:image" content="https://pikbook.cc/favicon.png">
+
+  <!-- Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700;900&family=Quicksand:wght@400;600;700&display=swap" rel="stylesheet">
+  <link rel="icon" href="./favicon.png" type="image/png">
+
+  <style>
+    :root {
+      --bg: #f6f7f2;
+      --text: #2b2f27;
+      --muted: #7b8275;
+      --green: #6aa85e;
+      --green-dark: #2f7d3b;
+      --green-soft: #eaf6df;
+      --white: #ffffff;
+      --shadow: 0 18px 50px rgba(32, 36, 28, 0.08);
+      --radius: 24px;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Quicksand', 'Noto Sans TC', sans-serif;
+      background: 
+        radial-gradient(circle at top left, rgba(232,246,214,0.72), transparent 32%),
+        radial-gradient(circle at top right, rgba(255,245,205,0.62), transparent 28%),
+        var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 40px 20px;
+    }
+
+    .container {
+      max-width: 800px;
+      width: 100%;
+      background: rgba(255, 255, 255, 0.7);
+      backdrop-filter: blur(12px);
+      border: 1px solid rgba(40, 45, 35, 0.08);
+      border-radius: var(--radius);
+      padding: 40px;
+      box-shadow: var(--shadow);
+      animation: fadeIn 0.6s ease-out;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .header {
+      text-align: center;
+      margin-bottom: 40px;
+    }
+
+    .brand-icon {
+      font-size: 48px;
+      margin-bottom: 16px;
+      display: block;
+    }
+
+    h1 {
+      font-size: 32px;
+      color: var(--green-dark);
+      font-weight: 900;
+      margin-bottom: 8px;
+    }
+
+    .subtitle {
+      color: var(--muted);
+      font-size: 18px;
+      font-weight: 500;
+    }
+
+    section {
+      margin-bottom: 40px;
+    }
+
+    h2 {
+      font-size: 22px;
+      color: var(--green);
+      margin-bottom: 16px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    h2::before {
+      content: '🌱';
+      font-size: 20px;
+    }
+
+    p {
+      margin-bottom: 16px;
+      font-size: 16px;
+    }
+
+    .info-list {
+      margin-left: 1.2em;
+      color: var(--text);
+      line-height: 1.9;
+    }
+
+    .info-list li {
+      margin-bottom: 8px;
+    }
+
+    .info-list strong {
+      color: var(--green-dark);
+    }
+
+    .cta-container {
+      text-align: center;
+      margin-top: 20px;
+    }
+
+    .btn-primary {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: var(--green);
+      color: white;
+      text-decoration: none;
+      padding: 14px 32px;
+      border-radius: 999px;
+      font-weight: 700;
+      font-size: 18px;
+      box-shadow: 0 10px 20px rgba(106, 168, 94, 0.2);
+      transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+
+    .btn-primary:hover {
+      background: var(--green-dark);
+      transform: scale(1.05);
+      box-shadow: 0 15px 30px rgba(47, 125, 59, 0.3);
+    }
+
+    .footer {
+      margin-top: 40px;
+      text-align: center;
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+
+
+    @media (max-width: 600px) {
+      .container {
+        padding: 24px;
+      }
+      h1 {
+        font-size: 26px;
+      }
+      .btn-primary {
+        width: 100%;
+        justify-content: center;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <header class="header">
+      <span class="brand-icon">🌱</span>
+      <h1>Pikbook｜皮克敏明信片收藏冊</h1>
+      <p class="subtitle">整理 Pikmin Bloom 明信片、地點名稱與 GPS 座標</p>
+    </header>
+
+    <section id="about">
+      <h2>這裡在整理什麼？</h2>
+      <p>Pikbook 是用來整理 Pikmin Bloom 皮克敏明信片、GPS 座標與地點名稱的收藏冊。</p>
+      <p>這裡會慢慢收集好看、有趣、有特色的皮克敏明信片，並記下明信片地點、國家地區、GPS 座標與分類標籤，方便之後搜尋、收藏和查找。</p>
+      <p>這裡不是官方攻略，也不一定是完整資料庫，比較像玩家一起慢慢整理的皮克敏明信片收藏小本本。</p>
+      <p>也歡迎玩家一起分享好看、有趣、特別，或覺得值得收藏的 Pikmin Bloom 明信片。</p>
+    </section>
+
+    <section id="features">
+      <h2>可以留下哪些資訊？</h2>
+      <p>每張明信片只要補上幾個重點，就會變得比較好找，也方便之後修正或補充。</p>
+
+      <ul class="info-list">
+        <li><strong>明信片資料：</strong>上傳後可以持續編輯地點、GPS、標籤與來源資料。</li>
+        <li><strong>地點名稱：</strong>記下明信片上的地點或附近區域。</li>
+        <li><strong>GPS 座標：</strong>記下明信片的 GPS 座標，之後比較好查找。</li>
+        <li><strong>簡單分類：</strong>用花、蘑菇、隱藏、活動等標籤整理。</li>
+      </ul>
+    </section>
+
+    <section id="categories">
+      <h2>目前會怎麼整理？</h2>
+      <p>
+        目前會先依照國家、活動和簡單標籤整理，例如日本、比利時、香港、台灣，以及花、蘑菇、隱藏、活動等分類。
+        之後看到喜歡的明信片，再慢慢補上。
+      </p>
+    </section>
+
+    <section id="keywords">
+      <h2>相關搜尋</h2>
+      <p>
+        皮克敏明信片、Pikmin Bloom 明信片、皮克敏 GPS 座標、Pikmin postcard、
+        皮克敏景點、皮克敏收藏冊、Pikmin Bloom GPS、皮克敏地點整理
+      </p>
+    </section>
+
+    <div class="cta-container">
+      <a href="/" class="btn-primary">
+        <span>📖</span> 去看收藏冊
+      </a>
+    </div>
+  </div>
+
+  <footer class="footer">
+    <p>Pikbook 想把有趣、好看、有特色的 Pikmin Bloom 明信片慢慢收起來 🌱</p>
+    <p>慢慢整理皮克敏明信片、GPS 座標、地點名稱與活動紀錄。</p>
+  </footer>
+
+</body>
+</html>
